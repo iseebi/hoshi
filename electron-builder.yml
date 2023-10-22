@@ -1,4 +1,4 @@
-appId: com.electron.app
+appId: net.iseteki.hoshi
 productName: hoshi
 directories:
   buildResources: build
@@ -9,6 +9,11 @@ files:
   - '!{.eslintignore,.eslintrc.cjs,.prettierignore,.prettierrc.yaml,dev-app-update.yml,CHANGELOG.md,README.md}'
   - '!{.env,.env.*,.npmrc,pnpm-lock.yaml}'
   - '!{tsconfig.json,tsconfig.node.json,tsconfig.web.json,tsconfig.cli.json}'
+extraFiles:
+  - from: out/cli/index-${os}
+    to: hoshi-cli
+  - from: out/cli/index-${os}.exe
+    to: hoshi-cli.exe
 asarUnpack:
   - resources/**
 win:
