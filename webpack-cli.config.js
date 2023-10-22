@@ -1,5 +1,5 @@
 // webpack.config.js
-const path = require('path')
+const path = require('path');
 
 module.exports = {
   mode: 'production',
@@ -10,16 +10,16 @@ module.exports = {
         // 拡張子 .ts の場合
         test: /\.ts$/,
         // TypeScript をコンパイルする
-        use: 'ts-loader'
-      }
-    ]
+        use: 'ts-loader',
+      },
+    ],
   },
   resolve: {
-    extensions: ['.ts', '.js']
+    extensions: ['.ts', '.js'],
   },
   output: {
     path: path.join(__dirname, 'out/cli/src'),
-    filename: 'index.js'
+    filename: 'index.js',
   },
-  target: 'node'
-}
+  target: 'node',
+};

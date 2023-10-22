@@ -1,12 +1,6 @@
-import {ReactElement} from "react";
-import {CommonTest} from "../../common/src";
+import { ReactElement } from 'react';
+import { CommonTest } from '../../common/src';
 
-function App(): ReactElement {
-  return (
-    <div className="container">
-      Test + {new CommonTest().doTest()}
-    </div>
-  )
-}
+const App = (): ReactElement => <div className="container">Test +{new CommonTest().doTest()}</div>;
 
-export default App
+export default App;

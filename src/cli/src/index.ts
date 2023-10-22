@@ -1,3 +1,4 @@
-import { CommonTest } from '../../common/src'
+import { CommonTest } from '../../common/src';
 
-console.log(new CommonTest().doTest())
+// eslint-disable-next-line no-console
+console.log(new CommonTest().doTest());
