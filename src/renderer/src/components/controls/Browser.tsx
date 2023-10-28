@@ -23,7 +23,9 @@ const Browser: React.FC = () => (
       </Section>
     </Picker>
     <ListView flexGrow={1}>
-      <Item key="v1">v1</Item>
+      <Item key="v3">0000300 feature2</Item>
+      <Item key="v2">0000200 feature1</Item>
+      <Item key="v1">0000100 initial</Item>
     </ListView>
   </Frame>
 );
