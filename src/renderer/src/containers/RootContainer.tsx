@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import Root from '../components/Root';
 import AppHeaderContainer from './controls/AppHeaderContainer';
 import AppToolbarContainer from './controls/AppToolbarContainer';
+import BrowserContainer from './controls/BrowserContainer';
 
 type ExportProps = {
   children?: React.ReactNode;
@@ -19,7 +20,7 @@ type DispatchProps = {
 type Props = ExportProps & StateProps & DispatchProps;
 
 const RootContainer: React.FC<Props> = ({ children }) => (
-  <Root header={<AppHeaderContainer />} toolbar={<AppToolbarContainer />}>
+  <Root header={<AppHeaderContainer />} toolbar={<AppToolbarContainer />} browser={<BrowserContainer />}>
     {children}
   </Root>
 );
