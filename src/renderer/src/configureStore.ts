@@ -1,23 +1,15 @@
 import createSagaMiddleware from 'redux-saga';
 import { all } from 'typed-redux-saga';
-import { createReduxHistoryContext } from 'redux-first-history';
 import logger from 'redux-logger';
 import { configureStore } from '@reduxjs/toolkit';
-import { createBrowserHistory } from 'history';
 
 const sagaMiddleware = createSagaMiddleware();
 function* rootSaga(): Generator {
   yield all([]);
 }
 
-const { createReduxHistory, routerMiddleware, routerReducer } = createReduxHistoryContext({
-  history: createBrowserHistory(),
-});
-
-export const store = configureStore({
-  reducer: {
-    router: routerReducer,
-  },
+const store = configureStore({
+  reducer: {},
   middleware: (getDefaultMiddleware) => {
     const middleware = getDefaultMiddleware({
       thunk: false,
@@ -30,7 +22,7 @@ export const store = configureStore({
     //   return [...middleware, sagaMiddleware, routerMiddleware, logger];
     // }
     // return [...middleware, sagaMiddleware, routerMiddleware];
-    return [...middleware, sagaMiddleware, routerMiddleware, logger];
+    return [...middleware, sagaMiddleware, logger];
   },
 });
 
@@ -39,4 +31,4 @@ sagaTask.toPromise().catch(() => {
   /* no op */
 });
 
-export const history = createReduxHistory(store);
+export default store;
