@@ -22,4 +22,6 @@ const mapStateToProps = (/* state: RootState */): StateProps => ({});
 
 const mapDispatchToProps = (/* dispatch: Dispatch */): DispatchProps => ({});
 
-export default connect(mapStateToProps, mapDispatchToProps)(TopPageContainer);
+const Connected = connect(mapStateToProps, mapDispatchToProps)(TopPageContainer);
+
+export default Connected;

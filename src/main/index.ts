@@ -5,12 +5,18 @@ import { electronApp, optimizer, is } from '@electron-toolkit/utils';
 import icon from '../../resources/icon.png?asset';
 
 function createWindow(): void {
+  const frame = process.platform === 'darwin' ? true : false;
+  const fullscreenable = process.platform === 'darwin' ? true : false;
+
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     width: 900,
     height: 670,
     show: false,
     autoHideMenuBar: true,
+    titleBarStyle: 'hiddenInset',
+    frame,
+    fullscreenable,
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),

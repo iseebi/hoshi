@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import NotFoundPage from '../../components/pages/NotFoundPage';
+import AppHeader from '../../components/controls/AppHeader';
 
 type ExportProps = {
-  children?: React.ReactNode;
+  /* N/A */
 };
 
 type StateProps = {
@@ -16,12 +16,12 @@ type DispatchProps = {
 
 type Props = ExportProps & StateProps & DispatchProps;
 
-const NotFoundPageContainer: React.FC<Props> = () => <NotFoundPage />;
+const AppHeaderContainer: React.FC<Props> = () => <AppHeader />;
 
-const mapStateToProps = (/* state: RootState */): StateProps => ({});
+const mapStateToProps = (/* state: HeaderState */): StateProps => ({});
 
 const mapDispatchToProps = (/* dispatch: Dispatch */): DispatchProps => ({});
 
-const Connected = connect(mapStateToProps, mapDispatchToProps)(NotFoundPageContainer);
+const Connected = connect(mapStateToProps, mapDispatchToProps)(AppHeaderContainer);
 
 export default Connected;

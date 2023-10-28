@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import NotFoundPage from '../../components/pages/NotFoundPage';
+import AppToolbar from '../../components/controls/AppToolbar';
 
 type ExportProps = {
-  children?: React.ReactNode;
+  /* N/A */
 };
 
 type StateProps = {
@@ -16,12 +16,12 @@ type DispatchProps = {
 
 type Props = ExportProps & StateProps & DispatchProps;
 
-const NotFoundPageContainer: React.FC<Props> = () => <NotFoundPage />;
+const AppToolbarContainer: React.FC<Props> = () => <AppToolbar />;
 
-const mapStateToProps = (/* state: RootState */): StateProps => ({});
+const mapStateToProps = (/* state: ToolbarState */): StateProps => ({});
 
 const mapDispatchToProps = (/* dispatch: Dispatch */): DispatchProps => ({});
 
-const Connected = connect(mapStateToProps, mapDispatchToProps)(NotFoundPageContainer);
+const Connected = connect(mapStateToProps, mapDispatchToProps)(AppToolbarContainer);
 
 export default Connected;

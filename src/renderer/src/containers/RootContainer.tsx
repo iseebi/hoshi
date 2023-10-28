@@ -1,6 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Root from '../components/Root';
+import AppHeaderContainer from './controls/AppHeaderContainer';
+import AppToolbarContainer from './controls/AppToolbarContainer';
 
 type ExportProps = {
   children?: React.ReactNode;
@@ -16,12 +18,16 @@ type DispatchProps = {
 
 type Props = ExportProps & StateProps & DispatchProps;
 
-const RootContainer: React.FC<Props> = ({ children }) => <Root>{children}</Root>;
+const RootContainer: React.FC<Props> = ({ children }) => (
+  <Root header={<AppHeaderContainer />} toolbar={<AppToolbarContainer />}>
+    {children}
+  </Root>
+);
 
 const mapStateToProps = (/* state: RootState */): StateProps => ({});
 
 const mapDispatchToProps = (/* dispatch: Dispatch */): DispatchProps => ({});
 
-const ConnectedRootContainer = connect(mapStateToProps, mapDispatchToProps)(RootContainer);
+const Connected = connect(mapStateToProps, mapDispatchToProps)(RootContainer);
 
-export default ConnectedRootContainer;
+export default Connected;
