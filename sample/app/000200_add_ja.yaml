@@ -1,0 +1,6 @@
+type: hoshi.version:1
+phrases:
+  greeting_morning:
+    ja: おはようございます
+  greeting_evening:
+    ja: こんばんは

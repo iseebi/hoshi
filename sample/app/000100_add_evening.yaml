@@ -1,0 +1,5 @@
+type: hoshi.version:1
+phrases:
+  greeting_evening:
+    $description: Evening greetings.
+    en: Good evening
