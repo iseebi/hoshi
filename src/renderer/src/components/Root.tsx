@@ -5,7 +5,6 @@ import { Grid } from '@adobe/react-spectrum';
 type Props = {
   header?: React.ReactNode;
   toolbar?: React.ReactNode;
-  browser?: React.ReactNode;
   children?: React.ReactNode;
 };
 
@@ -16,8 +15,8 @@ const Background = styled.div`
 
 const RootGrid: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <Grid
-    areas={['header header header', 'toolbar browser content']}
-    columns={['size-600', 'size-3600', 'auto']}
+    areas={['header header', 'toolbar content']}
+    columns={['size-600', 'auto']}
     rows={['size-500', 'auto']}
     height="100vh"
     gap="size-25"
@@ -30,12 +29,11 @@ const RootGridItem = styled.div<{ gridArea: string }>`
   grid-area: ${({ gridArea }): string => gridArea};
 `;
 
-const Root: React.FC<Props> = ({ header, toolbar, browser, children }) => (
+const Root: React.FC<Props> = ({ header, toolbar, children }) => (
   <Background>
     <RootGrid>
       <RootGridItem gridArea="header">{header}</RootGridItem>
       <RootGridItem gridArea="toolbar">{toolbar}</RootGridItem>
-      <RootGridItem gridArea="browser">{browser}</RootGridItem>
       <RootGridItem gridArea="content">{children}</RootGridItem>
     </RootGrid>
   </Background>

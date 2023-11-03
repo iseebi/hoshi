@@ -4,15 +4,12 @@ import { defaultTheme, Provider as SpectrumProvider } from '@adobe/react-spectru
 import store from './configureStore';
 import RootContainer from './containers/RootContainer';
 import GlobalStyles from './styles/GlobalStyles';
-import TranslationEditorContainer from './containers/editors/TranslationEditorContainer';
 
 const App = (): ReactElement => (
   <ReduxProvider store={store}>
     <SpectrumProvider theme={defaultTheme}>
       <GlobalStyles />
-      <RootContainer>
-        <TranslationEditorContainer />
-      </RootContainer>
+      <RootContainer />
     </SpectrumProvider>
   </ReduxProvider>
 );

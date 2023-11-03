@@ -4,12 +4,12 @@ import { Dispatch } from '@reduxjs/toolkit';
 import Root from '../components/Root';
 import AppHeaderContainer from './controls/AppHeaderContainer';
 import AppToolbarContainer from './controls/AppToolbarContainer';
-import BrowserContainer from './controls/BrowserContainer';
 import { fetchCurrentProjectAction } from '../modules/projects';
 import { useOnMount } from './sideEffects';
+import RootEditorContainer from './editors/RootEditorContainer';
 
 type ExportProps = {
-  children?: React.ReactNode;
+  /* N/A */
 };
 
 type StateProps = {
@@ -24,14 +24,14 @@ type DispatchProps = {
 
 type Props = ExportProps & StateProps & DispatchProps;
 
-const RootContainer: React.FC<Props> = ({ children, dispatch }) => {
+const RootContainer: React.FC<Props> = ({ dispatch }) => {
   useOnMount(() => {
     dispatch.fetchCurrentProject();
   });
 
   return (
-    <Root header={<AppHeaderContainer />} toolbar={<AppToolbarContainer />} browser={<BrowserContainer />}>
-      {children}
+    <Root header={<AppHeaderContainer />} toolbar={<AppToolbarContainer />}>
+      <RootEditorContainer />
     </Root>
   );
 };

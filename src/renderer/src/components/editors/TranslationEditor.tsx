@@ -5,7 +5,7 @@ import 'react-data-grid/lib/styles.css';
 
 const Frame = styled.div`
   contain: inline-size;
-  height: calc(100% - 4px);
+  height: 100%;
 
   padding-top: var(--spectrum-global-dimension-size-10, var(--spectrum-alias-size-10));
   padding-right: calc(var(--spectrum-global-dimension-size-10, var(--spectrum-alias-size-10)) * 2);

@@ -6,7 +6,7 @@ const Frame = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  height: calc(100% - var(--spectrum-global-dimension-size-25));
+  height: 100%;
   padding: var(--spectrum-global-dimension-size-10, var(--spectrum-alias-size-10));
   background-color: var(--spectrum-alias-toolbar-background-color);
 `;
