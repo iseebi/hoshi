@@ -27,7 +27,7 @@ const RootEditorContainer: React.FC<Props> = ({ activePackage }) => (
 );
 
 const mapStateToProps = (state: RootState): StateProps => ({
-  activePackage: state.projects.activePackage,
+  activePackage: state.packages.activePackage,
 });
 
 const mapDispatchToProps = (/* dispatch: Dispatch */): DispatchProps => ({});

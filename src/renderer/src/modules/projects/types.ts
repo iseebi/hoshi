@@ -11,10 +11,8 @@ export type SmalledProject = _SmalledProject;
 
 export type ProjectsState = {
   project: LoadableValue<SmalledProject | undefined>;
-  activePackage: string | null;
 };
 
 export const EmptyProjectsState: ProjectsState = {
   project: initialLoadableValue(),
-  activePackage: null,
 };

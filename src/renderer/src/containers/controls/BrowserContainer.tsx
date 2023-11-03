@@ -3,13 +3,13 @@ import { connect } from 'react-redux';
 import { Dispatch } from '@reduxjs/toolkit';
 import Browser from '../../components/controls/Browser';
 import { RootState } from '../../modules';
-import { switchPackageAction } from '../../modules/projects';
 import {
   clearPackagesStateAction,
   fetchPackageAction,
   selectActivePackage,
   selectActivePackageVersions,
   SmalledPackage,
+  switchPackageAction,
 } from '../../modules/packages';
 import { clearVersionStateAction, switchVersionAction } from '../../modules/versions';
 
@@ -80,7 +80,7 @@ const BrowserContainer: React.FC<Props> = ({
 };
 
 const mapStateToProps = (state: RootState): StateProps => ({
-  activePackage: state.projects.activePackage,
+  activePackage: state.packages.activePackage,
   packages: state.projects.project.value?.packages ?? [],
   package: selectActivePackage(state),
   versions: selectActivePackageVersions(state),

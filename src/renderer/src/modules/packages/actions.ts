@@ -6,6 +6,10 @@ const actionCreator = actionCreatorFactory('Packages');
 
 export const clearPackagesStateAction = actionCreator('clearPackagesState');
 
+export const switchPackageAction = actionCreator<{
+  packageId: string | null;
+}>('switchPackage');
+
 export const [fetchPackageAction, fetchPackageProgressAction] = createAsyncActionCreator<
   {
     packageId: string;

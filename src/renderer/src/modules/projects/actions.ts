@@ -14,7 +14,3 @@ export const [openProjectAction, openProjectProgressAction] = createAsyncActionC
   actionCreator,
   'openProject',
 );
-
-export const switchPackageAction = actionCreator<{
-  packageId: string | null;
-}>('switchPackage');

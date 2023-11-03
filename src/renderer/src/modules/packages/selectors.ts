@@ -5,7 +5,7 @@ import { LoadableValue, LoadingState } from '../models';
 
 type State = { packages: PackagesState; projects: ProjectsState };
 
-const selectActivePackageName = (state: State): string | null => state.projects.activePackage;
+const selectActivePackageName = (state: State): string | null => state.packages.activePackage;
 export const selectPackage = (state: State): LoadableValue<SmalledPackage | undefined> => state.packages.package;
 
 export const selectActivePackage = createSelector(selectActivePackageName, selectPackage, (packageName, pkg) => {
