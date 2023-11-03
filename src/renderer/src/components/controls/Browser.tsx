@@ -24,6 +24,7 @@ const ProjectSelectedKey = '**PROJECT**';
 const Browser: React.FC<Props> = ({ packages, activePackage, versions, onPackageSelect }) => (
   <Frame>
     <Picker
+      aria-label="Package Selector"
       width="100%"
       marginBottom="size-25"
       selectedKey={activePackage ?? ProjectSelectedKey}
@@ -42,7 +43,7 @@ const Browser: React.FC<Props> = ({ packages, activePackage, versions, onPackage
         ))}
       </Section>
     </Picker>
-    <ListView flexGrow={1}>
+    <ListView aria-label="Version Selector" flexGrow={1}>
       {versions.map((version) => (
         <Item key={version} textValue={version}>
           {version}
