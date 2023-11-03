@@ -1,18 +1,37 @@
-export type Project = {
+// Project
+// ------------------------------
+
+export type ProjectHeader = {
   id: string;
   metadata: ProjectMetadata;
+};
+
+export type Project = ProjectHeader & {
   packages: Package[];
+};
+
+export type SmalledProject = ProjectHeader & {
+  packages: PackageHeader[];
 };
 
 export type ProjectMetadata = Record<string, never>;
 
-export type Package = {
+// Package
+// ------------------------------
+
+export type PackageHeader = {
   id: string;
   metadata: PackageMetadata;
+};
+
+export type Package = PackageHeader & {
   versions: Version[];
 };
 
 export type PackageMetadata = Record<string, never>;
+
+// Version
+// ------------------------------
 
 export type Version = {
   id: string;
@@ -27,9 +46,3 @@ export type Phrase = {
   incomplete: boolean;
   translations: Record<string, string>;
 };
-
-export type SmalledProject = Omit<Project, 'packages'> & {
-  packages: SmalledPackage[];
-};
-
-export type SmalledPackage = Omit<Package, 'versions'>;
