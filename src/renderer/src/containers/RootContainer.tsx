@@ -4,8 +4,10 @@ import { Dispatch } from '@reduxjs/toolkit';
 import Root from '../components/Root';
 import AppHeaderContainer from './controls/AppHeaderContainer';
 import AppToolbarContainer from './controls/AppToolbarContainer';
-import { fetchCurrentProjectAction } from '../modules/projects';
+import { fetchCurrentProjectAction, selectHasCurrentProject } from '../modules/projects';
 import { useOnMount } from './sideEffects';
+import StartViewContainer from './startView/StartViewContainer';
+import { RootState } from '../modules';
 import RootEditorContainer from './editors/RootEditorContainer';
 
 type ExportProps = {
@@ -13,7 +15,7 @@ type ExportProps = {
 };
 
 type StateProps = {
-  /* N/A */
+  hasCurrentProject: boolean;
 };
 
 type DispatchProps = {
@@ -24,19 +26,21 @@ type DispatchProps = {
 
 type Props = ExportProps & StateProps & DispatchProps;
 
-const RootContainer: React.FC<Props> = ({ dispatch }) => {
+const RootContainer: React.FC<Props> = ({ hasCurrentProject, dispatch }) => {
   useOnMount(() => {
     dispatch.fetchCurrentProject();
   });
 
   return (
     <Root header={<AppHeaderContainer />} toolbar={<AppToolbarContainer />}>
-      <RootEditorContainer />
+      {hasCurrentProject ? <RootEditorContainer /> : <StartViewContainer />}
     </Root>
   );
 };
 
-const mapStateToProps = (/* state: RootState */): StateProps => ({});
+const mapStateToProps = (state: RootState): StateProps => ({
+  hasCurrentProject: selectHasCurrentProject(state),
+});
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
   dispatch: {

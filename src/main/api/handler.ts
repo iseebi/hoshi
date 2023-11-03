@@ -12,6 +12,8 @@ const createAPIHandler: () => LocalHoshiAPI = () => ({
   exposed: {
     // eslint-disable-next-line class-methods-use-this
     fetchCurrentProjectAsync: async (): Promise<SmalledProject | undefined> => {
+      return undefined;
+      /*
       return {
         id: '1234',
         metadata: {},
@@ -26,6 +28,7 @@ const createAPIHandler: () => LocalHoshiAPI = () => ({
           },
         ],
       };
+       */
     },
   },
 });
