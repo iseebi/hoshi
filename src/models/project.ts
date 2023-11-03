@@ -11,7 +11,7 @@ export type Project = ProjectHeader & {
 };
 
 export type SmalledProject = ProjectHeader & {
-  packages: PackageHeader[];
+  packages: string[];
 };
 
 export type ProjectMetadata = Record<string, never>;
