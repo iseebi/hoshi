@@ -3,13 +3,15 @@ import { connect } from 'react-redux';
 import RootEditor from '../../components/editors/RootEditor';
 import TranslationEditorContainer from './TranslationEditorContainer';
 import BrowserContainer from '../controls/BrowserContainer';
+import { RootState } from '../../modules';
+import ProjectEditorContainer from './ProjectEditorContainer';
 
 type ExportProps = {
   /* N/A */
 };
 
 type StateProps = {
-  /* N/A */
+  activePackage: string | null;
 };
 
 type DispatchProps = {
@@ -18,13 +20,15 @@ type DispatchProps = {
 
 type Props = ExportProps & StateProps & DispatchProps;
 
-const RootEditorContainer: React.FC<Props> = () => (
+const RootEditorContainer: React.FC<Props> = ({ activePackage }) => (
   <RootEditor browser={<BrowserContainer />}>
-    <TranslationEditorContainer />
+    {activePackage === null ? <ProjectEditorContainer /> : <TranslationEditorContainer />}
   </RootEditor>
 );
 
-const mapStateToProps = (/* state: ToolbarState */): StateProps => ({});
+const mapStateToProps = (state: RootState): StateProps => ({
+  activePackage: state.projects.activePackage,
+});
 
 const mapDispatchToProps = (/* dispatch: Dispatch */): DispatchProps => ({});
 

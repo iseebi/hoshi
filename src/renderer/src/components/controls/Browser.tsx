@@ -2,6 +2,12 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { Item, ListView, Picker, Section } from '@adobe/react-spectrum';
 
+type Props = {
+  packages: string[];
+  activePackage: string | null;
+  onPackageSelect: (pkg: string | null) => void;
+};
+
 const Frame = styled.div`
   display: flex;
   flex-direction: column;
@@ -11,15 +17,28 @@ const Frame = styled.div`
   background-color: var(--spectrum-alias-toolbar-background-color);
 `;
 
-const Browser: React.FC = () => (
+const ProjectSelectedKey = '**PROJECT**';
+
+// TODO: Translation
+const Browser: React.FC<Props> = ({ packages, activePackage, onPackageSelect }) => (
   <Frame>
-    <Picker width="100%" marginBottom="size-25">
+    <Picker
+      width="100%"
+      marginBottom="size-25"
+      selectedKey={activePackage ?? ProjectSelectedKey}
+      onSelectionChange={(selected): void => onPackageSelect(selected === ProjectSelectedKey ? null : `${selected}`)}
+    >
       <Section>
-        <Item key="Project">Project</Item>
+        <Item key={ProjectSelectedKey} textValue="Project">
+          Project
+        </Item>
       </Section>
       <Section>
-        <Item key="app">app</Item>
-        <Item key="server">server</Item>
+        {packages.map((pkg) => (
+          <Item key={pkg} textValue={pkg}>
+            {pkg}
+          </Item>
+        ))}
       </Section>
     </Picker>
     <ListView flexGrow={1}>

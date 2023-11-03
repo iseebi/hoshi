@@ -14,3 +14,11 @@ export const [openProjectAction, openProjectProgressAction] = createAsyncActionC
   actionCreator,
   'openProject',
 );
+
+export const [switchPackageAction, switchPackageProgressAction] = createAsyncActionCreator<
+  {
+    packageId: string | null;
+  },
+  SmalledProject,
+  Error
+>(actionCreator, 'switchPackage');
