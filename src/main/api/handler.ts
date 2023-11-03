@@ -1,8 +1,8 @@
 import { HoshiAPI, SmalledProject } from '../../models';
 
-class APIHandler implements HoshiAPI {
+const createAPIHandler: () => HoshiAPI = () => ({
   // eslint-disable-next-line class-methods-use-this
-  async fetchCurrentProjectAsync(): Promise<SmalledProject | undefined> {
+  fetchCurrentProjectAsync: async (): Promise<SmalledProject | undefined> => {
     return {
       id: '1234',
       metadata: {},
@@ -17,7 +17,7 @@ class APIHandler implements HoshiAPI {
         },
       ],
     };
-  }
-}
+  },
+});
 
-export default APIHandler;
+export default createAPIHandler;

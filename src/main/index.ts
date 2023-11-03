@@ -1,17 +1,20 @@
-import { app, shell, BrowserWindow } from 'electron';
+import { app, shell, ipcMain, BrowserWindow } from 'electron';
 import { join } from 'path';
 import { electronApp, optimizer, is } from '@electron-toolkit/utils';
 // eslint-disable-next-line import/no-unresolved
 import icon from '../../resources/icon.png?asset';
-import ipcMain = Electron.ipcMain;
 import { HoshiAPIChannel } from '../models';
 import HoshiAPIDispatcher from './api/dispatcher';
 
+const apiDispatcher = new HoshiAPIDispatcher();
+
 function createWindow(): void {
-  const frame = process.platform === 'darwin' ? true : false;
-  const fullscreenable = process.platform === 'darwin' ? true : false;
+  const frame = process.platform === 'darwin';
+  // noinspection SpellCheckingInspection
+  const fullscreenable = process.platform === 'darwin';
 
   // Create the browser window.
+  // noinspection SpellCheckingInspection
   const mainWindow = new BrowserWindow({
     width: 1080,
     height: 670,
@@ -32,16 +35,16 @@ function createWindow(): void {
   });
 
   mainWindow.webContents.setWindowOpenHandler((details) => {
-    shell.openExternal(details.url);
+    shell.openExternal(details.url).then();
     return { action: 'deny' };
   });
 
   // HMR for renderer base on electron-vite cli.
   // Load the remote URL for development or the local html file for production.
   if (is.dev && process.env.ELECTRON_RENDERER_URL) {
-    mainWindow.loadURL(process.env.ELECTRON_RENDERER_URL);
+    mainWindow.loadURL(process.env.ELECTRON_RENDERER_URL).then();
   } else {
-    mainWindow.loadFile(join(__dirname, '../renderer/index.html'));
+    mainWindow.loadFile(join(__dirname, '../renderer/index.html')).then();
   }
 }
 
@@ -58,6 +61,10 @@ app.whenReady().then(() => {
   app.on('browser-window-created', (_, window) => {
     optimizer.watchWindowShortcuts(window);
   });
+
+  ipcMain.handle(HoshiAPIChannel, (ev, method: string, ...args) =>
+    apiDispatcher.dispatchAsync(ev.sender.id, method, args),
+  );
 
   createWindow();
 
@@ -79,8 +86,3 @@ app.on('window-all-closed', () => {
 
 // In this file you can include the rest of your app"s specific main process
 // code. You can also put them in separate files and require them here.
-
-const apiDispatcher = new HoshiAPIDispatcher();
-ipcMain.handle(HoshiAPIChannel, (ev, args) => {
-  return apiDispatcher.dispatchAsync(ev.sender.id, args);
-});
