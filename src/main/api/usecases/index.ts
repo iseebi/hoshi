@@ -1,4 +1,4 @@
 import ProjectsUseCase from './projects';
+import PackagesUseCase from './packages';
 
-// eslint-disable-next-line import/prefer-default-export
-export { ProjectsUseCase };
+export { ProjectsUseCase, PackagesUseCase };

@@ -15,10 +15,6 @@ export const [openProjectAction, openProjectProgressAction] = createAsyncActionC
   'openProject',
 );
 
-export const [switchPackageAction, switchPackageProgressAction] = createAsyncActionCreator<
-  {
-    packageId: string | null;
-  },
-  SmalledProject,
-  Error
->(actionCreator, 'switchPackage');
+export const switchPackageAction = actionCreator<{
+  packageId: string | null;
+}>('switchPackage');

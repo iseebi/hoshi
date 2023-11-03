@@ -65,7 +65,7 @@ app.whenReady().then(() => {
   });
 
   ipcMain.handle(HoshiAPIChannel, (ev, method: string, ...args) =>
-    apiDispatcher.dispatchAsync(ev.sender, method, args),
+    apiDispatcher.dispatchAsync(ev.sender, method, ...args),
   );
 
   createWindowAsync().then();

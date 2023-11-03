@@ -1,4 +1,4 @@
 import ProjectsRepository from './projects';
+import PackagesRepository from './packages';
 
-// eslint-disable-next-line import/prefer-default-export
-export { ProjectsRepository };
+export { ProjectsRepository, PackagesRepository };

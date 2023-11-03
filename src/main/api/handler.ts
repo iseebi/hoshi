@@ -1,5 +1,5 @@
 import { BrowserWindow, dialog } from 'electron';
-import { HoshiAPI, SmalledProject } from '../../models';
+import { HoshiAPI, SmalledPackage, SmalledProject } from '../../models';
 import createModulesContainer from './container';
 
 export type APIHandler = {
@@ -35,6 +35,9 @@ const createAPIHandler: (window: BrowserWindow) => APIHandler = (window) => {
       // eslint-disable-next-line class-methods-use-this
       fetchCurrentProjectAsync: async (): Promise<SmalledProject | undefined> => {
         return container.projects.fetchCurrentProjectAsync();
+      },
+      fetchPackageAsync(packageId: string): Promise<SmalledPackage | undefined> {
+        return container.packages.fetchPackageAsync(packageId);
       },
     },
   };

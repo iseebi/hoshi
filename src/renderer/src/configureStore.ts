@@ -3,15 +3,17 @@ import { all } from 'typed-redux-saga';
 import logger from 'redux-logger';
 import { configureStore } from '@reduxjs/toolkit';
 import { projectsReducer, projectsSaga } from './modules/projects';
+import { packagesReducer, packagesSaga } from './modules/packages';
 
 const sagaMiddleware = createSagaMiddleware();
 function* rootSaga(): Generator {
-  yield all([projectsSaga()]);
+  yield all([projectsSaga(), packagesSaga()]);
 }
 
 const store = configureStore({
   reducer: {
     projects: projectsReducer,
+    packages: packagesReducer,
   },
   middleware: (getDefaultMiddleware) => {
     const middleware = getDefaultMiddleware({

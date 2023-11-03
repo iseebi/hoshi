@@ -28,6 +28,10 @@ export type Package = PackageHeader & {
   versions: Version[];
 };
 
+export type SmalledPackage = PackageHeader & {
+  versions: string[];
+};
+
 export type PackageMetadata = Record<string, never>;
 
 // Version

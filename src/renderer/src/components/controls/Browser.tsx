@@ -5,6 +5,7 @@ import { Item, ListView, Picker, Section } from '@adobe/react-spectrum';
 type Props = {
   packages: string[];
   activePackage: string | null;
+  versions: string[];
   onPackageSelect: (pkg: string | null) => void;
 };
 
@@ -20,7 +21,7 @@ const Frame = styled.div`
 const ProjectSelectedKey = '**PROJECT**';
 
 // TODO: Translation
-const Browser: React.FC<Props> = ({ packages, activePackage, onPackageSelect }) => (
+const Browser: React.FC<Props> = ({ packages, activePackage, versions, onPackageSelect }) => (
   <Frame>
     <Picker
       width="100%"
@@ -42,9 +43,11 @@ const Browser: React.FC<Props> = ({ packages, activePackage, onPackageSelect }) 
       </Section>
     </Picker>
     <ListView flexGrow={1}>
-      <Item key="v3">0000300 feature2</Item>
-      <Item key="v2">0000200 feature1</Item>
-      <Item key="v1">0000100 initial</Item>
+      {versions.map((version) => (
+        <Item key={version} textValue={version}>
+          {version}
+        </Item>
+      ))}
     </ListView>
   </Frame>
 );

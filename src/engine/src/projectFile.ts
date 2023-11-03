@@ -1,8 +1,15 @@
 import * as path from 'path';
 import * as YAML from 'yaml';
 import { Dirent } from 'fs';
-import { ProjectHeader } from '../../models';
-import { FileHeader, PackageFileName, PackageFileType, ProjectFileType } from '../../models/file';
+import { PackageHeader, ProjectHeader } from '../../models';
+import {
+  FileHeader,
+  PackageFileName,
+  PackageFileType,
+  ProjectFileName,
+  ProjectFileType,
+  VersionFileExt,
+} from '../../models/file';
 
 const fs = require('fs').promises;
 
@@ -14,7 +21,7 @@ class ProjectFile {
   }
 
   async readProjectHeaderAsync(): Promise<ProjectHeader> {
-    const contents = await this.readYamlFileAsync<FileHeader & ProjectHeader>('project.hoshi');
+    const contents = await this.readYamlFileAsync<FileHeader & ProjectHeader>(ProjectFileName);
     if (contents.type !== ProjectFileType) {
       throw Error('Invalid Project');
     }
@@ -31,6 +38,18 @@ class ProjectFile {
     return (await Promise.all(dirs.map(async (dir: string) => [dir, await this.isPackageAsync(dir)]))).map((v) => v[0]);
   }
 
+  async readPackageHeaderAsync(packageId: string): Promise<PackageHeader> {
+    const fileName = path.join(packageId, PackageFileName);
+    const contents = await this.readYamlFileAsync<FileHeader & PackageHeader>(fileName);
+    if (contents.type !== PackageFileType) {
+      throw Error('Invalid Package');
+    }
+    return {
+      id: packageId,
+      metadata: contents.metadata,
+    };
+  }
+
   private async isPackageAsync(dirName: string): Promise<boolean> {
     try {
       const fileName = path.join(dirName, PackageFileName);
@@ -39,6 +58,19 @@ class ProjectFile {
     } catch {
       return false;
     }
+  }
+
+  async listVersionsAsync(packageId: string): Promise<string[]> {
+    const packageDir = path.join(this.projectDirectory, packageId);
+    const versions = (await fs.readdir(packageDir, { withFileTypes: true }))
+      .filter(
+        (entry: Dirent) =>
+          !entry.isDirectory() &&
+          !entry.name.startsWith('.') &&
+          path.extname(entry.name).toLowerCase() === VersionFileExt,
+      )
+      .map((entry: Dirent) => path.basename(entry.name, VersionFileExt));
+    return versions.sort();
   }
 
   private async readYamlFileAsync<T>(relativeFileName: string): Promise<T> {

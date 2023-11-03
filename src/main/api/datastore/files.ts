@@ -1,4 +1,4 @@
-import { SmalledProject } from '../../../models';
+import { SmalledPackage, SmalledProject } from '../../../models';
 import ProjectFile from '../../../engine/src/projectFile';
 
 class FilesDatastore {
@@ -30,6 +30,23 @@ class FilesDatastore {
       return {
         ...projectHeader,
         packages,
+      };
+    } catch (e) {
+      console.error(e);
+      return undefined;
+    }
+  }
+
+  async fetchPackageAsync(packageId: string): Promise<SmalledPackage | undefined> {
+    try {
+      if (!this.projectFile) {
+        return undefined;
+      }
+      const packageHeader = await this.projectFile.readPackageHeaderAsync(packageId);
+      const versions = await this.projectFile.listVersionsAsync(packageId);
+      return {
+        ...packageHeader,
+        versions,
       };
     } catch (e) {
       console.error(e);
