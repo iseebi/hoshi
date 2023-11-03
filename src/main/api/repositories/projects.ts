@@ -11,5 +11,9 @@ class ProjectsRepository {
   openProjectAsync(path: string): Promise<SmalledProject | undefined> {
     return this.filesDatastore.openProjectFileAsync(path);
   }
+
+  fetchCurrentProjectAsync() {
+    return this.filesDatastore.fetchCurrentProjectAsync();
+  }
 }
 export default ProjectsRepository;

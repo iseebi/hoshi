@@ -11,6 +11,10 @@ class ProjectsUseCase {
   openProjectAsync(path: string): Promise<SmalledProject | undefined> {
     return this.projectsRepository.openProjectAsync(path);
   }
+
+  fetchCurrentProjectAsync(): Promise<SmalledProject | undefined> {
+    return this.projectsRepository.fetchCurrentProjectAsync();
+  }
 }
 
 export default ProjectsUseCase;

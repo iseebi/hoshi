@@ -34,23 +34,7 @@ const createAPIHandler: (window: BrowserWindow) => APIHandler = (window) => {
       },
       // eslint-disable-next-line class-methods-use-this
       fetchCurrentProjectAsync: async (): Promise<SmalledProject | undefined> => {
-        return undefined;
-        /*
-        return {
-          id: '1234',
-          metadata: {},
-          packages: [
-            {
-              id: 'app',
-              metadata: {},
-            },
-            {
-              id: 'server',
-              metadata: {},
-            },
-          ],
-        };
-         */
+        return container.projects.fetchCurrentProjectAsync();
       },
     },
   };
