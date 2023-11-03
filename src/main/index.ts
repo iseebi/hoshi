@@ -8,7 +8,7 @@ import HoshiAPIDispatcher from './api/dispatcher';
 
 const apiDispatcher = new HoshiAPIDispatcher();
 
-function createWindow(): void {
+async function createWindowAsync(): Promise<void> {
   const frame = process.platform === 'darwin';
   // noinspection SpellCheckingInspection
   const fullscreenable = process.platform === 'darwin';
@@ -29,6 +29,8 @@ function createWindow(): void {
       sandbox: false,
     },
   });
+
+  await apiDispatcher.initializeAsync(mainWindow.id);
 
   mainWindow.on('ready-to-show', () => {
     mainWindow.show();
@@ -66,12 +68,12 @@ app.whenReady().then(() => {
     apiDispatcher.dispatchAsync(ev.sender.id, method, args),
   );
 
-  createWindow();
+  createWindowAsync().then();
 
   app.on('activate', () => {
-    // On macOS it's common to re-create a window in the app when the
+    // On macOS, it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
-    if (BrowserWindow.getAllWindows().length === 0) createWindow();
+    if (BrowserWindow.getAllWindows().length === 0) createWindowAsync().then();
   });
 });
 
@@ -84,5 +86,5 @@ app.on('window-all-closed', () => {
   }
 });
 
-// In this file you can include the rest of your app"s specific main process
+// In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.

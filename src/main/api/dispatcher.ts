@@ -1,5 +1,4 @@
-import { HoshiAPI } from '../../models';
-import createAPIHandler from './handler';
+import createAPIHandler, { LocalHoshiAPI } from './handler';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type AnyParameter = any;
@@ -17,14 +16,19 @@ const invokeMethod = (
 };
 
 class HoshiAPIDispatcher {
-  private handlersForContexts: Record<number, HoshiAPI> = {};
+  private handlersForContexts: Record<number, LocalHoshiAPI> = {};
+
+  async initializeAsync(contextId: number): Promise<void> {
+    const handler = this.getHandler(contextId);
+    return handler.initializeAsync();
+  }
 
   dispatchAsync(contextId: number, method: string, ...args: AnyParameter[]): Promise<AnyParameter> {
     const handler = this.getHandler(contextId);
-    return invokeMethod(handler, method, args);
+    return invokeMethod(handler.exposed, method, args);
   }
 
-  private getHandler(contextId: number): HoshiAPI {
+  private getHandler(contextId: number): LocalHoshiAPI {
     if (this.handlersForContexts[contextId]) {
       return this.handlersForContexts[contextId];
     }
