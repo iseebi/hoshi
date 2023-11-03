@@ -6,6 +6,9 @@ const dispatchApi = <T>(method: string, ...args: unknown[]): Promise<T> =>
 
 // Custom APIs for renderer
 const api: HoshiAPI = {
+  openProjectAsync(): Promise<SmalledProject | undefined> {
+    return dispatchApi('openProjectAsync');
+  },
   fetchCurrentProjectAsync: (): Promise<SmalledProject | undefined> => {
     return dispatchApi('fetchCurrentProjectAsync');
   },

@@ -3,6 +3,10 @@ import styled from '@emotion/styled';
 import FolderOpenOutline from '@spectrum-icons/workflow/FolderOpenOutline';
 import { ActionGroup, Item, Tooltip, TooltipTrigger } from '@adobe/react-spectrum';
 
+type Props = {
+  onOpen: () => void;
+};
+
 const Frame = styled.div`
   display: flex;
   justify-content: center;
@@ -11,14 +15,28 @@ const Frame = styled.div`
   background-color: var(--spectrum-alias-toolbar-background-color);
 `;
 
-const AppToolbar: React.FC = () => (
+// TODO: Translation
+const AppToolbar: React.FC<Props> = ({ onOpen }) => (
   <Frame>
-    <ActionGroup orientation="vertical" isQuiet isEmphasized>
+    <ActionGroup
+      orientation="vertical"
+      isQuiet
+      isEmphasized
+      onAction={(key): void => {
+        switch (key) {
+          case 'Open':
+            onOpen();
+            break;
+          default:
+            break;
+        }
+      }}
+    >
       <TooltipTrigger placement="end">
-        <Item key="Select">
+        <Item key="Open">
           <FolderOpenOutline />
         </Item>
-        <Tooltip>Select (V)</Tooltip>
+        <Tooltip>Open Project</Tooltip>
       </TooltipTrigger>
     </ActionGroup>
   </Frame>

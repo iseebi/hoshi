@@ -1,4 +1,5 @@
-import createAPIHandler, { LocalHoshiAPI } from './handler';
+import { BrowserWindow, WebContents } from 'electron';
+import createAPIHandler, { APIHandler } from './handler';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type AnyParameter = any;
@@ -16,25 +17,31 @@ const invokeMethod = (
 };
 
 class HoshiAPIDispatcher {
-  private handlersForContexts: Record<number, LocalHoshiAPI> = {};
+  private handlersForContexts: Record<number, APIHandler> = {};
 
-  async initializeAsync(contextId: number): Promise<void> {
-    const handler = this.getHandler(contextId);
+  async initializeAsync(window: BrowserWindow): Promise<void> {
+    const handler = this.createHandler(window);
     return handler.initializeAsync();
   }
 
-  dispatchAsync(contextId: number, method: string, ...args: AnyParameter[]): Promise<AnyParameter> {
-    const handler = this.getHandler(contextId);
+  dispatchAsync(contents: WebContents, method: string, ...args: AnyParameter[]): Promise<AnyParameter> {
+    const handler = this.getHandler(contents);
+    if (!handler) {
+      throw new Error('Invalid API State');
+    }
     return invokeMethod(handler.exposed, method, args);
   }
 
-  private getHandler(contextId: number): LocalHoshiAPI {
-    if (this.handlersForContexts[contextId]) {
-      return this.handlersForContexts[contextId];
-    }
-    const newHandler = createAPIHandler();
+  private createHandler(window: BrowserWindow): APIHandler {
+    const contextId = window.webContents.id;
+    const newHandler = createAPIHandler(window);
     this.handlersForContexts[contextId] = newHandler;
     return newHandler;
+  }
+
+  private getHandler(contents: WebContents): APIHandler | undefined {
+    const contextId = contents.id;
+    return this.handlersForContexts[contextId];
   }
 }
 

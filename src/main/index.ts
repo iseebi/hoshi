@@ -30,7 +30,7 @@ async function createWindowAsync(): Promise<void> {
     },
   });
 
-  await apiDispatcher.initializeAsync(mainWindow.id);
+  await apiDispatcher.initializeAsync(mainWindow);
 
   mainWindow.on('ready-to-show', () => {
     mainWindow.show();
@@ -65,7 +65,7 @@ app.whenReady().then(() => {
   });
 
   ipcMain.handle(HoshiAPIChannel, (ev, method: string, ...args) =>
-    apiDispatcher.dispatchAsync(ev.sender.id, method, args),
+    apiDispatcher.dispatchAsync(ev.sender, method, args),
   );
 
   createWindowAsync().then();

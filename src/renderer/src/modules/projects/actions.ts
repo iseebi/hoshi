@@ -8,4 +8,9 @@ export const [fetchCurrentProjectAction, fetchCurrentProjectProgressAction] = cr
   void,
   SmalledProject,
   Error
->(actionCreator, 'loadMyPageData');
+>(actionCreator, 'fetchCurrentProject');
+
+export const [openProjectAction, openProjectProgressAction] = createAsyncActionCreator<void, SmalledProject, Error>(
+  actionCreator,
+  'openProject',
+);

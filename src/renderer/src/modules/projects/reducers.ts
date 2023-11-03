@@ -1,11 +1,16 @@
 import { reducerWithInitialState } from 'typescript-fsa-reducers';
 import { EmptyProjectsState } from './types';
 import { registerProgressAction } from '../actionCreatorsHelpers';
-import { fetchCurrentProjectProgressAction } from './actions';
+import { fetchCurrentProjectProgressAction, openProjectProgressAction } from './actions';
 
 const reducer = reducerWithInitialState({ ...EmptyProjectsState });
 
 registerProgressAction(reducer, fetchCurrentProjectProgressAction, (state, { value }) => ({
+  ...state,
+  project: value,
+}));
+
+registerProgressAction(reducer, openProjectProgressAction, (state, { value }) => ({
   ...state,
   project: value,
 }));
