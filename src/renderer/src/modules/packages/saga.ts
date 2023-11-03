@@ -8,7 +8,11 @@ const fetchPackageSaga = bindAsyncTriggerAction(
   fetchPackageProgressAction,
   function* action({ packageId }: { packageId: string }): SagaIterator {
     const api = apiHandler.getCurrentApi();
-    return yield* call(() => api.fetchPackageAsync(packageId));
+    const pkg = yield* call(() => api.fetchPackageAsync(packageId));
+    if (pkg) {
+      pkg.versions = pkg.versions.reverse();
+    }
+    return pkg;
   },
 );
 

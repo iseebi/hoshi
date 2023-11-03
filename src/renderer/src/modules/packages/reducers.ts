@@ -9,7 +9,6 @@ const reducer = reducerWithInitialState({ ...EmptyPackagesState });
 reducer.case(clearPackagesStateAction, (state) => ({
   ...state,
   package: initialLoadableValue(),
-  selectedVersion: null,
 }));
 
 registerProgressAction(reducer, fetchPackageProgressAction, (state, { value }) => ({

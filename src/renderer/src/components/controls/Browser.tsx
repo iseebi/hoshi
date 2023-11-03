@@ -1,12 +1,14 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import { Item, ListView, Picker, Section } from '@adobe/react-spectrum';
+import { Item, ListBox, Picker, Section } from '@adobe/react-spectrum';
 
 type Props = {
   packages: string[];
   activePackage: string | null;
   versions: string[];
+  activeVersion: string | null;
   onPackageSelect: (pkg: string | null) => void;
+  onVersionSelect: (version: string) => void;
 };
 
 const Frame = styled.div`
@@ -21,7 +23,14 @@ const Frame = styled.div`
 const ProjectSelectedKey = '**PROJECT**';
 
 // TODO: Translation
-const Browser: React.FC<Props> = ({ packages, activePackage, versions, onPackageSelect }) => (
+const Browser: React.FC<Props> = ({
+  packages,
+  activePackage,
+  versions,
+  activeVersion,
+  onPackageSelect,
+  onVersionSelect,
+}) => (
   <Frame>
     <Picker
       aria-label="Package Selector"
@@ -43,13 +52,28 @@ const Browser: React.FC<Props> = ({ packages, activePackage, versions, onPackage
         ))}
       </Section>
     </Picker>
-    <ListView aria-label="Version Selector" flexGrow={1}>
+    <ListBox
+      aria-label="Version Selector"
+      selectionMode="single"
+      flexGrow={1}
+      selectedKeys={activeVersion ? [activeVersion] : []}
+      onSelectionChange={(selection): void => {
+        if (selection === 'all') {
+          return;
+        }
+        const version = selection.values().next().value;
+        if (!version) {
+          return;
+        }
+        onVersionSelect(version);
+      }}
+    >
       {versions.map((version) => (
         <Item key={version} textValue={version}>
           {version}
         </Item>
       ))}
-    </ListView>
+    </ListBox>
   </Frame>
 );
 

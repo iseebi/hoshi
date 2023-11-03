@@ -11,10 +11,8 @@ export type SmalledPackage = _SmalledPackage;
 
 export type PackagesState = {
   package: LoadableValue<SmalledPackage>;
-  activeVersion: string | null;
 };
 
 export const EmptyPackagesState: PackagesState = {
   package: initialLoadableValue(),
-  activeVersion: null,
 };
