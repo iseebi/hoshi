@@ -1,8 +1,19 @@
 import { contextBridge } from 'electron';
 import { electronAPI } from '@electron-toolkit/preload';
+import { HoshiAPI, HoshiAPIChannel, HoshiAPIMethods, SmalledProject } from '../models';
+import ipcRenderer = Electron.ipcRenderer;
+
+const dispatchApi = <T>(method: HoshiAPIMethods): Promise<T> =>
+  ipcRenderer.invoke(HoshiAPIChannel, method) as Promise<T>;
 
 // Custom APIs for renderer
-const api = {};
+const api: HoshiAPI = {
+  fetchCurrentProjectAsync(): Promise<SmalledProject | undefined> {
+    return dispatchApi({
+      method: 'FetchCurrentProject',
+    });
+  },
+};
 
 // Use `contextBridge` APIs to expose Electron APIs to
 // renderer only if context isolation is enabled, otherwise

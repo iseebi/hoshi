@@ -3,6 +3,9 @@ import { join } from 'path';
 import { electronApp, optimizer, is } from '@electron-toolkit/utils';
 // eslint-disable-next-line import/no-unresolved
 import icon from '../../resources/icon.png?asset';
+import ipcMain = Electron.ipcMain;
+import { HoshiAPIChannel } from '../models';
+import HoshiAPIDispatcher from './api/dispatcher';
 
 function createWindow(): void {
   const frame = process.platform === 'darwin' ? true : false;
@@ -76,3 +79,8 @@ app.on('window-all-closed', () => {
 
 // In this file you can include the rest of your app"s specific main process
 // code. You can also put them in separate files and require them here.
+
+const apiDispatcher = new HoshiAPIDispatcher();
+ipcMain.handle(HoshiAPIChannel, (ev, args) => {
+  return apiDispatcher.dispatchAsync(ev.sender.id, args);
+});
