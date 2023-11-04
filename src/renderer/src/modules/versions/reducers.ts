@@ -1,9 +1,21 @@
 import { reducerWithInitialState } from 'typescript-fsa-reducers';
-import { fetchEditableVersionProgressAction, switchVersionAction, updateVersionAction } from './actions';
+import {
+  clearVersionStateAction,
+  fetchEditableVersionProgressAction,
+  switchVersionAction,
+  updateVersionAction,
+} from './actions';
 import { EmptyVersionState } from './types';
 import { registerProgressAction } from '../actionCreatorsHelpers';
+import { initialLoadableValue } from '../models';
 
 const reducer = reducerWithInitialState({ ...EmptyVersionState });
+
+reducer.case(clearVersionStateAction, (state) => ({
+  ...state,
+  activeVersion: null,
+  editingVersion: initialLoadableValue(),
+}));
 
 reducer.case(switchVersionAction, (state, { versionId }) => ({ ...state, activeVersion: versionId }));
 

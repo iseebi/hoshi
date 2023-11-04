@@ -50,7 +50,6 @@ const BrowserContainer: React.FC<Props> = ({
   const previousPkg = usePrevious(pkg);
 
   useEffect(() => {
-    dispatch.clearVersionsState();
     if (!pkg || pkg.versions.length === 0 || pkg === previousPkg) {
       return;
     }
@@ -73,6 +72,7 @@ const BrowserContainer: React.FC<Props> = ({
         } else {
           dispatch.clearPackagesState();
         }
+        dispatch.clearVersionsState();
       }}
       onVersionSelect={(versionId): void => {
         if (!activePackage) {
