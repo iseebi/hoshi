@@ -1,5 +1,5 @@
 import { BrowserWindow, dialog } from 'electron';
-import { HoshiAPI, SmalledPackage, SmalledProject } from '../../models';
+import { EditableVersion, HoshiAPI, SmalledPackage, SmalledProject, Version } from '../../models';
 import createModulesContainer from './container';
 
 export type APIHandler = {
@@ -29,6 +29,7 @@ const createAPIHandler: (window: BrowserWindow) => APIHandler = (window) => {
           return undefined;
         }
         const path = result.filePaths[0];
+        // noinspection UnnecessaryLocalVariableJS
         const project = await container.projects.openProjectAsync(path);
         return project;
       },
@@ -38,6 +39,18 @@ const createAPIHandler: (window: BrowserWindow) => APIHandler = (window) => {
       },
       fetchPackageAsync(packageId: string): Promise<SmalledPackage | undefined> {
         return container.packages.fetchPackageAsync(packageId);
+      },
+      addNewVersionAsync(packageId: string, versionId: string): Promise<void> {
+        return container.versions.addNewVersionAsync(packageId, versionId);
+      },
+      deleteVersionAsync(packageId: string, versionId: string): Promise<void> {
+        return container.versions.deleteVersionAsync(packageId, versionId);
+      },
+      fetchEditableVersionAsync(packageId: string, versionId: string): Promise<EditableVersion | undefined> {
+        return container.versions.fetchEditableVersionAsync(packageId, versionId);
+      },
+      updateVersionAsync(packageId: string, versionId: string, data: Version): Promise<void> {
+        return container.versions.updateVersionAsync(packageId, versionId, data);
       },
     },
   };

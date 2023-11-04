@@ -1,10 +1,11 @@
-import { PackagesUseCase, ProjectsUseCase } from './usecases';
-import { PackagesRepository, ProjectsRepository } from './repositories';
+import { PackagesUseCase, ProjectsUseCase, VersionsUseCase } from './usecases';
+import { PackagesRepository, ProjectsRepository, VersionsRepository } from './repositories';
 import { FilesDatastore } from './datastore';
 
 type ApiModulesContainer = {
   projects: ProjectsUseCase;
   packages: PackagesUseCase;
+  versions: VersionsUseCase;
 };
 
 const createModulesContainer: () => ApiModulesContainer = () => {
@@ -12,10 +13,12 @@ const createModulesContainer: () => ApiModulesContainer = () => {
 
   const projectsRepository = new ProjectsRepository(filesDatastore);
   const packagesRepository = new PackagesRepository(filesDatastore);
+  const versionsRepository = new VersionsRepository(filesDatastore);
 
   return {
     projects: new ProjectsUseCase(projectsRepository),
     packages: new PackagesUseCase(packagesRepository),
+    versions: new VersionsUseCase(versionsRepository),
   };
 };
 

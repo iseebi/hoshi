@@ -1,5 +1,5 @@
 import { ipcRenderer } from 'electron';
-import { HoshiAPI, HoshiAPIChannel, SmalledPackage, SmalledProject } from '../models';
+import { EditableVersion, HoshiAPI, HoshiAPIChannel, SmalledPackage, SmalledProject, Version } from '../models';
 
 const dispatchApi = <T>(method: string, ...args: unknown[]): Promise<T> =>
   ipcRenderer.invoke(HoshiAPIChannel, method, ...args) as Promise<T>;
@@ -14,6 +14,18 @@ const api: HoshiAPI = {
   },
   fetchPackageAsync(packageId: string): Promise<SmalledPackage | undefined> {
     return dispatchApi('fetchPackageAsync', packageId);
+  },
+  addNewVersionAsync(packageId: string, versionId: string): Promise<void> {
+    return dispatchApi('addNewVersionAsync', packageId, versionId);
+  },
+  deleteVersionAsync(packageId: string, versionId: string): Promise<void> {
+    return dispatchApi('deleteVersionAsync', packageId, versionId);
+  },
+  fetchEditableVersionAsync(packageId: string, versionId: string): Promise<EditableVersion | undefined> {
+    return dispatchApi('fetchEditableVersionAsync', packageId, versionId);
+  },
+  updateVersionAsync(packageId: string, versionId: string, data: Version): Promise<void> {
+    return dispatchApi('updateVersionAsync', packageId, versionId, data);
   },
 };
 
