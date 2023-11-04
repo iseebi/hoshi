@@ -12,6 +12,7 @@ import {
   switchPackageAction,
 } from '../../modules/packages';
 import { clearVersionStateAction, switchVersionAction } from '../../modules/versions';
+import { usePrevious } from '../sideEffects';
 
 type ExportProps = {
   /* N/A */
@@ -45,16 +46,18 @@ const BrowserContainer: React.FC<Props> = ({
   activeVersion,
   dispatch,
 }) => {
+  const previousPkg = usePrevious(pkg);
+
   useEffect(() => {
     dispatch.clearVersionsState();
-    if (!pkg || pkg.versions.length === 0) {
+    if (!pkg || pkg.versions.length === 0 || pkg === previousPkg) {
       return;
     }
     if (!activePackage) {
       return;
     }
     dispatch.switchVersion(activePackage, pkg.versions[0]);
-  }, [pkg]);
+  }, [pkg, previousPkg, activePackage, dispatch]);
   return (
     <Browser
       packages={packages}
