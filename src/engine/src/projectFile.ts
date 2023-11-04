@@ -77,7 +77,7 @@ class ProjectFile {
   async listVersionsToVersionAsync(packageId: string, versionId: string): Promise<string[]> {
     const versions = await this.listVersionsAsync(packageId);
     const index = versions.findIndex((v) => {
-      if (versionId === packageId) {
+      if (versionId === v) {
         return true;
       }
       const match = v.match(/^\d+_(.*)$/);
@@ -94,7 +94,7 @@ class ProjectFile {
   }
 
   async readVersionAsync(packageId: string, versionId: string): Promise<VersionFile> {
-    const fileName = path.join(packageId, `${versionId}`);
+    const fileName = path.join(packageId, `${versionId}${VersionFileExt}`);
     const contents = await this.readYamlFileAsync<FileHeader & VersionFile>(fileName);
     if (contents.type !== VersionFileType) {
       throw Error('Invalid Package');
@@ -128,7 +128,7 @@ class ProjectFile {
   }
 
   async writeVersionFileAsync(packageId: string, versionId: string, contents: VersionFile): Promise<void> {
-    const fileName = path.join(packageId, `${versionId}`);
+    const fileName = path.join(packageId, `${versionId}${VersionFileExt}`);
     await this.writeYamlFileAsync<FileHeader & Omit<VersionFile, 'id'>>(fileName, {
       type: VersionFileType,
       metadata: contents.metadata,
@@ -137,7 +137,7 @@ class ProjectFile {
   }
 
   async deleteVersionFileAsync(packageId: string, versionId: string): Promise<void> {
-    const fileName = path.join(packageId, `${versionId}`);
+    const fileName = path.join(packageId, `${versionId}${VersionFileExt}`);
     await this.deleteFileAsync(fileName);
   }
 

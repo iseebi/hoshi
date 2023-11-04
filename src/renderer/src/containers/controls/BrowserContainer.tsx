@@ -11,7 +11,7 @@ import {
   SmalledPackage,
   switchPackageAction,
 } from '../../modules/packages';
-import { clearVersionStateAction, switchVersionAction } from '../../modules/versions';
+import { clearVersionStateAction, fetchEditableVersionAction, switchVersionAction } from '../../modules/versions';
 import { usePrevious } from '../sideEffects';
 
 type ExportProps = {
@@ -32,6 +32,7 @@ type DispatchProps = {
     clearPackagesState: () => void;
     fetchPackage: (packageId: string) => void;
     switchVersion: (packageId: string, versionId: string) => void;
+    fetchEditableVersion: (packageId: string, versionId: string) => void;
     clearVersionsState: () => void;
   };
 };
@@ -57,6 +58,7 @@ const BrowserContainer: React.FC<Props> = ({
       return;
     }
     dispatch.switchVersion(activePackage, pkg.versions[0]);
+    dispatch.fetchEditableVersion(activePackage, pkg.versions[0]);
   }, [pkg, previousPkg, activePackage, dispatch]);
   return (
     <Browser
@@ -77,6 +79,7 @@ const BrowserContainer: React.FC<Props> = ({
           return;
         }
         dispatch.switchVersion(activePackage, versionId);
+        dispatch.fetchEditableVersion(activePackage, versionId);
       }}
     />
   );
@@ -96,6 +99,7 @@ const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
     clearPackagesState: () => dispatch(clearPackagesStateAction()),
     fetchPackage: (packageId) => dispatch(fetchPackageAction({ packageId })),
     switchVersion: (packageId, versionId) => dispatch(switchVersionAction({ packageId, versionId })),
+    fetchEditableVersion: (packageId, versionId) => dispatch(fetchEditableVersionAction({ packageId, versionId })),
     clearVersionsState: () => dispatch(clearVersionStateAction()),
   },
 });
