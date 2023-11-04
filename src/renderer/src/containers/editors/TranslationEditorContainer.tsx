@@ -1,13 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import TranslationEditor from '../../components/editors/TranslationEditor';
+import { RootState } from '../../modules';
+import { EditableVersion, selectActiveEditingVersion } from '../../modules/versions';
 
 type ExportProps = {
   /* N/A */
 };
 
 type StateProps = {
-  /* N/A */
+  editingVersion: EditableVersion | undefined;
 };
 
 type DispatchProps = {
@@ -16,9 +18,13 @@ type DispatchProps = {
 
 type Props = ExportProps & StateProps & DispatchProps;
 
-const TranslationEditorContainer: React.FC<Props> = () => <TranslationEditor />;
+const TranslationEditorContainer: React.FC<Props> = ({ editingVersion }) => (
+  <TranslationEditor editingVersion={editingVersion} />
+);
 
-const mapStateToProps = (/* state: ToolbarState */): StateProps => ({});
+const mapStateToProps = (state: RootState): StateProps => ({
+  editingVersion: selectActiveEditingVersion(state),
+});
 
 const mapDispatchToProps = (/* dispatch: Dispatch */): DispatchProps => ({});
 

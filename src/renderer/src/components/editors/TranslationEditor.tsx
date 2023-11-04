@@ -1,8 +1,14 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import DataGrid from 'react-data-grid';
+import DataGrid, { ColumnOrColumnGroup } from 'react-data-grid';
 import 'react-data-grid/lib/styles.css';
+import { EditableVersion } from '../../modules/versions';
 
+type Props = {
+  editingVersion: EditableVersion | undefined;
+};
+
+// noinspection CssInvalidPropertyValue
 const Frame = styled.div`
   contain: inline-size;
   height: 100%;
@@ -19,23 +25,40 @@ const GridFrame = styled.div`
   }
 `;
 
-const columns = [
+const createColumns = (translations: string[]): ColumnOrColumnGroup<Record<string, string>>[] => [
   { key: 'id', name: 'ID', resizable: true, frozen: true, width: 200 },
-  { key: 'translation.ja-JP', name: 'ja-JP', resizable: true, width: 200 },
-  { key: 'translation.en', name: 'en', resizable: true, width: 200 },
+  ...translations.map((lang) => ({
+    key: `translation.${lang}`,
+    name: lang,
+    resizable: true,
+    width: 200,
+  })),
 ];
 
-const rows = [
-  { id: 'sample_text_1', 'translation.ja-JP': 'こんにちは', 'translation.en': 'Hello', 'translation.th': '' },
-  { id: 'sample_text_2', 'translation.ja-JP': 'さようなら', 'translation.en': 'Goodbye', 'translation.th': '' },
-  { id: 'sample_text_2', 'translation.ja-JP': 'さようなら', 'translation.en': 'Goodbye', 'translation.th': '' },
-];
+const createRows = (editingVersion: EditableVersion): Record<string, string>[] =>
+  editingVersion.keys.map((key) => ({
+    id: key,
+    ...editingVersion.languages.reduce(
+      (prev, lang) => ({
+        ...prev,
+        [`translation.${lang}`]:
+          editingVersion.phrases[key]?.translations[lang] ?? editingVersion.historyPhrases[key]?.translations[lang],
+      }),
+      {} as Record<string, string>,
+    ),
+  }));
 
-const TranslationEditor: React.FC = () => (
+const TranslationEditor: React.FC<Props> = ({ editingVersion }) => (
   <Frame>
-    <GridFrame>
-      <DataGrid columns={columns} rows={rows} className="fill-grid" />
-    </GridFrame>
+    {editingVersion && (
+      <GridFrame>
+        <DataGrid
+          columns={createColumns(editingVersion.languages)}
+          rows={createRows(editingVersion)}
+          className="fill-grid"
+        />
+      </GridFrame>
+    )}
   </Frame>
 );
 

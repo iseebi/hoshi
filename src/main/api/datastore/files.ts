@@ -75,9 +75,6 @@ class FilesDatastore {
       const versions = await this.projectFile.listVersionsToVersionAsync(packageId, versionId);
       const historyVersions = includeCurrentVersionInHistory ? versions : versions.slice(0, versions.length - 1);
       const fileHistoryPhrases = await this.projectFile.readHistoryMergedPhrasesAsync(packageId, historyVersions);
-      if (historyVersions.length === 0) {
-        return undefined;
-      }
       const phrases = convertFilePhrasesToPhrases(targetVersion.phrases);
       const historyPhrases = convertFilePhrasesToPhrases(fileHistoryPhrases);
       const keys = [...new Set([...Object.keys(historyPhrases), ...Object.keys(phrases)])];
