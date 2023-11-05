@@ -1,15 +1,18 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import AppToolbar from '../../components/controls/AppToolbar';
 import { Dispatch } from '@reduxjs/toolkit';
-import { openProjectAction } from '../../modules/projects';
+import AppToolbar from '../../components/controls/AppToolbar';
+import { openProjectAction, selectHasCurrentProject } from '../../modules/projects';
+import { RootState } from '../../modules';
+import { selectHasActiveEditingVersion } from '../../modules/versions';
 
 type ExportProps = {
   /* N/A */
 };
 
 type StateProps = {
-  /* N/A */
+  hasActiveProject: boolean;
+  hasActiveVersion: boolean;
 };
 
 type DispatchProps = {
@@ -20,9 +23,19 @@ type DispatchProps = {
 
 type Props = ExportProps & StateProps & DispatchProps;
 
-const AppToolbarContainer: React.FC<Props> = ({ dispatch }) => <AppToolbar onOpen={dispatch.openProject} />;
+const AppToolbarContainer: React.FC<Props> = ({ hasActiveProject, hasActiveVersion, dispatch }) => (
+  <AppToolbar
+    hasActiveProject={hasActiveProject}
+    hasActiveVersion={hasActiveVersion}
+    onAddPackage={(): void => console.log('add package')}
+    onAddVersion={(): void => console.log('add version')}
+  />
+);
 
-const mapStateToProps = (/* state: ToolbarState */): StateProps => ({});
+const mapStateToProps = (state: RootState): StateProps => ({
+  hasActiveProject: selectHasCurrentProject(state),
+  hasActiveVersion: selectHasActiveEditingVersion(state),
+});
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
   dispatch: {

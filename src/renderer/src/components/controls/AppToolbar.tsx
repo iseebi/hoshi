@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import styled from '@emotion/styled';
-import FolderOpenOutline from '@spectrum-icons/workflow/FolderOpenOutline';
 import { ActionGroup, Item, Tooltip, TooltipTrigger } from '@adobe/react-spectrum';
+import DataAdd from '@spectrum-icons/workflow/DataAdd';
+import TextAdd from '@spectrum-icons/workflow/TextAdd';
 
 type Props = {
-  onOpen: () => void;
+  hasActiveProject: boolean;
+  hasActiveVersion: boolean;
+  onAddPackage: () => void;
+  onAddVersion: () => void;
 };
 
 const Frame = styled.div`
@@ -15,31 +19,53 @@ const Frame = styled.div`
   background-color: var(--spectrum-alias-toolbar-background-color);
 `;
 
+const addPackageKey = 'AddPackage';
+const addVersionKey = 'AddVersion';
+
 // TODO: Translation
-const AppToolbar: React.FC<Props> = ({ onOpen }) => (
-  <Frame>
-    <ActionGroup
-      orientation="vertical"
-      isQuiet
-      isEmphasized
-      onAction={(key): void => {
-        switch (key) {
-          case 'Open':
-            onOpen();
-            break;
-          default:
-            break;
-        }
-      }}
-    >
-      <TooltipTrigger placement="end">
-        <Item key="Open">
-          <FolderOpenOutline />
-        </Item>
-        <Tooltip>Open Project</Tooltip>
-      </TooltipTrigger>
-    </ActionGroup>
-  </Frame>
-);
+const AppToolbar: React.FC<Props> = ({ hasActiveProject, hasActiveVersion, onAddPackage, onAddVersion }) => {
+  const disabledKeys = useMemo(
+    () =>
+      [hasActiveProject ? undefined : addPackageKey, hasActiveVersion ? undefined : addVersionKey].filter(
+        (v) => v,
+      ) as string[],
+    [hasActiveProject, hasActiveVersion],
+  );
+  return (
+    <Frame>
+      <ActionGroup
+        orientation="vertical"
+        isQuiet
+        isEmphasized
+        disabledKeys={disabledKeys}
+        onAction={(key): void => {
+          switch (key) {
+            case addPackageKey:
+              onAddPackage();
+              break;
+            case addVersionKey:
+              onAddVersion();
+              break;
+            default:
+              break;
+          }
+        }}
+      >
+        <TooltipTrigger placement="end">
+          <Item key={addPackageKey}>
+            <DataAdd />
+          </Item>
+          <Tooltip>Add Package</Tooltip>
+        </TooltipTrigger>
+        <TooltipTrigger placement="end">
+          <Item key={addVersionKey}>
+            <TextAdd />
+          </Item>
+          <Tooltip>Add Version</Tooltip>
+        </TooltipTrigger>
+      </ActionGroup>
+    </Frame>
+  );
+};
 
 export default AppToolbar;
