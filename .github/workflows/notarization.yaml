@@ -11,25 +11,24 @@ jobs:
   notarization:
     runs-on: macos-latest
     permissions:
-      contents: read
+      contents: write
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v1
       - name: Prepare for app notarization
-        if: startsWith(matrix.os, 'macos')
         run: |
           mkdir -p ~/private_keys/
           echo '${{ secrets.NOTARIZATION_API_KEY }}' > ~/private_keys/AuthKey_${{ secrets.NOTARIZATION_API_KEY_ID }}.p8
       - name: Download Files
         run: |
-          release_id=
-          gh release download ${{ github.ref_name }} --clobber -p '*.dmg' -p '*-mac.zip'
+          # gh release download ${{ github.ref_name }} --clobber -p '*.dmg' -p '*-mac.zip'
+          gh release download v0.1.0 --clobber -p '*.dmg' -p '*-mac.zip' -p '*-mac-arm64.zip'
         env:
           GH_TOKEN: ${{ github.token }}
       - name: Submit notarization
         run: |
-          find . -name '*.dmg' -exec xcrun notarytool {} -d $KEY_ID -i $ISSUER_ID -k ~/private_keys/AuthKey_$KEY_ID.p8 \;
-          find . -name '*.zip' -exec xcrun notarytool {} -d $KEY_ID -i $ISSUER_ID -k ~/private_keys/AuthKey_$KEY_ID.p8 \;
+          find . -name '*.dmg' -exec xcrun notarytool submit {} -d $KEY_ID -i $ISSUER_ID -k ~/private_keys/AuthKey_$KEY_ID.p8 \;
+          find . -name '*.zip' -exec xcrun notarytool submit {} -d $KEY_ID -i $ISSUER_ID -k ~/private_keys/AuthKey_$KEY_ID.p8 \;
         env:
           KEY_ID: ${{ secrets.NOTARIZATION_API_KEY_ID }}
           ISSUER_ID:  ${{ secrets.NOTARIZATION_API_KEY_ISSUER }}
