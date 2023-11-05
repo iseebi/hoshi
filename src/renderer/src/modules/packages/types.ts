@@ -6,6 +6,10 @@ import { SmalledPackage as _SmalledPackage } from '../../../../models';
 
 export type SmalledPackage = _SmalledPackage;
 
+export type NewPackageForm = {
+  name: string;
+};
+
 // State
 // ------------------------------
 

@@ -39,6 +39,26 @@ class ProjectFile {
     return (await Promise.all(dirs.map(async (dir: string) => [dir, await this.isPackageAsync(dir)]))).map((v) => v[0]);
   }
 
+  async addNewPackageAsync(packageId: string): Promise<void> {
+    const packages = await this.listPackagesAsync();
+    if (packages.find((v) => v === packageId)) {
+      throw new Error('Directory already exists');
+    }
+    await this.makeDirectoryAsync(packageId);
+    await this.writePackageHeaderAsync(packageId, {
+      id: '',
+      metadata: {},
+    });
+  }
+
+  async writePackageHeaderAsync(packageId: string, contents: PackageHeader): Promise<void> {
+    const fileName = path.join(packageId, PackageFileName);
+    await this.writeYamlFileAsync<FileHeader & Omit<PackageHeader, 'id'>>(fileName, {
+      type: PackageFileType,
+      metadata: contents.metadata,
+    });
+  }
+
   async readPackageHeaderAsync(packageId: string): Promise<PackageHeader> {
     const fileName = path.join(packageId, PackageFileName);
     const contents = await this.readYamlFileAsync<FileHeader & PackageHeader>(fileName);
@@ -156,6 +176,11 @@ class ProjectFile {
   private async deleteFileAsync(relativeFileName: string): Promise<void> {
     const targetPath = path.join(this.projectDirectory, relativeFileName);
     await fs.unlink(targetPath);
+  }
+
+  private async makeDirectoryAsync(relativeFileName: string): Promise<void> {
+    const targetPath = path.join(this.projectDirectory, relativeFileName);
+    await fs.mkdir(targetPath);
   }
 }
 

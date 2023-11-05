@@ -17,3 +17,10 @@ export const [fetchPackageAction, fetchPackageProgressAction] = createAsyncActio
   SmalledPackage,
   Error
 >(actionCreator, 'fetchPackage');
+export const [addPackageAction, addPackageProgressAction] = createAsyncActionCreator<
+  {
+    packageId: string;
+  },
+  void,
+  Error
+>(actionCreator, 'addPackage');

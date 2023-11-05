@@ -11,6 +11,10 @@ class PackagesRepository {
   fetchPackageAsync(packageId: string): Promise<SmalledPackage | undefined> {
     return this.filesDatastore.fetchPackageAsync(packageId);
   }
+
+  addNewPackageAsync(packageId: string): Promise<void> {
+    return this.filesDatastore.addNewPackageAsync(packageId);
+  }
 }
 
 export default PackagesRepository;

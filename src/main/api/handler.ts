@@ -40,6 +40,9 @@ const createAPIHandler: (window: BrowserWindow) => APIHandler = (window) => {
       fetchPackageAsync(packageId: string): Promise<SmalledPackage | undefined> {
         return container.packages.fetchPackageAsync(packageId);
       },
+      addNewPackageAsync(packageId: string): Promise<void> {
+        return container.packages.addNewPackageAsync(packageId);
+      },
       addNewVersionAsync(packageId: string, versionId: string): Promise<void> {
         return container.versions.addNewVersionAsync(packageId, versionId);
       },

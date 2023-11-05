@@ -15,6 +15,9 @@ const api: HoshiAPI = {
   fetchPackageAsync(packageId: string): Promise<SmalledPackage | undefined> {
     return dispatchApi('fetchPackageAsync', packageId);
   },
+  addNewPackageAsync(packageId: string): Promise<void> {
+    return dispatchApi('addNewPackageAsync', packageId);
+  },
   addNewVersionAsync(packageId: string, versionId: string): Promise<void> {
     return dispatchApi('addNewVersionAsync', packageId, versionId);
   },

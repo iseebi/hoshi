@@ -2,20 +2,11 @@ import React from 'react';
 import { Button, ButtonGroup, Content, Dialog, Divider, Form, Heading, TextField } from '@adobe/react-spectrum';
 import { FormikProps } from 'formik';
 import { NewVersionForm } from '../../modules/versions';
+import { makeValidationState } from '../formHelpers';
 
 type Props = {
   formik: FormikProps<NewVersionForm>;
   onCancel: () => void;
-};
-
-const makeValidationState: <T>(formik: FormikProps<T>, key: string) => 'valid' | 'invalid' | undefined = (
-  formik,
-  key,
-) => {
-  if (!formik.touched[key]) {
-    return undefined;
-  }
-  return formik.errors[key] ? 'invalid' : 'valid';
 };
 
 // TODO: Translation

@@ -62,6 +62,17 @@ class FilesDatastore {
     }
   }
 
+  async addNewPackageAsync(packageId: string): Promise<void> {
+    try {
+      if (!this.projectFile) {
+        return;
+      }
+      await this.projectFile.addNewPackageAsync(packageId);
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
   async fetchEditableVersionAsync(
     packageId: string,
     versionId: string,

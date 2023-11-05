@@ -1,12 +1,13 @@
 import React, { useMemo } from 'react';
 import { connect } from 'react-redux';
-import { FormikHelpers, useFormik } from 'formik';
+import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { Dispatch } from '@reduxjs/toolkit';
 import AddVersionDialog from '../../components/dialogs/AddVersionDialog';
 import { addVersionAction, NewVersionForm } from '../../modules/versions';
 import { RootState } from '../../modules';
 import { selectActivePackageName, selectNextVersionPrefix } from '../../modules/packages';
+import { resetFormWithDelay } from '../../components/formHelpers';
 
 type ExportProps = {
   close: () => void;
@@ -31,14 +32,6 @@ const validationSchema = Yup.object({
     .matches(/^[a-z0-9-_]*$/i, { message: 'validation_invalid_format' }),
 });
 
-const resetForm = (f: FormikHelpers<NewVersionForm>): void => {
-  new Promise((resolve) => {
-    setTimeout(resolve, 300);
-  }).then(() => {
-    f.resetForm();
-  });
-};
-
 const AddVersionDialogContainer: React.FC<Props> = ({ activePackageName, nextVersionPrefix, close, dispatch }) => {
   const initialValues: NewVersionForm = useMemo(() => ({ name: nextVersionPrefix }), [nextVersionPrefix]);
   const formik = useFormik({
@@ -49,15 +42,15 @@ const AddVersionDialogContainer: React.FC<Props> = ({ activePackageName, nextVer
         return;
       }
       dispatch.addVersion(activePackageName, values.name);
-      resetForm(formikHelpers);
+      resetFormWithDelay(formikHelpers);
       close();
     },
   });
-  const handleClose = (): void => {
-    resetForm(formik);
+  const handleCancel = (): void => {
+    resetFormWithDelay(formik);
     close();
   };
-  return <AddVersionDialog formik={formik} onCancel={handleClose} />;
+  return <AddVersionDialog formik={formik} onCancel={handleCancel} />;
 };
 
 const mapStateToProps = (state: RootState): StateProps => ({

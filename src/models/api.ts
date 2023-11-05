@@ -4,6 +4,7 @@ export type HoshiAPI = {
   openProjectAsync: () => Promise<SmalledProject | undefined>;
   fetchCurrentProjectAsync: () => Promise<SmalledProject | undefined>;
   fetchPackageAsync: (packageId: string) => Promise<SmalledPackage | undefined>;
+  addNewPackageAsync: (packageId: string) => Promise<void>;
   fetchEditableVersionAsync: (packageId: string, versionId: string) => Promise<EditableVersion | undefined>;
   addNewVersionAsync: (packageId: string, versionId: string) => Promise<void>;
   deleteVersionAsync: (packageId: string, versionId: string) => Promise<void>;

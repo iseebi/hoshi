@@ -1,8 +1,9 @@
 import { SagaIterator } from 'redux-saga';
-import { call, takeEvery } from 'typed-redux-saga';
-import { fetchPackageAction, fetchPackageProgressAction } from './actions';
+import { call, put, takeEvery } from 'typed-redux-saga';
+import { addPackageAction, addPackageProgressAction, fetchPackageAction, fetchPackageProgressAction } from './actions';
 import { bindAsyncTriggerAction } from '../sagaHelpers';
 import apiHandler from '../../api';
+import { fetchCurrentProjectAction } from '../projects';
 
 const fetchPackageSaga = bindAsyncTriggerAction(
   fetchPackageProgressAction,
@@ -16,6 +17,20 @@ const fetchPackageSaga = bindAsyncTriggerAction(
   },
 );
 
+const addPackageSaga = bindAsyncTriggerAction(
+  addPackageProgressAction,
+  function* action({ packageId }: { packageId: string }): SagaIterator {
+    const api = apiHandler.getCurrentApi();
+    yield* call(() => api.addNewPackageAsync(packageId));
+    yield* put(fetchCurrentProjectAction());
+    // yield* put(fetchPackageAction({ packageId }));
+    // yield* take(fetchPackageProgressAction.done);
+    // yield* put(switchVersionAction({ packageId, versionId }));
+    // yield* put(fetchEditableVersionAction({ packageId, versionId }));
+  },
+);
+
 export default function* watch(): SagaIterator {
   yield* takeEvery(fetchPackageAction, fetchPackageSaga);
+  yield* takeEvery(addPackageAction, addPackageSaga);
 }

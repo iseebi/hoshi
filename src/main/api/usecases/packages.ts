@@ -11,6 +11,10 @@ class PackagesUseCase {
   fetchPackageAsync(packageId: string): Promise<SmalledPackage | undefined> {
     return this.packagesRepository.fetchPackageAsync(packageId);
   }
+
+  addNewPackageAsync(packageId: string): Promise<void> {
+    return this.packagesRepository.addNewPackageAsync(packageId);
+  }
 }
 
 export default PackagesUseCase;
