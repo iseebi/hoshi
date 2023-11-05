@@ -17,6 +17,11 @@ export const [fetchEditableVersionAction, fetchEditableVersionProgressAction] = 
   EditableVersion,
   Error
 >(actionCreator, 'loadVersion');
+export const [addVersionAction, addVersionProgressAction] = createAsyncActionCreator<
+  { packageId: string; versionId: string },
+  void,
+  Error
+>(actionCreator, 'addVersion');
 export const [updateVersionAction, updateVersionProgressAction] = createAsyncActionCreator<
   {
     packageId: string;

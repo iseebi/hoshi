@@ -56,6 +56,7 @@ const BrowserContainer: React.FC<Props> = ({
     if (!activePackage) {
       return;
     }
+    // FIXME: バージョン追加時とかに挙動がおかしくなるからほかの方法考える
     dispatch.switchVersion(activePackage, pkg.versions[0]);
     dispatch.fetchEditableVersion(activePackage, pkg.versions[0]);
   }, [pkg, previousPkg, activePackage, dispatch]);

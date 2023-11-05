@@ -2,19 +2,24 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { FormikHelpers, useFormik } from 'formik';
 import * as Yup from 'yup';
+import { Dispatch } from '@reduxjs/toolkit';
 import AddVersionDialog from '../../components/dialogs/AddVersionDialog';
-import { NewVersionForm } from '../../modules/versions';
+import { addVersionAction, NewVersionForm } from '../../modules/versions';
+import { RootState } from '../../modules';
+import { selectActivePackageName } from '../../modules/packages';
 
 type ExportProps = {
   close: () => void;
 };
 
 type StateProps = {
-  /* N/A */
+  activePackageName: string | null;
 };
 
 type DispatchProps = {
-  /* N/A */
+  dispatch: {
+    addVersion: (packageId: string, versionId: string) => void;
+  };
 };
 
 type Props = ExportProps & StateProps & DispatchProps;
@@ -34,13 +39,16 @@ const resetForm = (f: FormikHelpers<NewVersionForm>): void => {
   });
 };
 
-const AddVersionDialogContainer: React.FC<Props> = ({ close }) => {
+const AddVersionDialogContainer: React.FC<Props> = ({ activePackageName, close, dispatch }) => {
   const initialValues: NewVersionForm = { name: '' };
   const formik = useFormik({
     initialValues,
     validationSchema,
     onSubmit: (values, formikHelpers) => {
-      console.log(values);
+      if (!activePackageName) {
+        return;
+      }
+      dispatch.addVersion(activePackageName, values.name);
       resetForm(formikHelpers);
       close();
     },
@@ -52,9 +60,15 @@ const AddVersionDialogContainer: React.FC<Props> = ({ close }) => {
   return <AddVersionDialog formik={formik} onCancel={handleClose} />;
 };
 
-const mapStateToProps = (/* state: RootState */): StateProps => ({});
+const mapStateToProps = (state: RootState): StateProps => ({
+  activePackageName: selectActivePackageName(state),
+});
 
-const mapDispatchToProps = (/* dispatch: Dispatch */): DispatchProps => ({});
+const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
+  dispatch: {
+    addVersion: (packageId, versionId) => dispatch(addVersionAction({ packageId, versionId })),
+  },
+});
 
 const Connected = connect(mapStateToProps, mapDispatchToProps)(AddVersionDialogContainer);
 
