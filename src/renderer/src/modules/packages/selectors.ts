@@ -16,3 +16,17 @@ export const selectActivePackage = createSelector(selectActivePackageName, selec
 });
 
 export const selectActivePackageVersions = createSelector(selectActivePackage, (pkg): string[] => pkg?.versions ?? []);
+
+export const selectNextVersionPrefix = createSelector(selectActivePackageVersions, (versions) => {
+  if (versions.length === 0) {
+    return '0000000_initial';
+  }
+  const lastVersion = versions[0];
+  const match = lastVersion.match(/^(\d+)_.*$/);
+  // noinspection RedundantIfStatementJS
+  if (!match) {
+    return '';
+  }
+  const versionNum = (Math.floor(parseInt(match[1], 10) / 1000) + 1) * 1000;
+  return `${`${versionNum}`.padStart(7, '0')}_`;
+});

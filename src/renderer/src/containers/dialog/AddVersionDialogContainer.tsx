@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { connect } from 'react-redux';
 import { FormikHelpers, useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -6,7 +6,7 @@ import { Dispatch } from '@reduxjs/toolkit';
 import AddVersionDialog from '../../components/dialogs/AddVersionDialog';
 import { addVersionAction, NewVersionForm } from '../../modules/versions';
 import { RootState } from '../../modules';
-import { selectActivePackageName } from '../../modules/packages';
+import { selectActivePackageName, selectNextVersionPrefix } from '../../modules/packages';
 
 type ExportProps = {
   close: () => void;
@@ -14,6 +14,7 @@ type ExportProps = {
 
 type StateProps = {
   activePackageName: string | null;
+  nextVersionPrefix: string;
 };
 
 type DispatchProps = {
@@ -34,13 +35,12 @@ const resetForm = (f: FormikHelpers<NewVersionForm>): void => {
   new Promise((resolve) => {
     setTimeout(resolve, 300);
   }).then(() => {
-    console.log('resetForm');
     f.resetForm();
   });
 };
 
-const AddVersionDialogContainer: React.FC<Props> = ({ activePackageName, close, dispatch }) => {
-  const initialValues: NewVersionForm = { name: '' };
+const AddVersionDialogContainer: React.FC<Props> = ({ activePackageName, nextVersionPrefix, close, dispatch }) => {
+  const initialValues: NewVersionForm = useMemo(() => ({ name: nextVersionPrefix }), [nextVersionPrefix]);
   const formik = useFormik({
     initialValues,
     validationSchema,
@@ -62,6 +62,7 @@ const AddVersionDialogContainer: React.FC<Props> = ({ activePackageName, close, 
 
 const mapStateToProps = (state: RootState): StateProps => ({
   activePackageName: selectActivePackageName(state),
+  nextVersionPrefix: selectNextVersionPrefix(state),
 });
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
