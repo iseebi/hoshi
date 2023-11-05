@@ -19,8 +19,8 @@ const Frame = styled.div`
   contain: inline-size;
   height: 100%;
 
-  padding-top: var(--spectrum-global-dimension-size-10, var(--spectrum-alias-size-10));
-  padding-right: calc(var(--spectrum-global-dimension-size-10, var(--spectrum-alias-size-10)) * 2);
+  padding-top: var(--spectrum-global-dimension-size-10);
+  padding-right: calc(var(--spectrum-global-dimension-size-10) * 2);
   overflow: scroll;
 `;
 

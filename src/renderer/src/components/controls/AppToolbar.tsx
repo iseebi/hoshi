@@ -11,7 +11,7 @@ const Frame = styled.div`
   display: flex;
   justify-content: center;
   height: 100%;
-  padding-top: var(--spectrum-global-dimension-size-85, var(--spectrum-alias-size-85));
+  padding-top: var(--spectrum-global-dimension-size-85);
   background-color: var(--spectrum-alias-toolbar-background-color);
 `;
 

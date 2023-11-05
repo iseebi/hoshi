@@ -10,14 +10,14 @@ const TranslationCellInput = styled.input`
   padding-inline: 6px;
   border: 2px solid var(--spectrum-textfield-border-color-key-focus, var(--spectrum-alias-border-color-focus));
   vertical-align: top;
-  color: var(--spectrum-body-text-color, var(--spectrum-alias-text-color));
+  color: var(--spectrum-body-text-color);
   background-color: var(--rdg-background-color);
 
   font-family: inherit;
   font-size: var(--rdg-font-size);
 
   &:focus {
-    border-color: var(--spectrum-textfield-border-color-key-focus, var(--spectrum-alias-border-color-focus));
+    border-color: var(--spectrum-textfield-border-color-key-focus);
     outline: none;
   }
 `;
