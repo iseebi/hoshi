@@ -11,6 +11,7 @@ type Props = {
   isAvailable: boolean;
   languages: string[];
   rows: TranslationRow[];
+  onRowChange: (row: TranslationRow, index: number) => void;
 };
 
 // noinspection CssInvalidPropertyValue
@@ -42,14 +43,23 @@ const createColumns = (translations: string[]): Column<TranslationRow>[] => [
   })),
 ];
 
-const TranslationEditor: React.FC<Props> = ({ isAvailable, rows, languages }) => {
+const TranslationEditor: React.FC<Props> = ({ isAvailable, rows, languages, onRowChange }) => {
   const columns = useMemo(() => createColumns(languages), [languages]);
 
   return (
     <Frame>
       {isAvailable && (
         <GridFrame>
-          <DataGrid columns={columns} rows={rows} className="fill-grid" />
+          <DataGrid
+            columns={columns}
+            rows={rows}
+            className="fill-grid"
+            onRowsChange={(newRows, indexes): void => {
+              const index = indexes.indexes[0];
+              const row = newRows[index];
+              onRowChange(row, index);
+            }}
+          />
         </GridFrame>
       )}
     </Frame>

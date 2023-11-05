@@ -1,16 +1,31 @@
 import { initialLoadableValue, LoadableValue } from '../models';
-import { Version as _Version, EditableVersion as _EditableVersion, Phrase } from '../../../../models';
+import { EditableVersion as _EditableVersion, Phrase as _Phrase } from '../../../../models';
 
 // Models
 // ------------------------------
 
-export type Version = _Version;
+// export type Version = _Version;
 export type EditableVersion = _EditableVersion;
+export type Phrase = _Phrase;
 
 export type TranslationRow = {
   id: string;
   currentPhrase?: Phrase;
   historyPhrase?: Phrase;
+};
+
+// Compose Function
+// ------------------------------
+
+export const applyTranslationRow = (editing: EditableVersion, row: TranslationRow): EditableVersion => {
+  if (!row.currentPhrase) {
+    return editing;
+  }
+  const newPhrase = row.currentPhrase;
+  return {
+    ...editing,
+    phrases: { ...editing.phrases, [row.id]: newPhrase },
+  };
 };
 
 // State
