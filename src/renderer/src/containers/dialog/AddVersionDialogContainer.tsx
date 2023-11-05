@@ -1,6 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 import AddVersionDialog from '../../components/dialogs/AddVersionDialog';
+import { NewVersionForm } from '../../modules/versions';
 
 type ExportProps = {
   close: () => void;
@@ -16,11 +19,23 @@ type DispatchProps = {
 
 type Props = ExportProps & StateProps & DispatchProps;
 
-const AddVersionDialogContainer: React.FC<Props> = ({ close }) => {
-  const [name, setName] = useState<string>('');
+const validationSchema = Yup.object({
+  name: Yup.string()
+    .required('validation_required')
+    .matches(/^[a-z0-9-_]*$/i, { message: 'validation_invalid_format' }),
+});
 
+const AddVersionDialogContainer: React.FC<Props> = ({ close }) => {
+  const initialValues: NewVersionForm = { name: '' };
+  const formik = useFormik({
+    initialValues,
+    validationSchema,
+    onSubmit: () => {
+      close();
+    },
+  });
   const resetState = (): void => {
-    setName('');
+    formik.resetForm();
   };
   const handleDismiss = (): void => {
     console.log('dismiss');
@@ -31,20 +46,7 @@ const AddVersionDialogContainer: React.FC<Props> = ({ close }) => {
     close();
     resetState();
   };
-  const handleSubmit = (): void => {
-    console.log('submit');
-    close();
-    resetState();
-  };
-  return (
-    <AddVersionDialog
-      name={name}
-      onChangeName={setName}
-      onDismiss={handleDismiss}
-      onCancel={handleClose}
-      onSubmit={handleSubmit}
-    />
-  );
+  return <AddVersionDialog formik={formik} onDismiss={(): void => handleDismiss()} onCancel={handleClose} />;
 };
 
 const mapStateToProps = (/* state: RootState */): StateProps => ({});

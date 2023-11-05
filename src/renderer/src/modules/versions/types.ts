@@ -14,6 +14,10 @@ export type TranslationRow = {
   historyPhrase?: Phrase;
 };
 
+export type NewVersionForm = {
+  name: string;
+};
+
 // Compose Function
 // ------------------------------
 
