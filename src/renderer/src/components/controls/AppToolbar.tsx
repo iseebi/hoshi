@@ -23,6 +23,8 @@ const Frame = styled.div`
 const Tools = styled.div`
   display: flex;
   flex-direction: column;
+  padding-left: var(--spectrum-global-dimension-size-100);
+  padding-right: var(--spectrum-global-dimension-size-100);
 `;
 const Actions = styled.div`
   display: flex;

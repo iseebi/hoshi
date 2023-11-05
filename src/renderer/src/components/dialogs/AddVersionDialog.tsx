@@ -6,7 +6,6 @@ import { NewVersionForm } from '../../modules/versions';
 type Props = {
   formik: FormikProps<NewVersionForm>;
   onCancel: () => void;
-  onDismiss: () => void;
 };
 
 const makeValidationState: <T>(formik: FormikProps<T>, key: string) => 'valid' | 'invalid' | undefined = (
@@ -20,12 +19,17 @@ const makeValidationState: <T>(formik: FormikProps<T>, key: string) => 'valid' |
 };
 
 // TODO: Translation
-const AddVersionDialog: React.FC<Props> = ({ formik, onCancel, onDismiss }) => (
-  <Dialog onDismiss={onDismiss}>
+const AddVersionDialog: React.FC<Props> = ({ formik, onCancel }) => (
+  <Dialog>
     <Heading>Add Version</Heading>
     <Divider />
     <Content>
-      <Form onSubmit={formik.submitForm}>
+      <Form
+        onSubmit={(ev): void => {
+          ev.preventDefault();
+          formik.submitForm();
+        }}
+      >
         <TextField
           isRequired
           autoFocus
