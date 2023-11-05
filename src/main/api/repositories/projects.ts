@@ -12,7 +12,7 @@ class ProjectsRepository {
     return this.filesDatastore.openProjectFileAsync(path);
   }
 
-  fetchCurrentProjectAsync() {
+  fetchCurrentProjectAsync(): Promise<SmalledProject | undefined> {
     return this.filesDatastore.fetchCurrentProjectAsync();
   }
 }

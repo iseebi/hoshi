@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Dispatch } from '@reduxjs/toolkit';
 import TranslationEditor from '../../components/editors/TranslationEditor';
 import { RootState } from '../../modules';
 import {
@@ -12,7 +13,6 @@ import {
   TranslationRow,
   updateVersionAction,
 } from '../../modules/versions';
-import { Dispatch } from '@reduxjs/toolkit';
 
 type ExportProps = {
   /* N/A */
