@@ -2,10 +2,10 @@ name: Build/notarization
 
 on:
   workflow_dispatch:
-#  release:
-#    types:
-#      - prereleased
-#      - released
+  release:
+    types:
+      - prereleased
+      - released
 
 jobs:
   notarization:
@@ -21,8 +21,7 @@ jobs:
           echo '${{ secrets.NOTARIZATION_API_KEY }}' > ~/private_keys/AuthKey_${{ secrets.NOTARIZATION_API_KEY_ID }}.p8
       - name: Download Files
         run: |
-          # gh release download ${{ github.ref_name }} --clobber -p '*.dmg' -p '*-mac.zip'
-          gh release download v0.1.0 --clobber -p '*.dmg' -p '*-mac.zip' -p '*-mac-arm64.zip'
+          gh release download ${{ github.ref_name }} --clobber -p '*.dmg' -p '*-mac.zip'
         env:
           GH_TOKEN: ${{ github.token }}
       - name: Submit notarization
