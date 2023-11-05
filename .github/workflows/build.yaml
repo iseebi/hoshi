@@ -1,0 +1,95 @@
+name: Build/release
+
+on:
+  push:
+#    branches:
+#      - main
+#      - develop
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    runs-on: ${{ matrix.os }}
+    permissions:
+      contents: write
+
+    strategy:
+      matrix:
+#        os: [macos-latest-large, ubuntu-latest, windows-latest]
+        os: [macos-latest-xlarge, windows-latest]
+
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v1
+
+      - name: Install Node.js, NPM and Yarn
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install Developer ID Certificate
+        if: startsWith(matrix.os, 'macos')
+        run: |
+          CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
+          KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
+
+          echo -n "$BUILD_CERTIFICATE_BASE64" | base64 --decode -o $CERTIFICATE_PATH
+
+          security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+          security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+
+          security import $CERTIFICATE_PATH -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
+          security list-keychain -d user -s $KEYCHAIN_PATH
+
+          rm $RUNNER_TEMP/build_certificate.p12
+        env:
+          BUILD_CERTIFICATE_BASE64: ${{ secrets.MAC_CERTS }}
+          P12_PASSWORD: ${{ secrets.MAC_CERTS_PASSWORD }}
+          KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
+
+      - name: Prepare for app notarization
+        if: startsWith(matrix.os, 'macos')
+        run: |
+          mkdir -p ~/private_keys/
+          echo '${{ secrets.NOTARIZATION_API_KEY }}' > ~/private_keys/AuthKey_${{ secrets.NOTARIZATION_API_KEY_ID }}.p8
+
+      - name: Build CLI Packages
+        if: startsWith(matrix.os, 'macos')
+        run: |
+          npm install
+          npm run build:cli
+          npm run build:cli-package
+
+      - name: Build/release Electron app
+        uses: samuelmeuli/action-electron-builder@v1
+        with:
+          github_token: ${{ secrets.github_token }}
+          release: ${{ startsWith(github.ref, 'refs/tags/v') }}
+          mac_certs: ${{ secrets.MAC_CERTS }}
+          mac_certs_password: ${{ secrets.MAC_CERTS_PASSWORD }}
+#        env:
+#          API_KEY_ID: ${{ secrets.NOTARIZATION_API_KEY_ID }}
+#          API_KEY_ISSUER_ID: ${{ secrets.NOTARIZATION_API_KEY_ISSUER }}
+
+      - name: Attach CLI Packages
+        if: ${{ startsWith(github.ref, 'refs/tags/v') }}
+        run: gh release upload ${{ github.ref_name }} dist/hoshi-cli*.zip
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+      - name: Clean up keychain and provisioning profile
+        if: ${{ always() && startsWith(matrix.os, 'macos') }}
+        run: |
+          security delete-keychain $RUNNER_TEMP/app-signing.keychain-db
+
+#      - name: Store artifacts
+#        uses: actions/upload-artifact@v3
+#        with:
+#          name: build-artifacts
+#          path: |
+#            dist/*.AppImage
+#            dist/*.dmg*
+#            dist/*.zip*
+#            dist/*.exe*

@@ -25,6 +25,14 @@ nsis:
   createDesktopShortcut: always
 mac:
   entitlementsInherit: build/entitlements.mac.plist
+  hardenedRuntime: true
+  target:
+    - target: dmg
+      arch: arm64
+    - target: zip
+      arch: arm64
+  binaries:
+    - Contents/hoshi-cli
   extendInfo:
     - NSCameraUsageDescription: Application requests access to the device's camera.
     - NSMicrophoneUsageDescription: Application requests access to the device's microphone.
@@ -44,5 +52,5 @@ appImage:
   artifactName: ${name}-${version}.${ext}
 npmRebuild: false
 publish:
-  provider: generic
-  url: https://example.com/auto-updates
+  provider: github
+  releaseType: draft
