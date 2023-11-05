@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import { Item, ListBox, Picker, Section } from '@adobe/react-spectrum';
+import { Item, ListBox, Picker, Section, Text } from '@adobe/react-spectrum';
 
 type Props = {
   packages: string[];
@@ -18,6 +18,10 @@ const Frame = styled.div`
   height: 100%;
   padding: var(--spectrum-global-dimension-size-10, var(--spectrum-alias-size-10));
   background-color: var(--spectrum-alias-toolbar-background-color);
+`;
+
+const VersionItemContent = styled.div`
+  font-family: var(--spectrum-global-font-family-code);
 `;
 
 const ProjectSelectedKey = '**PROJECT**';
@@ -70,7 +74,9 @@ const Browser: React.FC<Props> = ({
     >
       {versions.map((version) => (
         <Item key={version} textValue={version}>
-          {version}
+          <Text>
+            <VersionItemContent>{version}</VersionItemContent>
+          </Text>
         </Item>
       ))}
     </ListBox>

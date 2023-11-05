@@ -2,14 +2,21 @@ import React from 'react';
 import { connect } from 'react-redux';
 import TranslationEditor from '../../components/editors/TranslationEditor';
 import { RootState } from '../../modules';
-import { EditableVersion, selectActiveEditingVersion } from '../../modules/versions';
+import {
+  selectActiveLanguages,
+  selectEditingTranslationRows,
+  selectHasActiveEditingVersion,
+  TranslationRow,
+} from '../../modules/versions';
 
 type ExportProps = {
   /* N/A */
 };
 
 type StateProps = {
-  editingVersion: EditableVersion | undefined;
+  isAvailable: boolean;
+  languages: string[];
+  rows: TranslationRow[];
 };
 
 type DispatchProps = {
@@ -18,12 +25,14 @@ type DispatchProps = {
 
 type Props = ExportProps & StateProps & DispatchProps;
 
-const TranslationEditorContainer: React.FC<Props> = ({ editingVersion }) => (
-  <TranslationEditor editingVersion={editingVersion} />
+const TranslationEditorContainer: React.FC<Props> = ({ isAvailable, languages, rows }) => (
+  <TranslationEditor isAvailable={isAvailable} languages={languages} rows={rows} />
 );
 
 const mapStateToProps = (state: RootState): StateProps => ({
-  editingVersion: selectActiveEditingVersion(state),
+  isAvailable: selectHasActiveEditingVersion(state),
+  languages: selectActiveLanguages(state),
+  rows: selectEditingTranslationRows(state),
 });
 
 const mapDispatchToProps = (/* dispatch: Dispatch */): DispatchProps => ({});

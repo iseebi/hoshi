@@ -5,6 +5,7 @@ const styles = css`
   * {
     padding: 0;
     margin: 0;
+    --app-disable-content-color: var(--spectrum-disabled-content-color, var(--spectrum-gray-400));
   }
 
   ul {

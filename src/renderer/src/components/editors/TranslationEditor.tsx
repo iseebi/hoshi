@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import styled from '@emotion/styled';
-import DataGrid, { ColumnOrColumnGroup } from 'react-data-grid';
+import DataGrid, { Column } from 'react-data-grid';
 import 'react-data-grid/lib/styles.css';
-import { EditableVersion } from '../../modules/versions';
+import { TranslationRow } from '../../modules/versions';
+import { renderTranslationCell, TranslationIdCell } from './cellRenderer/TranslationCell';
 
 type Props = {
-  editingVersion: EditableVersion | undefined;
+  isAvailable: boolean;
+  languages: string[];
+  rows: TranslationRow[];
 };
 
 // noinspection CssInvalidPropertyValue
@@ -25,41 +28,29 @@ const GridFrame = styled.div`
   }
 `;
 
-const createColumns = (translations: string[]): ColumnOrColumnGroup<Record<string, string>>[] => [
-  { key: 'id', name: 'ID', resizable: true, frozen: true, width: 200 },
+const createColumns = (translations: string[]): Column<TranslationRow>[] => [
+  { key: 'id', name: 'ID', resizable: true, frozen: true, width: 200, renderCell: TranslationIdCell },
   ...translations.map((lang) => ({
     key: `translation.${lang}`,
     name: lang,
     resizable: true,
     width: 200,
+    renderCell: renderTranslationCell(lang),
   })),
 ];
 
-const createRows = (editingVersion: EditableVersion): Record<string, string>[] =>
-  editingVersion.keys.map((key) => ({
-    id: key,
-    ...editingVersion.languages.reduce(
-      (prev, lang) => ({
-        ...prev,
-        [`translation.${lang}`]:
-          editingVersion.phrases[key]?.translations[lang] ?? editingVersion.historyPhrases[key]?.translations[lang],
-      }),
-      {} as Record<string, string>,
-    ),
-  }));
+const TranslationEditor: React.FC<Props> = ({ isAvailable, rows, languages }) => {
+  const columns = useMemo(() => createColumns(languages), [languages]);
 
-const TranslationEditor: React.FC<Props> = ({ editingVersion }) => (
-  <Frame>
-    {editingVersion && (
-      <GridFrame>
-        <DataGrid
-          columns={createColumns(editingVersion.languages)}
-          rows={createRows(editingVersion)}
-          className="fill-grid"
-        />
-      </GridFrame>
-    )}
-  </Frame>
-);
+  return (
+    <Frame>
+      {isAvailable && (
+        <GridFrame>
+          <DataGrid columns={columns} rows={rows} className="fill-grid" />
+        </GridFrame>
+      )}
+    </Frame>
+  );
+};
 
 export default TranslationEditor;
