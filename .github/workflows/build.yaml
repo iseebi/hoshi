@@ -49,11 +49,11 @@ jobs:
           P12_PASSWORD: ${{ secrets.MAC_CERTS_PASSWORD }}
           KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
 
-      - name: Prepare for app notarization
-        if: startsWith(matrix.os, 'macos')
-        run: |
-          mkdir -p ~/private_keys/
-          echo '${{ secrets.NOTARIZATION_API_KEY }}' > ~/private_keys/AuthKey_${{ secrets.NOTARIZATION_API_KEY_ID }}.p8
+#      - name: Prepare for app notarization
+#        if: startsWith(matrix.os, 'macos')
+#        run: |
+#          mkdir -p ~/private_keys/
+#          echo '${{ secrets.NOTARIZATION_API_KEY }}' > ~/private_keys/AuthKey_${{ secrets.NOTARIZATION_API_KEY_ID }}.p8
 
       - name: Build CLI Packages
         if: startsWith(matrix.os, 'macos')
