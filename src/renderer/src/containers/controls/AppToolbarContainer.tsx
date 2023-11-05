@@ -1,10 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Dispatch } from '@reduxjs/toolkit';
 import AppToolbar from '../../components/controls/AppToolbar';
-import { openProjectAction, selectHasCurrentProject } from '../../modules/projects';
+import { selectHasCurrentProject } from '../../modules/projects';
 import { RootState } from '../../modules';
 import { selectHasActiveEditingVersion } from '../../modules/versions';
+import AddVersionDialogContainer from '../dialog/AddVersionDialogContainer';
+import AddPackageDialogContainer from '../dialog/AddPackageDialogContainer';
 
 type ExportProps = {
   /* N/A */
@@ -16,19 +17,28 @@ type StateProps = {
 };
 
 type DispatchProps = {
+  /*
   dispatch: {
-    openProject: () => void;
   };
+   */
 };
 
 type Props = ExportProps & StateProps & DispatchProps;
 
-const AppToolbarContainer: React.FC<Props> = ({ hasActiveProject, hasActiveVersion, dispatch }) => (
+const RenderAddPackageDialogContainer = (close: () => void): React.ReactElement => (
+  <AddPackageDialogContainer close={close} />
+);
+
+const RenderAddVersionDialogContainer = (close: () => void): React.ReactElement => (
+  <AddVersionDialogContainer close={close} />
+);
+
+const AppToolbarContainer: React.FC<Props> = ({ hasActiveProject, hasActiveVersion }) => (
   <AppToolbar
     hasActiveProject={hasActiveProject}
     hasActiveVersion={hasActiveVersion}
-    onAddPackage={(): void => console.log('add package')}
-    onAddVersion={(): void => console.log('add version')}
+    addPackageDialog={RenderAddPackageDialogContainer}
+    addVersionDialog={RenderAddVersionDialogContainer}
   />
 );
 
@@ -37,10 +47,11 @@ const mapStateToProps = (state: RootState): StateProps => ({
   hasActiveVersion: selectHasActiveEditingVersion(state),
 });
 
-const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
+const mapDispatchToProps = (/* dispatch: Dispatch */): DispatchProps => ({
+  /*
   dispatch: {
-    openProject: () => dispatch(openProjectAction()),
   },
+   */
 });
 
 const Connected = connect(mapStateToProps, mapDispatchToProps)(AppToolbarContainer);
