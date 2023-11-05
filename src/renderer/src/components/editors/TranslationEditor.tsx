@@ -3,7 +3,9 @@ import styled from '@emotion/styled';
 import DataGrid, { Column } from 'react-data-grid';
 import 'react-data-grid/lib/styles.css';
 import { TranslationRow } from '../../modules/versions';
-import { renderTranslationCell, TranslationIdCell } from './cellRenderer/TranslationCell';
+import TranslationIdCell from './cellRenderer/TranslationIdCell';
+import renderTranslationCell from './cellRenderer/renderTranslationCell';
+import renderTranslationEditCell from './cellRenderer/renderTranslationEditCell';
 
 type Props = {
   isAvailable: boolean;
@@ -36,6 +38,7 @@ const createColumns = (translations: string[]): Column<TranslationRow>[] => [
     resizable: true,
     width: 200,
     renderCell: renderTranslationCell(lang),
+    renderEditCell: renderTranslationEditCell(lang),
   })),
 ];
 
