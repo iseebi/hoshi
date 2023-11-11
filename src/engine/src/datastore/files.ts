@@ -7,7 +7,7 @@ import {
   SmalledProject,
   Version,
 } from '../../../models';
-import ProjectFile from '../../../engine/src/projectFile';
+import ProjectFile from '../projectFile';
 
 class FilesDatastore {
   private projectFile: ProjectFile | undefined;

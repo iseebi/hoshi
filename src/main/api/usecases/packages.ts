@@ -1,5 +1,5 @@
 import { SmalledPackage } from '../../../models';
-import { PackagesRepository } from '../repositories';
+import { PackagesRepository } from '../../../engine/src/repositories';
 
 class PackagesUseCase {
   private packagesRepository: PackagesRepository;

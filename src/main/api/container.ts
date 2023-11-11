@@ -1,6 +1,6 @@
 import { PackagesUseCase, ProjectsUseCase, VersionsUseCase } from './usecases';
-import { PackagesRepository, ProjectsRepository, VersionsRepository } from './repositories';
-import { FilesDatastore } from './datastore';
+import { PackagesRepository, ProjectsRepository, VersionsRepository } from '../../engine/src/repositories';
+import { FilesDatastore } from '../../engine/src/datastore';
 
 type ApiModulesContainer = {
   projects: ProjectsUseCase;

@@ -1,5 +1,5 @@
 import { SmalledProject } from '../../../models';
-import ProjectsRepository from '../repositories/projects';
+import ProjectsRepository from '../../../engine/src/repositories/projects';
 
 class ProjectsUseCase {
   private projectsRepository: ProjectsRepository;

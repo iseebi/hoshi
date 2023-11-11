@@ -2,8 +2,6 @@ import FilesDatastore from '../datastore/files';
 import { EditableVersion, Version } from '../../../models';
 
 class VersionsRepository {
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
   private filesDatastore: FilesDatastore;
 
   public constructor(filesDatastore: FilesDatastore) {
