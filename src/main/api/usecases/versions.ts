@@ -1,9 +1,7 @@
-import { VersionsRepository } from '../repositories';
+import { VersionsRepository } from '../../../engine/src/repositories';
 import { EditableVersion, Version } from '../../../models';
 
 class VersionsUseCase {
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
   private versionsRepository: VersionsRepository;
 
   public constructor(versionsRepository: VersionsRepository) {

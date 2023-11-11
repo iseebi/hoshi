@@ -2,16 +2,18 @@ import FilesDatastore from '../datastore/files';
 import { EditableVersion, Version } from '../../../models';
 
 class VersionsRepository {
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
   private filesDatastore: FilesDatastore;
 
   public constructor(filesDatastore: FilesDatastore) {
     this.filesDatastore = filesDatastore;
   }
 
-  fetchEditableVersionAsync(packageId: string, versionId: string): Promise<EditableVersion | undefined> {
-    return this.filesDatastore.fetchEditableVersionAsync(packageId, versionId);
+  fetchEditableVersionAsync(
+    packageId: string,
+    versionId: string,
+    includeCurrentVersionInHistory: boolean = false,
+  ): Promise<EditableVersion | undefined> {
+    return this.filesDatastore.fetchEditableVersionAsync(packageId, versionId, includeCurrentVersionInHistory);
   }
 
   addNewVersionAsync(packageId: string, versionId: string): Promise<void> {

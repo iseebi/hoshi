@@ -1,12 +1,24 @@
 # hoshi
 
-An Electron application with React and TypeScript
+Simple translation management software (Work in progress)
 
-## Recommended IDE Setup
+## Application Components
 
-- [VSCode](https://code.visualstudio.com/) + [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) + [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+### Editor
 
-## Project Setup
+Localizations editor built with Electron
+
+### CLI
+
+File export workflow tool
+
+#### Publish
+
+```
+$ hoshi publish --project . --outDir _published packageName
+```
+
+## Development
 
 ### Install
 
@@ -18,6 +30,7 @@ $ npm install
 
 ```bash
 $ npm run dev
+$ npm run cli -- publish --project sample --outDir _published app
 ```
 
 ### Build
