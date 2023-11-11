@@ -6,7 +6,8 @@
     "types": ["electron-vite/node"],
     "downlevelIteration": true,
     "lib": [
-      "dom.iterable"
+      "dom.iterable",
+      "ES2021.String"
     ]
   }
 }
