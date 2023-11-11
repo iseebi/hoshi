@@ -8,8 +8,12 @@ class VersionsRepository {
     this.filesDatastore = filesDatastore;
   }
 
-  fetchEditableVersionAsync(packageId: string, versionId: string): Promise<EditableVersion | undefined> {
-    return this.filesDatastore.fetchEditableVersionAsync(packageId, versionId);
+  fetchEditableVersionAsync(
+    packageId: string,
+    versionId: string,
+    includeCurrentVersionInHistory: boolean = false,
+  ): Promise<EditableVersion | undefined> {
+    return this.filesDatastore.fetchEditableVersionAsync(packageId, versionId, includeCurrentVersionInHistory);
   }
 
   addNewVersionAsync(packageId: string, versionId: string): Promise<void> {

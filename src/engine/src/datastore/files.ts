@@ -8,13 +8,16 @@ import {
   Version,
 } from '../../../models';
 import ProjectFile from '../projectFile';
+import { promises as fs } from 'fs';
+import * as path from 'path';
+import { PackageFileName } from '../../../models/file';
 
 class FilesDatastore {
   private projectFile: ProjectFile | undefined;
 
-  async openProjectFileAsync(path: string): Promise<SmalledProject | undefined> {
+  async openProjectFileAsync(dir: string): Promise<SmalledProject | undefined> {
     try {
-      const projectFile = new ProjectFile(path);
+      const projectFile = new ProjectFile(dir);
       const projectHeader = await projectFile.readProjectHeaderAsync();
       const packages = await projectFile.listPackagesAsync();
       this.projectFile = projectFile;
@@ -23,7 +26,7 @@ class FilesDatastore {
         packages,
       };
     } catch (e) {
-      console.error(e);
+      // console.error(e);
       return undefined;
     }
   }
@@ -40,7 +43,7 @@ class FilesDatastore {
         packages,
       };
     } catch (e) {
-      console.error(e);
+      // console.error(e);
       return undefined;
     }
   }
@@ -57,7 +60,7 @@ class FilesDatastore {
         versions,
       };
     } catch (e) {
-      console.error(e);
+      // console.error(e);
       return undefined;
     }
   }
@@ -69,7 +72,7 @@ class FilesDatastore {
       }
       await this.projectFile.addNewPackageAsync(packageId);
     } catch (e) {
-      console.error(e);
+      // console.error(e);
     }
   }
 
@@ -104,7 +107,7 @@ class FilesDatastore {
         phrases,
       };
     } catch (e) {
-      console.error(e);
+      // console.error(e);
       return undefined;
     }
   }
@@ -135,7 +138,7 @@ class FilesDatastore {
         phrases: convertPhrasesToFilePhrases(data.phrases),
       });
     } catch (e) {
-      console.error(e);
+      // console.error(e);
     }
   }
 
@@ -147,6 +150,21 @@ class FilesDatastore {
       await this.projectFile.deleteVersionFileAsync(packageId, versionId);
     } catch (e) {
       console.error(e);
+    }
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  async isPackageAsync(dir: string): Promise<boolean> {
+    try {
+      const dirResult = await fs.stat(dir);
+      if (!dirResult.isDirectory()) {
+        return false;
+      }
+      const metadataPath = path.join(dir, PackageFileName);
+      const metadataResult = await fs.stat(metadataPath);
+      return metadataResult.isFile();
+    } catch (e) {
+      return false;
     }
   }
 }

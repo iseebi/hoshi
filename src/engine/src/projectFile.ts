@@ -1,6 +1,6 @@
 import * as path from 'path';
 import * as YAML from 'yaml';
-import { Dirent } from 'fs';
+import { Dirent, promises as fs } from 'fs';
 import { PackageHeader, ProjectHeader, VersionFile } from '../../models';
 import {
   FileHeader,
@@ -11,8 +11,6 @@ import {
   VersionFileExt,
   VersionFileType,
 } from '../../models/file';
-
-const fs = require('fs').promises;
 
 class ProjectFile {
   private readonly projectDirectory: string;
@@ -36,7 +34,9 @@ class ProjectFile {
     const dirs = (await fs.readdir(this.projectDirectory, { withFileTypes: true }))
       .filter((entry: Dirent) => entry.isDirectory() && !entry.name.startsWith('.'))
       .map((entry: Dirent) => entry.name);
-    return (await Promise.all(dirs.map(async (dir: string) => [dir, await this.isPackageAsync(dir)]))).map((v) => v[0]);
+    return (await Promise.all(dirs.map(async (dir: string) => [dir, await this.isPackageAsync(dir)]))).map(
+      (v) => v[0] as string,
+    );
   }
 
   async addNewPackageAsync(packageId: string): Promise<void> {

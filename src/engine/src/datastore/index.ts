@@ -1,4 +1,4 @@
 import FilesDatastore from './files';
+import ConverterDatastore from './converter';
 
-// eslint-disable-next-line import/prefer-default-export
-export { FilesDatastore };
+export { FilesDatastore, ConverterDatastore };
