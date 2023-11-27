@@ -139,6 +139,17 @@ class ProjectFile {
             next[key] = cur.phrases[key];
             return;
           }
+          // 削除フラグだったら置き換え
+          if (next[key].$deleted === 'true') {
+            next[key] = cur.phrases[key];
+            return;
+          }
+          if (cur.phrases[key].$deleted === 'true') {
+            next[key] = {
+              $deleted: 'true',
+            };
+            return;
+          }
           next[key] = { ...next[key], ...cur.phrases[key] };
         });
         return next;

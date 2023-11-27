@@ -4,6 +4,7 @@ import { Converter } from './type';
 import { ExportParameter } from '../../../models/converter';
 import { createDirIfNotExistAsync } from './helpers';
 import { serialPromises } from '../helpers';
+import { isDeletedPhrase } from '../../../models';
 
 const keyEscape = (input: string): string => input;
 const valueEscape = (input: string | undefined): string => input ?? '';
@@ -23,7 +24,12 @@ class AndroidXmlConverter implements Converter {
         const buffer = `<?xml version="1.0" encoding="utf-8"?>
 <resources>
 ${param.keys
-  .map((key) => `    <string name="${keyEscape(key)}">${valueEscape(param.phrases[key]?.translations[lang])}</string>`)
+  .map((key) =>
+    isDeletedPhrase(param.phrases[key])
+      ? ''
+      : `    <string name="${keyEscape(key)}">${valueEscape(param.phrases[key]?.translations[lang])}</string>`,
+  )
+  .filter((v) => v !== '')
   .join('\n')}
 </resources>
 `;
