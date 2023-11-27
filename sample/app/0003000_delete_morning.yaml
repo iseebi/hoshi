@@ -1,0 +1,4 @@
+type: hoshi.version:1
+phrases:
+  greeting_morning:
+    $deleted: "true"

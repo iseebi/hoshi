@@ -17,7 +17,7 @@ type Props = {
 // noinspection CssInvalidPropertyValue
 const Frame = styled.div`
   contain: inline-size;
-  height: 100%;
+  height: calc(100vh - 40px);
 
   padding-top: var(--spectrum-global-dimension-size-10);
   padding-right: calc(var(--spectrum-global-dimension-size-10) * 2);

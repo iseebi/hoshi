@@ -4,6 +4,7 @@ import { Converter } from './type';
 import { ExportParameter } from '../../../models/converter';
 import { createDirIfNotExistAsync } from './helpers';
 import { serialPromises } from '../helpers';
+import { isDeletedPhrase } from '../../../models';
 
 const keyEscape = (input: string): string => input;
 const valueEscape = (input: string | undefined): string => {
@@ -30,7 +31,12 @@ class AppleStringsConverter implements Converter {
     await serialPromises(
       param.languages.map(async (lang) => {
         const buffer = param.keys
-          .map((key) => `"${keyEscape(key)}" = "${valueEscape(param.phrases[key]?.translations[lang])}";`)
+          .map((key) =>
+            isDeletedPhrase(param.phrases[key])
+              ? ''
+              : `"${keyEscape(key)}" = "${valueEscape(param.phrases[key]?.translations[lang])}";`,
+          )
+          .filter((v) => v !== '')
           .join('\n');
         const filePath = path.join(baseDir, `${lang}.strings`);
         await fs.writeFile(filePath, buffer);

@@ -67,6 +67,10 @@ export type EditableVersion = VersionHeader & {
   historyPhrases: Record<string, Phrase>;
 };
 
+export const isDeletedPhrase = (phrase?: Phrase): boolean => {
+  return phrase?.metadata?.deleted === 'true';
+};
+
 const sortDictionary = <T>(dict: Record<string, T>): Record<string, T> =>
   Object.keys(dict)
     .sort()
