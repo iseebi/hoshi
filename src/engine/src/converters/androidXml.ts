@@ -7,7 +7,23 @@ import { serialPromises } from '../helpers';
 import { isDeletedPhrase } from '../../../models';
 
 const keyEscape = (input: string): string => input;
-const valueEscape = (input: string | undefined): string => input ?? '';
+const valueEscape = (input: string | undefined): string => {
+  if (!input) {
+    return '';
+  }
+  // noinspection JSUnresolvedReference
+  const result = input
+    .replaceAll(/\n/g, '\\n')
+    .replaceAll("'", "\\'")
+    .replaceAll('"', '\\"')
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;');
+  if (result.startsWith(' ') || result.endsWith(' ')) {
+    return `"${result}"`;
+  }
+  return result;
+};
 
 class AndroidXmlConverter implements Converter {
   // eslint-disable-next-line class-methods-use-this
