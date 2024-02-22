@@ -31,6 +31,7 @@ class AppleStringsConverter implements Converter {
     await serialPromises(
       param.languages.map(async (lang) => {
         const buffer = param.keys
+          .sort()
           .map((key) =>
             isDeletedPhrase(param.phrases[key])
               ? ''

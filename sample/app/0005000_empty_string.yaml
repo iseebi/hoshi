@@ -1,0 +1,6 @@
+type: hoshi.version:1
+phrases:
+  empty_string:
+    $description: test for empty string outputs
+    en: ""
+    ja: ""

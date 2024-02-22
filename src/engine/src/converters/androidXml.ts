@@ -40,6 +40,7 @@ class AndroidXmlConverter implements Converter {
         const buffer = `<?xml version="1.0" encoding="utf-8"?>
 <resources>
 ${param.keys
+  .sort()
   .map((key) =>
     isDeletedPhrase(param.phrases[key])
       ? ''
