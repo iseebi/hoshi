@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 import { PublishParameter } from '../models';
 import {
+  ContextRepository,
   PackagesRepository,
   ProjectsRepository,
   PublishRepository,
@@ -57,16 +58,20 @@ class PublishUseCase {
 
   private publishRepository: PublishRepository;
 
+  private contextRepository: ContextRepository;
+
   public constructor(
     projectsRepository: ProjectsRepository,
     packagesRepository: PackagesRepository,
     versionsRepository: VersionsRepository,
     publishRepository: PublishRepository,
+    contextRepository: ContextRepository,
   ) {
     this.projectsRepository = projectsRepository;
     this.packagesRepository = packagesRepository;
     this.versionsRepository = versionsRepository;
     this.publishRepository = publishRepository;
+    this.contextRepository = contextRepository;
   }
 
   async processPublishAsync(parameter: PublishParameter): Promise<boolean> {
@@ -91,6 +96,9 @@ class PublishUseCase {
       console.error('Package not found');
       return false;
     }
+
+    // コンテキスト読み込み
+    const context = await this.contextRepository.fetchContextAsync(projectPath);
 
     const availableFormats = await this.publishRepository.availableFormatsAsync();
 
@@ -133,6 +141,7 @@ class PublishUseCase {
                 editableVersion,
                 pkg.metadata,
                 project.metadata,
+                context,
                 packageOutDir,
               ),
             ),
