@@ -35,11 +35,20 @@ class AndroidXmlConverter implements Converter {
   async exportAsync(param: ExportParameter): Promise<void> {
     const baseDir = path.join(param.outDir, 'axml');
     await createDirIfNotExistAsync(baseDir);
+    const contextPrefix = param.metadata.package.contextPrefix || param.metadata.project.contextPrefix || '';
+    const contextKeys = contextPrefix ? Object.keys(param.metadata.context) : [];
     await serialPromises(
       param.languages.map(async (lang) => {
         const buffer = `<?xml version="1.0" encoding="utf-8"?>
 <resources>
+${contextKeys
+  .map(
+    (key) =>
+      `    <string name="${keyEscape(contextPrefix + key)}">${valueEscape(param.metadata.context[key])}</string>`,
+  )
+  .join('\n')}
 ${param.keys
+  .filter((key) => !contextPrefix || !key.startsWith(contextPrefix))
   .sort()
   .map((key) =>
     isDeletedPhrase(param.phrases[key])

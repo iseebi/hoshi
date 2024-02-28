@@ -7,6 +7,7 @@ export type ExportParameter = {
     project: Record<string, string>;
     package: Record<string, string>;
     version: Record<string, string>;
+    context: Record<string, string>;
   };
   languages: string[];
   keys: string[];
