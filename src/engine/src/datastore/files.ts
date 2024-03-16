@@ -11,6 +11,7 @@ import ProjectFile from '../projectFile';
 import { promises as fs } from 'fs';
 import * as path from 'path';
 import { PackageFileName } from '../../../models/file';
+import { YAMLParseError } from 'yaml';
 
 class FilesDatastore {
   private projectFile: ProjectFile | undefined;
@@ -106,8 +107,11 @@ class FilesDatastore {
         historyPhrases,
         phrases,
       };
-    } catch (e) {
+    } catch (e: unknown) {
       // console.error(e);
+      if (e instanceof YAMLParseError) {
+        throw(e)
+      }
       return undefined;
     }
   }
