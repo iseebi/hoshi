@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { BrowserWindow, dialog } from 'electron';
 import { EditableVersion, HoshiAPI, SmalledPackage, SmalledProject, Version } from '../../models';
 import createModulesContainer from './container';
@@ -49,8 +50,12 @@ const createAPIHandler: (window: BrowserWindow) => APIHandler = (window) => {
       deleteVersionAsync(packageId: string, versionId: string): Promise<void> {
         return container.versions.deleteVersionAsync(packageId, versionId);
       },
-      fetchEditableVersionAsync(packageId: string, versionId: string): Promise<EditableVersion | undefined> {
-        return container.versions.fetchEditableVersionAsync(packageId, versionId);
+      fetchEditableVersionAsync: async (packageId: string, versionId: string): Promise<EditableVersion | undefined> => {
+        const result = await container.versions.fetchEditableVersionAsync(packageId, versionId);
+        if (result.status === 'success') {
+          return result.data;
+        }
+        return undefined;
       },
       updateVersionAsync(packageId: string, versionId: string, data: Version): Promise<void> {
         return container.versions.updateVersionAsync(packageId, versionId, data);

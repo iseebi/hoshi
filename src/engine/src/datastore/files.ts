@@ -1,4 +1,6 @@
 /* eslint-disable no-console */
+import { promises as fs } from 'fs';
+import * as path from 'path';
 import {
   convertFilePhrasesToPhrases,
   convertPhrasesToFilePhrases,
@@ -6,11 +8,13 @@ import {
   SmalledPackage,
   SmalledProject,
   Version,
+  Result,
+  errorResult,
+  successResult,
 } from '../../../models';
-import ProjectFile from '../projectFile';
-import { promises as fs } from 'fs';
-import * as path from 'path';
-import { PackageFileName } from '../../../models/file';
+import ProjectFile from '../projectFile/projectFile';
+import { FileLoadError, PackageFileName } from '../../../models/file';
+import ProjectFileError from '../projectFile/projectFileError';
 
 class FilesDatastore {
   private projectFile: ProjectFile | undefined;
@@ -80,10 +84,10 @@ class FilesDatastore {
     packageId: string,
     versionId: string,
     includeCurrentVersionInHistory: boolean = false,
-  ): Promise<EditableVersion | undefined> {
+  ): Promise<Result<EditableVersion, FileLoadError>> {
     try {
       if (!this.projectFile) {
-        return undefined;
+        return errorResult({ type: 'noPackage' });
       }
       const targetVersion = await this.projectFile.readVersionAsync(packageId, versionId);
       const versions = await this.projectFile.listVersionsToVersionAsync(packageId, versionId);
@@ -98,17 +102,27 @@ class FilesDatastore {
           ...Object.values(phrases).flatMap((p) => Object.keys(p.translations)),
         ]),
       ];
-      return {
+      return successResult({
         id: versionId,
         keys,
         languages,
         metadata: targetVersion.metadata,
         historyPhrases,
         phrases,
-      };
+      });
     } catch (e) {
-      // console.error(e);
-      return undefined;
+      if (e instanceof ProjectFileError) {
+        return errorResult({
+          type: 'parseError',
+          message: e.message,
+          file: e.fileName,
+          positions: e.positions,
+        });
+      }
+      if (e instanceof Error) {
+        return errorResult({ type: 'exception', error: e });
+      }
+      return errorResult({ type: 'unknown' });
     }
   }
 

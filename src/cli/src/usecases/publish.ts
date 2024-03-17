@@ -1,4 +1,5 @@
 /* eslint-disable no-console */
+import path from 'path';
 import { PublishParameter } from '../models';
 import {
   ContextRepository,
@@ -7,7 +8,6 @@ import {
   PublishRepository,
   VersionsRepository,
 } from '../../../engine/src/repositories';
-import path from 'path';
 import { ProjectFileName } from '../../../models/file';
 import { serialPromises } from '../../../engine/src/helpers';
 
@@ -128,8 +128,24 @@ class PublishUseCase {
             targetVersion,
             true,
           );
-          if (!editableVersion) {
-            throw new Error(`Package ${packageName}: load failed`);
+          if (editableVersion.status !== 'success') {
+            if (editableVersion.status === 'error') {
+              switch (editableVersion.error.type) {
+                case 'parseError': {
+                  throw new Error(
+                    `Package ${packageName}: ${editableVersion.error.file} ${editableVersion.error.message}`,
+                  );
+                }
+                case 'noPackage':
+                  throw new Error(`Package ${packageName}: not found`);
+                case 'exception':
+                  throw new Error(`Package ${packageName}: ${editableVersion.error.error.message}`);
+                default:
+                  throw new Error(`Package ${packageName}: load failed`);
+              }
+            } else {
+              throw new Error(`Package ${packageName}: load failed`);
+            }
           }
 
           // フォーマットごとに出力を実行する
@@ -138,7 +154,7 @@ class PublishUseCase {
             formats.map((format) =>
               this.publishRepository.publishAsync(
                 format,
-                editableVersion,
+                editableVersion.data,
                 pkg.metadata,
                 project.metadata,
                 context,
