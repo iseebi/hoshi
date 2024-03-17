@@ -3,3 +3,7 @@ dist
 out
 _published
 *.log*
+
+src/**/*.d.ts
+!src/renderer/src/env.d.ts
+!src/preload/index.d.ts
