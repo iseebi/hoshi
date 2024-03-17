@@ -165,7 +165,11 @@ class PublishUseCase {
         }),
       );
     } catch (e) {
-      console.error(e);
+      if (e instanceof Error) {
+        console.error(e.message);
+      } else {
+        console.error(`unknown error ${e}`);
+      }
       return false;
     }
 
