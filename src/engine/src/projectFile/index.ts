@@ -1,2 +1,2 @@
-export * from './projectFileError';
-export * from './projectFile';
+export { default as ProjectFileError } from './projectFileError';
+export { default as ProjectFile } from './projectFile';

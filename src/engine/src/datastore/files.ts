@@ -12,9 +12,8 @@ import {
   errorResult,
   successResult,
 } from '../../../models';
-import ProjectFile from '../projectFile/projectFile';
 import { FileLoadError, PackageFileName } from '../../../models/file';
-import ProjectFileError from '../projectFile/projectFileError';
+import { ProjectFile, ProjectFileError } from '../projectFile';
 
 class FilesDatastore {
   private projectFile: ProjectFile | undefined;
