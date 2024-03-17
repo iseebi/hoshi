@@ -1,8 +1,9 @@
 import createModulesContainer from '../container';
 import { PublishParameter } from '../models';
+import { Result } from '../../../models';
 
 // eslint-disable-next-line import/prefer-default-export
-export const handlePublish = async (parameter: PublishParameter): Promise<void> => {
+export const handlePublish = async (parameter: PublishParameter): Promise<Result<void, string>> => {
   const container = createModulesContainer();
-  await container.publish.processPublishAsync(parameter);
+  return container.publish.processPublishAsync(parameter);
 };

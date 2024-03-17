@@ -1,7 +1,8 @@
 import * as path from 'path';
 import * as YAML from 'yaml';
 import { Dirent, promises as fs } from 'fs';
-import { PackageHeader, ProjectHeader, VersionFile } from '../../models';
+import { YAMLParseError } from 'yaml';
+import { PackageHeader, ProjectHeader, VersionFile } from '../../../models';
 import {
   FileHeader,
   PackageFileName,
@@ -10,7 +11,8 @@ import {
   ProjectFileType,
   VersionFileExt,
   VersionFileType,
-} from '../../models/file';
+} from '../../../models/file';
+import ProjectFileError from './projectFileError';
 
 class ProjectFile {
   private readonly projectDirectory: string;
@@ -22,7 +24,7 @@ class ProjectFile {
   async readProjectHeaderAsync(): Promise<ProjectHeader> {
     const contents = await this.readYamlFileAsync<FileHeader & ProjectHeader>(ProjectFileName);
     if (contents.type !== ProjectFileType) {
-      throw Error('Invalid Project');
+      throw new ProjectFileError('Invalid project type', ProjectFileName);
     }
     return {
       id: contents.id,
@@ -63,7 +65,7 @@ class ProjectFile {
     const fileName = path.join(packageId, PackageFileName);
     const contents = await this.readYamlFileAsync<FileHeader & PackageHeader>(fileName);
     if (contents.type !== PackageFileType) {
-      throw Error('Invalid Package');
+      throw new ProjectFileError('Invalid package type', fileName);
     }
     return {
       id: packageId,
@@ -117,7 +119,7 @@ class ProjectFile {
     const fileName = path.join(packageId, `${versionId}${VersionFileExt}`);
     const contents = await this.readYamlFileAsync<FileHeader & VersionFile>(fileName);
     if (contents.type !== VersionFileType) {
-      throw Error('Invalid Package');
+      throw new ProjectFileError('Invalid version type', fileName);
     }
     return {
       id: versionId,
@@ -173,9 +175,22 @@ class ProjectFile {
   }
 
   private async readYamlFileAsync<T>(relativeFileName: string): Promise<T> {
-    const targetPath = path.join(this.projectDirectory, relativeFileName);
-    const contents = await fs.readFile(targetPath, { encoding: 'utf8' });
-    return YAML.parse(contents) as T;
+    try {
+      const targetPath = path.join(this.projectDirectory, relativeFileName);
+      const contents = await fs.readFile(targetPath, { encoding: 'utf8' });
+      return YAML.parse(contents) as T;
+    } catch (e) {
+      if (e instanceof YAMLParseError) {
+        throw new ProjectFileError(
+          e.message,
+          relativeFileName,
+          e.linePos?.map((p) => ({ line: p.line, column: p.col })) ?? [],
+        );
+      } else if (e instanceof Error) {
+        throw new ProjectFileError(e.message, relativeFileName);
+      }
+      throw new ProjectFileError('Unknown error', relativeFileName);
+    }
   }
 
   async writeYamlFileAsync<T>(relativeFileName: string, data: T): Promise<void> {

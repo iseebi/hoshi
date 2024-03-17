@@ -10,6 +10,15 @@ program
   .option('-v, --version <version>', 'publish translations at version')
   .option('-f, --format <format>', 'publish format')
   .option('-o, --outDir <dir>', 'output directory', '_published')
-  .action((packages, _, cmd) => handlePublish({ packages, options: cmd.optsWithGlobals() }).then());
+  .action(async (packages, _, cmd) => {
+    const result = await handlePublish({ packages, options: cmd.optsWithGlobals() });
+    if (result.status === 'error') {
+      program.error(result.error);
+    }
+  });
 
-program.parse();
+async function main(): Promise<void> {
+  await program.parseAsync(process.argv);
+}
+
+main().then();

@@ -13,6 +13,9 @@ module.exports = {
   ],
   parser: '@typescript-eslint/parser',
   plugins: ['react-refresh'],
+  settings: {
+    'import/core-modules': ['electron'],
+  },
   rules: {
     'no-use-before-define': 'off',
     '@typescript-eslint/no-use-before-define': ['error'],
