@@ -10,6 +10,7 @@ import {
 } from '../../../engine/src/repositories';
 import { ProjectFileName } from '../../../models/file';
 import { serialPromises } from '../../../engine/src/helpers';
+import { errorResult, Result } from '../../../models';
 
 const filteredPackages = (availablePackages: string[], specifiedPackages: string[]): string[] | undefined => {
   if (!specifiedPackages.length) {
@@ -74,27 +75,24 @@ class PublishUseCase {
     this.contextRepository = contextRepository;
   }
 
-  async processPublishAsync(parameter: PublishParameter): Promise<boolean> {
+  async processPublishAsync(parameter: PublishParameter): Promise<Result<void, string>> {
     const { project: projectPath, outDir } = parameter.options;
 
     // プロジェクトロード
     const project = await this.projectsRepository.openProjectAsync(path.join(projectPath, ProjectFileName));
     if (!project) {
-      console.error('Specified invalid project');
-      return false;
+      return errorResult('Project not found');
     }
 
     // 出力先がパッケージでないことを確認する
     if (await this.packagesRepository.isPackageAsync(outDir)) {
-      console.error('Output directory is package');
-      return false;
+      return errorResult('Output directory is package');
     }
 
     // 対象パッケージを取得する
     const packages = filteredPackages(project.packages, parameter.packages);
     if (!packages) {
-      console.error('Package not found');
-      return false;
+      return errorResult('Package not found');
     }
 
     // コンテキスト読み込み
@@ -166,14 +164,12 @@ class PublishUseCase {
       );
     } catch (e) {
       if (e instanceof Error) {
-        console.error(e.message);
-      } else {
-        console.error(`unknown error ${e}`);
+        return errorResult(e.message);
       }
-      return false;
+      return errorResult(`unknown error ${e}`);
     }
 
-    return true;
+    return { status: 'success', data: undefined };
   }
 }
 
