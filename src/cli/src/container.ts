@@ -1,3 +1,4 @@
+import I18NextConverter from '../../engine/src/converters/i18next';
 import { PublishUseCase } from './usecases';
 import {
   ContextRepository,
@@ -15,7 +16,11 @@ type CliModulesContainer = {
 
 const createModulesContainer = (): CliModulesContainer => {
   const filesDatastore = new FilesDatastore();
-  const converterDatastore = new ConverterDatastore([new AppleStringsConverter(), new AndroidXmlConverter()]);
+  const converterDatastore = new ConverterDatastore([
+    new AppleStringsConverter(),
+    new AndroidXmlConverter(),
+    new I18NextConverter(),
+  ]);
   const variablesDatastore = new VariablesDatastore();
 
   const projectsRepository = new ProjectsRepository(filesDatastore);
