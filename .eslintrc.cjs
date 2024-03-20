@@ -40,4 +40,12 @@ module.exports = {
     ],
     'react/function-component-definition': [2, { namedComponents: 'arrow-function' }],
   },
+  overrides: [
+    {
+      files: ['*.test.ts', '*.test.tsx'],
+      env: {
+        jest: true,
+      },
+    }
+  ],
 };
