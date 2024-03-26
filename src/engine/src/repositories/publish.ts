@@ -17,6 +17,7 @@ class PublishRepository {
     data: EditableVersion,
     packageMetadata: Record<string, string>,
     projectMetadata: Record<string, string>,
+    context: Record<string, string>,
     outDir: string,
   ): Promise<boolean> {
     try {
@@ -27,6 +28,7 @@ class PublishRepository {
           project: projectMetadata,
           package: packageMetadata,
           version: data.metadata,
+          context,
         },
         languages: data.languages,
         keys: data.keys,

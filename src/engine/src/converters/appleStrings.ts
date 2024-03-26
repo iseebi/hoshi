@@ -28,17 +28,23 @@ class AppleStringsConverter implements Converter {
   async exportAsync(param: ExportParameter): Promise<void> {
     const baseDir = path.join(param.outDir, 'strings');
     await createDirIfNotExistAsync(baseDir);
+    const contextPrefix = param.metadata.package.contextPrefix || param.metadata.project.contextPrefix || '';
+    const contextKeys = contextPrefix ? Object.keys(param.metadata.context) : [];
     await serialPromises(
       param.languages.map(async (lang) => {
-        const buffer = param.keys
+        const contextBuffer = contextKeys.map(
+          (key) => `"${keyEscape(contextPrefix + key)}" = "${valueEscape(param.metadata.context[key])}";`,
+        );
+        const mainBuffer = param.keys
+          .filter((key) => !contextPrefix || !key.startsWith(contextPrefix))
           .sort()
           .map((key) =>
             isDeletedPhrase(param.phrases[key])
               ? ''
               : `"${keyEscape(key)}" = "${valueEscape(param.phrases[key]?.translations[lang])}";`,
           )
-          .filter((v) => v !== '')
-          .join('\n');
+          .filter((v) => v !== '');
+        const buffer = [...contextBuffer, ...mainBuffer].join('\n');
         const filePath = path.join(baseDir, `${lang}.strings`);
         await fs.writeFile(filePath, buffer);
       }),

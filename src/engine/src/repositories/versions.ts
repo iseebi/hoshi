@@ -1,5 +1,6 @@
 import FilesDatastore from '../datastore/files';
-import { EditableVersion, Version } from '../../../models';
+import { EditableVersion, Result, Version } from '../../../models';
+import { FileLoadError } from '../../../models/file';
 
 class VersionsRepository {
   private filesDatastore: FilesDatastore;
@@ -12,7 +13,7 @@ class VersionsRepository {
     packageId: string,
     versionId: string,
     includeCurrentVersionInHistory: boolean = false,
-  ): Promise<EditableVersion | undefined> {
+  ): Promise<Result<EditableVersion, FileLoadError>> {
     return this.filesDatastore.fetchEditableVersionAsync(packageId, versionId, includeCurrentVersionInHistory);
   }
 

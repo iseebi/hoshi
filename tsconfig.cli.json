@@ -1,6 +1,7 @@
 {
   "extends": "@electron-toolkit/tsconfig/tsconfig.node.json",
   "include": ["src/cli/src/**/*", "src/models/**/*", "src/engine/src/**/*"],
+  "exclude": [ "**/*.test.ts", "**/*.test.tsx" ],
   "compilerOptions": {
     "module": "commonjs",
     "composite": true,

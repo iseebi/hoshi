@@ -13,6 +13,9 @@ module.exports = {
   ],
   parser: '@typescript-eslint/parser',
   plugins: ['react-refresh'],
+  settings: {
+    'import/core-modules': ['electron'],
+  },
   rules: {
     'no-use-before-define': 'off',
     '@typescript-eslint/no-use-before-define': ['error'],
@@ -37,4 +40,12 @@ module.exports = {
     ],
     'react/function-component-definition': [2, { namedComponents: 'arrow-function' }],
   },
+  overrides: [
+    {
+      files: ['*.test.ts', '*.test.tsx'],
+      env: {
+        jest: true,
+      },
+    }
+  ],
 };

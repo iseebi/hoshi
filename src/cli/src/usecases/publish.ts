@@ -1,14 +1,16 @@
 /* eslint-disable no-console */
+import path from 'path';
 import { PublishParameter } from '../models';
 import {
+  ContextRepository,
   PackagesRepository,
   ProjectsRepository,
   PublishRepository,
   VersionsRepository,
 } from '../../../engine/src/repositories';
-import path from 'path';
 import { ProjectFileName } from '../../../models/file';
 import { serialPromises } from '../../../engine/src/helpers';
+import { errorResult, Result } from '../../../models';
 
 const filteredPackages = (availablePackages: string[], specifiedPackages: string[]): string[] | undefined => {
   if (!specifiedPackages.length) {
@@ -57,40 +59,44 @@ class PublishUseCase {
 
   private publishRepository: PublishRepository;
 
+  private contextRepository: ContextRepository;
+
   public constructor(
     projectsRepository: ProjectsRepository,
     packagesRepository: PackagesRepository,
     versionsRepository: VersionsRepository,
     publishRepository: PublishRepository,
+    contextRepository: ContextRepository,
   ) {
     this.projectsRepository = projectsRepository;
     this.packagesRepository = packagesRepository;
     this.versionsRepository = versionsRepository;
     this.publishRepository = publishRepository;
+    this.contextRepository = contextRepository;
   }
 
-  async processPublishAsync(parameter: PublishParameter): Promise<boolean> {
+  async processPublishAsync(parameter: PublishParameter): Promise<Result<void, string>> {
     const { project: projectPath, outDir } = parameter.options;
 
     // プロジェクトロード
     const project = await this.projectsRepository.openProjectAsync(path.join(projectPath, ProjectFileName));
     if (!project) {
-      console.error('Specified invalid project');
-      return false;
+      return errorResult('Project not found');
     }
 
     // 出力先がパッケージでないことを確認する
     if (await this.packagesRepository.isPackageAsync(outDir)) {
-      console.error('Output directory is package');
-      return false;
+      return errorResult('Output directory is package');
     }
 
     // 対象パッケージを取得する
     const packages = filteredPackages(project.packages, parameter.packages);
     if (!packages) {
-      console.error('Package not found');
-      return false;
+      return errorResult('Package not found');
     }
+
+    // コンテキスト読み込み
+    const context = await this.contextRepository.fetchContextAsync(projectPath);
 
     const availableFormats = await this.publishRepository.availableFormatsAsync();
 
@@ -120,8 +126,24 @@ class PublishUseCase {
             targetVersion,
             true,
           );
-          if (!editableVersion) {
-            throw new Error(`Package ${packageName}: load failed`);
+          if (editableVersion.status !== 'success') {
+            if (editableVersion.status === 'error') {
+              switch (editableVersion.error.type) {
+                case 'parseError': {
+                  throw new Error(
+                    `Package ${packageName}: ${editableVersion.error.file} ${editableVersion.error.message}`,
+                  );
+                }
+                case 'noPackage':
+                  throw new Error(`Package ${packageName}: not found`);
+                case 'exception':
+                  throw new Error(`Package ${packageName}: ${editableVersion.error.error.message}`);
+                default:
+                  throw new Error(`Package ${packageName}: load failed`);
+              }
+            } else {
+              throw new Error(`Package ${packageName}: load failed`);
+            }
           }
 
           // フォーマットごとに出力を実行する
@@ -130,9 +152,10 @@ class PublishUseCase {
             formats.map((format) =>
               this.publishRepository.publishAsync(
                 format,
-                editableVersion,
+                editableVersion.data,
                 pkg.metadata,
                 project.metadata,
+                context,
                 packageOutDir,
               ),
             ),
@@ -140,11 +163,13 @@ class PublishUseCase {
         }),
       );
     } catch (e) {
-      console.error(e);
-      return false;
+      if (e instanceof Error) {
+        return errorResult(e.message);
+      }
+      return errorResult(`unknown error ${e}`);
     }
 
-    return true;
+    return { status: 'success', data: undefined };
   }
 }
 

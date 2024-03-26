@@ -11,3 +11,21 @@ export const PackageFileName = `package${AppFileExt}`;
 export type FileHeader = {
   type: string;
 };
+
+export type FileLoadError =
+  | {
+      type: 'parseError';
+      message: string;
+      file?: string;
+      positions: { line: number; column: number }[];
+    }
+  | {
+      type: 'noPackage';
+    }
+  | {
+      type: 'exception';
+      error: Error;
+    }
+  | {
+      type: 'unknown';
+    };

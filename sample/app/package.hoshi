@@ -3,4 +3,5 @@ metadata:
   availableTranslations:
     - en
     - ja
+  contextPrefix: hoshi_localize_meta_
 

@@ -2,11 +2,12 @@
 
 Simple translation management software (Work in progress)
 
+- Simple management approach inspired by database migration to fit many workflows
+- Create outputs for various platforms from a single definition.
+- Keep the core simple and create various support tools with scalable data specifications.
+- Provide an editor with a GUI aiming for ease of use even for non-engineers.
+
 ## Application Components
-
-### Editor
-
-Localizations editor built with Electron
 
 ### CLI
 
@@ -17,6 +18,10 @@ File export workflow tool
 ```
 $ hoshi publish --project . --outDir _published packageName
 ```
+
+### Editor
+
+Localizations editor built with Electron
 
 ## Development
 

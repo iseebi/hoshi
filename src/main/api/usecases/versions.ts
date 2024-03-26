@@ -1,5 +1,6 @@
 import { VersionsRepository } from '../../../engine/src/repositories';
-import { EditableVersion, Version } from '../../../models';
+import { EditableVersion, Result, Version } from '../../../models';
+import { FileLoadError } from '../../../models/file';
 
 class VersionsUseCase {
   private versionsRepository: VersionsRepository;
@@ -8,7 +9,7 @@ class VersionsUseCase {
     this.versionsRepository = versionsRepository;
   }
 
-  fetchEditableVersionAsync(packageId: string, versionId: string): Promise<EditableVersion | undefined> {
+  fetchEditableVersionAsync(packageId: string, versionId: string): Promise<Result<EditableVersion, FileLoadError>> {
     return this.versionsRepository.fetchEditableVersionAsync(packageId, versionId);
   }
 
