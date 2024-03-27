@@ -22,8 +22,8 @@ export const valueEscape = (input: string | undefined): string => {
       break;
     }
     if (input.charAt(nextIndex + 1) === '%') {
-      output += input.substring(i, nextIndex + 1);
-      i = nextIndex;
+      output += '%';
+      i = nextIndex + 1;
     } else {
       // そこまでの文字列は確定
       output += input.substring(i, nextIndex);

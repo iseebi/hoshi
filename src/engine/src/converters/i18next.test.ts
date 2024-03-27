@@ -11,5 +11,6 @@ test('escape format string', () => {
   expect(valueEscape('%d %f')).toBe('{{v1}} {{v2}}');
   expect(valueEscape('%4d %.2f')).toBe('{{v1, minimumIntegerDigits: 4}} {{v2, minimumFractionDigits: 2}}');
   expect(valueEscape('%4.2f')).toBe('{{v1, minimumIntegerDigits: 4, minimumFractionDigits: 2}}');
+  expect(valueEscape('%s%%')).toBe('{{v1}}%');
   expect(() => valueEscape('%hogefuga')).toThrow();
 });
