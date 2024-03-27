@@ -7,7 +7,7 @@ pkg --out-path out/cli \
 pf=$(uname)
 if [ $pf = "Darwin" ]; then
   cert_name=$(security find-certificate -c "Developer ID Application" | grep "alis" | awk -F'"' '{print $4}')
-  codesign -f -v -s "$cert_name" out/cli/index-macos-arm64
+  codesign -f -v -s "$cert_name" -o runtime out/cli/index-macos-arm64
 fi
 
 cp out/cli/index-macos-arm64 out/cli/index-mac
