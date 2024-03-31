@@ -82,11 +82,15 @@ class I18NextConverter implements Converter {
         const mainBuffer = param.keys
           .filter((key) => !contextPrefix || !key.startsWith(contextPrefix))
           .sort()
-          .map((key) =>
-            isDeletedPhrase(param.phrases[key])
-              ? ['', '']
-              : [keyEscape(key), valueEscape(param.phrases[key]?.translations[lang])],
-          )
+          .map((key) => {
+            try {
+              return isDeletedPhrase(param.phrases[key])
+                ? ['', '']
+                : [keyEscape(key), valueEscape(param.phrases[key]?.translations[lang])];
+            } catch (e) {
+              throw new Error(`Error on key: ${key}, lang: ${lang}, ${e}`);
+            }
+          })
           .filter((v) => v[0] !== '');
         const buffer = [...contextBuffer, ...mainBuffer].reduce(
           (acc, [key, value]) => {
