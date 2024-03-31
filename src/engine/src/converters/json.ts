@@ -7,73 +7,18 @@ import { Converter } from './type';
 import { ExportParameter } from '../../../models/converter';
 
 const keyEscape = (input: string): string => input;
-export const valueEscape = (input: string | undefined): string => {
-  if (!input) {
-    return '';
-  }
-
-  let output = '';
-  let varIndex = 0;
-
-  for (let i = 0; i < input.length; i += 1) {
-    const nextIndex = input.indexOf('%', i);
-    if (nextIndex === -1) {
-      output += input.substring(i);
-      break;
-    }
-    if (input.charAt(nextIndex + 1) === '%') {
-      output += '%';
-      i = nextIndex + 1;
-    } else {
-      // そこまでの文字列は確定
-      output += input.substring(i, nextIndex);
-
-      // s, d, f を探す
-      const conversionIndex = input.substring(nextIndex).search(/[sdf]/);
-      if (conversionIndex === -1) {
-        throw new Error('Format string is invalid');
-      }
-
-      // 書式指定文字列を得る
-      const formatString = input.substring(nextIndex, nextIndex + conversionIndex + 1);
-
-      // 書式指定文字列のパラメータをパース
-      const params = formatString.match(/^%(?:(\d+)\$)?(\d+)?(?:\.(\d+))?([sdf])$/);
-      if (!params) {
-        throw new Error('Format string is invalid');
-      }
-      const [, argIndex, minimumIntegerDigits, minimumFractionDigits] = params;
-      const fragments: string[] = [];
-      if (argIndex) {
-        fragments.push(`arg${argIndex}`);
-      } else {
-        varIndex += 1;
-        fragments.push(`v${varIndex}`);
-      }
-      if (minimumIntegerDigits) {
-        fragments.push(`minimumIntegerDigits: ${minimumIntegerDigits}`);
-      }
-      if (minimumFractionDigits) {
-        fragments.push(`minimumFractionDigits: ${minimumFractionDigits}`);
-      }
-      output += `{{${fragments.join(', ')}}}`;
-      i = nextIndex + conversionIndex;
-    }
-  }
-
-  return output;
-};
+export const valueEscape = (input: string | undefined): string => input ?? '';
 
 // noinspection DuplicatedCode
-class I18NextConverter implements Converter {
+class JsonConverter implements Converter {
   // eslint-disable-next-line class-methods-use-this
   getName(): string {
-    return 'i18next';
+    return 'json';
   }
 
   // eslint-disable-next-line class-methods-use-this
   async exportAsync(param: ExportParameter): Promise<void> {
-    const baseDir = path.join(param.outDir, 'i18next');
+    const baseDir = path.join(param.outDir, 'json');
     await createDirIfNotExistAsync(baseDir);
     const contextPrefix = param.metadata.package.contextPrefix || param.metadata.project.contextPrefix || '';
     const contextKeys = contextPrefix ? Object.keys(param.metadata.context) : [];
@@ -107,4 +52,4 @@ class I18NextConverter implements Converter {
   }
 }
 
-export default I18NextConverter;
+export default JsonConverter;
