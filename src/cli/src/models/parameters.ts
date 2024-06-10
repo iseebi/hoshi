@@ -10,3 +10,8 @@ export type PublishParameter = {
     format?: string;
   };
 };
+
+export type CreateParameter = {
+  name: string;
+  options: GlobalOptions;
+};

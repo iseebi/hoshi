@@ -32,6 +32,10 @@ class ProjectFile {
     };
   }
 
+  async writeProjectHeaderAsync(header: FileHeader & ProjectHeader): Promise<void> {
+    await this.writeYamlFileAsync(ProjectFileName, header);
+  }
+
   async listPackagesAsync(): Promise<string[]> {
     const dirs = (await fs.readdir(this.projectDirectory, { withFileTypes: true }))
       .filter((entry: Dirent) => entry.isDirectory() && !entry.name.startsWith('.'))

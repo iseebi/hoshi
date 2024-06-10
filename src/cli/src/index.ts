@@ -1,5 +1,5 @@
 import { program } from 'commander';
-import { handlePublish } from './handlers';
+import { handleCreatePackage, handleCreateProject, handleCreateVersion, handlePublish } from './handlers';
 
 program.option('-p, --project <projectDir>', 'project root directory', '.');
 
@@ -12,6 +12,42 @@ program
   .option('-o, --outDir <dir>', 'output directory', '_published')
   .action(async (packages, _, cmd) => {
     const result = await handlePublish({ packages, options: cmd.optsWithGlobals() });
+    if (result.status === 'error') {
+      program.error(result.error);
+    }
+  });
+
+const projects = program.command('projects');
+projects
+  .command('create')
+  .description('create a new project')
+  .argument('<name>', 'project name')
+  .action(async (name, _, cmd) => {
+    const result = await handleCreateProject({ name, options: cmd.optsWithGlobals() });
+    if (result.status === 'error') {
+      program.error(result.error);
+    }
+  });
+
+const packages = program.command('packages');
+packages
+  .command('create')
+  .description('create a new package')
+  .argument('<name>', 'package name')
+  .action(async (name, _, cmd) => {
+    const result = await handleCreatePackage({ name, options: cmd.optsWithGlobals() });
+    if (result.status === 'error') {
+      program.error(result.error);
+    }
+  });
+
+const versions = program.command('versions');
+versions
+  .command('create')
+  .description('create a new version')
+  .argument('<name>', 'version name')
+  .action(async (name, _, cmd) => {
+    const result = await handleCreateVersion({ name, options: cmd.optsWithGlobals() });
     if (result.status === 'error') {
       program.error(result.error);
     }
