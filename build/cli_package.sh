@@ -26,11 +26,12 @@ function notarizeMacPackages() {
   arch="arm64"
   tag="$pf-$arch"
 
-  base="out/cli/$tag/${npm_package_name}-cli-${npm_package_version}-$tag."
+  base="${npm_package_name}-cli-${npm_package_version}-$tag"
+  out_base="out/cli/$base"
 
-  xcrun notarytool submit "$base.zip" --key "$KEY_PATH" --key-id "$KEY_ID" --key-issuer "$ISSUER_ID"
-  xcrun notarytool submit --wait "$base.dmg"
-  xcrun stapler staple "$base.dmg"
+  xcrun notarytool submit "$out_base.zip" --key "$KEY_PATH" --key-id "$KEY_ID" --issuer "$ISSUER_ID"
+  xcrun notarytool submit --wait "$out_base.dmg" --key "$KEY_PATH" --key-id "$KEY_ID" --issuer "$ISSUER_ID"
+  xcrun stapler staple "$out_base.dmg"
 }
 
 buildPackage "win" "x64" ".exe"
@@ -41,3 +42,4 @@ buildMacDmg
 notarizeMacPackages
 
 cp out/cli/*.zip dist/
+cp out/cli/*.dmg dist/
