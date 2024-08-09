@@ -61,6 +61,10 @@ jobs:
           npm install
           npm run build:cli
           npm run build:cli-package
+        env:
+          KEY_PATH: ~/private_keys/AuthKey_${{ secrets.NOTARIZATION_API_KEY_ID }}.p8
+          KEY_ID: ${{ secrets.NOTARIZATION_API_KEY_ID }}
+          ISSUER_ID:  ${{ secrets.NOTARIZATION_API_KEY_ISSUER }}
 
       - name: Build/release Electron app
         uses: samuelmeuli/action-electron-builder@v1
