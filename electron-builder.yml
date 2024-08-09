@@ -10,9 +10,9 @@ files:
   - '!{.env,.env.*,.npmrc,pnpm-lock.yaml}'
   - '!{tsconfig.json,tsconfig.node.json,tsconfig.web.json,tsconfig.cli.json}'
 extraFiles:
-  - from: out/cli/index-${os}
+  - from: out/cli/${os}-${arch}/hoshi-cli
     to: hoshi-cli
-  - from: out/cli/index-${os}.exe
+  - from: out/cli/${os}-${arch}/hoshi-cli.exe
     to: hoshi-cli.exe
 asarUnpack:
   - resources/**
@@ -38,7 +38,6 @@ mac:
     - NSMicrophoneUsageDescription: Application requests access to the device's microphone.
     - NSDocumentsFolderUsageDescription: Application requests access to the user's Documents folder.
     - NSDownloadsFolderUsageDescription: Application requests access to the user's Downloads folder.
-  notarize: false
 dmg:
   artifactName: ${name}-${version}.${ext}
 linux:

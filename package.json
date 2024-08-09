@@ -1,6 +1,6 @@
 {
   "name": "hoshi",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Simple translation management software",
   "main": "./out/main/index.js",
   "author": "Nobuhiro Ito",
@@ -54,15 +54,13 @@
     "@electron-toolkit/eslint-config-prettier": "^1.0.1",
     "@electron-toolkit/eslint-config-ts": "^1.0.0",
     "@electron-toolkit/tsconfig": "^1.0.1",
-    "@electron/notarize": "^2.1.0",
     "@types/jest": "^29.5.12",
     "@types/node": "^18.18.9",
     "@types/react": "^18.2.20",
     "@types/react-dom": "^18.2.7",
     "@types/redux-logger": "^3.0.11",
     "electron": "^28.2.9",
-    "electron-builder": "^24.6.3",
-    "electron-builder-notarize": "^1.5.1",
+    "electron-builder": "^24.13.3",
     "eslint": "^8.47.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-prettier": "^9.0.0",
@@ -80,5 +78,8 @@
     "vite": "^4.5.2",
     "webpack": "^5.89.0",
     "webpack-cli": "^5.1.4"
+  },
+  "overrides": {
+    "@electron/notarize": "2.3.2"
   }
 }
