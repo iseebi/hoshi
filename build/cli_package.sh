@@ -18,7 +18,7 @@ function buildMacDmg() {
   arch="arm64"
   tag="$pf-$arch"
 
-  hdiutil create -volname "YourVolumeName" -srcfolder "out/cli/$tag" -ov -format UDZO out/cli/${npm_package_name}-cli-${npm_package_version}-$tag.dmg
+  hdiutil create -volname "hoshi-cli" -srcfolder "out/cli/$tag" -ov -format UDZO out/cli/${npm_package_name}-cli-${npm_package_version}-$tag.dmg
 }
 
 function notarizeMacPackages() {
