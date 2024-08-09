@@ -61,6 +61,10 @@ jobs:
           npm install
           npm run build:cli
           npm run build:cli-package
+        env:
+          KEY_PATH: ~/private_keys/AuthKey_${{ secrets.NOTARIZATION_API_KEY_ID }}.p8
+          KEY_ID: ${{ secrets.NOTARIZATION_API_KEY_ID }}
+          ISSUER_ID:  ${{ secrets.NOTARIZATION_API_KEY_ISSUER }}
 
       - name: Build/release Electron app
         uses: samuelmeuli/action-electron-builder@v1
@@ -69,22 +73,19 @@ jobs:
           release: ${{ startsWith(github.ref, 'refs/tags/v') }}
           mac_certs: ${{ secrets.MAC_CERTS }}
           mac_certs_password: ${{ secrets.MAC_CERTS_PASSWORD }}
+        env:
+          APPLE_TEAM_ID: ${{ secrets.MAC_TEAM_ID }}
+          APPLE_API_KEY: ~/private_keys/AuthKey_${{ secrets.NOTARIZATION_API_KEY_ID }}.p8
+          APPLE_API_KEY_ID: ${{ secrets.NOTARIZATION_API_KEY_ID }}
+          APPLE_API_ISSUER: ${{ secrets.NOTARIZATION_API_KEY_ISSUER }}
 
       - name: Attach CLI Packages
         if: ${{ startsWith(github.ref, 'refs/tags/v') && startsWith(matrix.os, 'macos') }}
-        run: gh release upload ${{ github.ref_name }} dist/hoshi-cli*.zip
+        run: |
+          gh release upload ${{ github.ref_name }} dist/hoshi-cli*.zip
+          gh release upload ${{ github.ref_name }} dist/hoshi-cli*.dmg
         env:
           GH_TOKEN: ${{ github.token }}
-
-      - name: Submit notarization
-        if: ${{ startsWith(matrix.os, 'macos') }}
-        run: |
-          find ./dist -name '*.dmg' -exec xcrun notarytool submit {} -d $KEY_ID -i $ISSUER_ID -k ~/private_keys/AuthKey_$KEY_ID.p8 \;
-          find ./dist -name 'hoshi-*-mac.zip' -exec xcrun notarytool submit {} -d $KEY_ID -i $ISSUER_ID -k ~/private_keys/AuthKey_$KEY_ID.p8 \;
-          find ./dist -name 'hoshi-*-mac-*.zip' -exec xcrun notarytool submit {} -d $KEY_ID -i $ISSUER_ID -k ~/private_keys/AuthKey_$KEY_ID.p8 \;
-        env:
-          KEY_ID: ${{ secrets.NOTARIZATION_API_KEY_ID }}
-          ISSUER_ID:  ${{ secrets.NOTARIZATION_API_KEY_ISSUER }}
 
       - name: Clean up keychain and provisioning profile
         if: ${{ always() && startsWith(matrix.os, 'macos') }}
