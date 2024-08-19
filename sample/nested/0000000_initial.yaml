@@ -1,0 +1,20 @@
+type: hoshi.version:1
+phrases:
+  Account.new:
+    ja: "新規アカウント"
+    en: "New Account"
+  Account.login:
+    ja: "ログイン"
+    en: "Login"
+  Editor.new:
+    ja: "新規作成"
+    en: "New Creation"
+  Editor.form.text:
+    ja: "テキスト"
+    en: "Text"
+  Editor.form.save:
+    ja: "保存"
+    en: "Save"
+  logout:
+    ja: "ログアウト"
+    en: "Logout"
