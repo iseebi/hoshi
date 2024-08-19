@@ -1,6 +1,6 @@
 {
   "name": "hoshi",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "description": "Simple translation management software",
   "main": "./out/main/index.js",
   "author": "Nobuhiro Ito",
