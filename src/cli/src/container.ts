@@ -1,5 +1,6 @@
 import I18NextConverter from '../../engine/src/converters/i18next';
 import JsonConverter from '../../engine/src/converters/json';
+import NextIntlConverter from '../../engine/src/converters/nextintl';
 import { PublishUseCase } from './usecases';
 import {
   ContextRepository,
@@ -22,6 +23,7 @@ const createModulesContainer = (): CliModulesContainer => {
     new AndroidXmlConverter(),
     new I18NextConverter(),
     new JsonConverter(),
+    new NextIntlConverter(),
   ]);
   const variablesDatastore = new VariablesDatastore();
 
