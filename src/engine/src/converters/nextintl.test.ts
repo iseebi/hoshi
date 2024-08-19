@@ -1,9 +1,11 @@
 import { makeNesting } from './nextintl';
 
-test('test nesting', () => {
-  expect(makeNesting({})).toEqual({});
-  expect(makeNesting({ a: 'valueA', b: 'valueB' })).toEqual({ a: 'valueA', b: 'valueB' });
-  expect(makeNesting({ 'Account.new': 'valueA' })).toEqual({ Account: { new: 'valueA' } });
+it('should return empty object', () => expect(makeNesting({})).toEqual({}));
+it('should return same object', () =>
+  expect(makeNesting({ a: 'valueA', b: 'valueB' })).toEqual({ a: 'valueA', b: 'valueB' }));
+it('should return nested object', () =>
+  expect(makeNesting({ 'Account.new': 'valueA' })).toEqual({ Account: { new: 'valueA' } }));
+it('should return nested object(complex sample)', () =>
   expect(
     makeNesting({
       'Account.new': '新規アカウント',
@@ -26,7 +28,8 @@ test('test nesting', () => {
       new: '新規作成',
     },
     logout: 'ログアウト',
-  });
+  }));
+it('should return object keys as sorted', () =>
   expect(
     Object.keys(
       makeNesting({
@@ -35,5 +38,14 @@ test('test nesting', () => {
         'a.b': 'B',
       }).a,
     ),
-  ).toEqual(['a', 'b', 'c']);
-});
+  ).toEqual(['a', 'b', 'c']));
+it('should throw error (already defined as value)', () =>
+  expect(() => makeNesting({ 'a.a': 'A', 'a.a.b': 'B' })).toThrow());
+it('should throw error (already defined as object)', () =>
+  expect(() =>
+    makeNesting({
+      'a.a.b': 'B',
+      'a.a.c': 'C',
+      'a.a': 'A',
+    }),
+  ).toThrow());

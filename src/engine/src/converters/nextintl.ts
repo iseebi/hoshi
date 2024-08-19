@@ -91,10 +91,15 @@ export const makeNesting = (input: Record<string, string>): Nesting => {
     let current = output;
     keys.forEach((k, i) => {
       if (i === keys.length - 1) {
+        if (typeof current[k] === 'object') {
+          throw new Error(`${key}: Key conflict. already exists as object`);
+        }
         current[k] = value;
       } else {
         if (!current[k]) {
           current[k] = {};
+        } else if (typeof current[k] !== 'object') {
+          throw new Error(`${key}: Key conflict. already exists as value`);
         }
         current = current[k] as Nesting;
       }
