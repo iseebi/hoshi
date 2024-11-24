@@ -7,6 +7,14 @@ Simple translation management software (Work in progress)
 - Keep the core simple and create various support tools with scalable data specifications.
 - Provide an editor with a GUI aiming for ease of use even for non-engineers.
 
+## Supported Formats
+
+- .strings (iOS)
+- .xml (Android)
+- pure JSON
+- i18next JSON
+- next-intl JSON
+
 ## Application Components
 
 ### CLI

@@ -78,6 +78,10 @@ class PublishUseCase {
   async processPublishAsync(parameter: PublishParameter): Promise<Result<void, string>> {
     const { project: projectPath, outDir } = parameter.options;
 
+    if (!projectPath) {
+      return errorResult('Project path is not defined');
+    }
+
     // プロジェクトロード
     const project = await this.projectsRepository.openProjectAsync(path.join(projectPath, ProjectFileName));
     if (!project) {

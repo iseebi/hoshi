@@ -29,3 +29,15 @@ export type FileLoadError =
   | {
       type: 'unknown';
     };
+
+export type ProjectCreateError =
+  | {
+      type: 'alreadyExists';
+    }
+  | {
+      type: 'exception';
+      error: Error;
+    }
+  | {
+      type: 'unknown';
+    };

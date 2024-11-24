@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 import { promises as fs } from 'fs';
+import { join } from 'path';
 import * as path from 'path';
 import {
   convertFilePhrasesToPhrases,
@@ -12,11 +13,36 @@ import {
   errorResult,
   successResult,
 } from '../../../models';
-import { FileLoadError, PackageFileName } from '../../../models/file';
+import { FileLoadError, PackageFileName, ProjectCreateError, ProjectFileType } from '../../../models/file';
 import { ProjectFile, ProjectFileError } from '../projectFile';
 
 class FilesDatastore {
   private projectFile: ProjectFile | undefined;
+
+  async createProjectAsync(basePath: string, name: string): Promise<Result<void, ProjectCreateError>> {
+    try {
+      const dir = join(basePath, name);
+      if (await this.isDirectoryExistsAsync(dir)) {
+        return errorResult({ type: 'alreadyExists' });
+      }
+
+      await fs.mkdir(dir);
+
+      const projectFile = new ProjectFile(dir);
+      await projectFile.writeProjectHeaderAsync({
+        type: ProjectFileType,
+        id: name,
+        metadata: {},
+      });
+
+      return successResult(undefined);
+    } catch (e) {
+      if (e instanceof Error) {
+        return errorResult({ type: 'exception', error: e });
+      }
+      return errorResult({ type: 'unknown' });
+    }
+  }
 
   async openProjectFileAsync(dir: string): Promise<SmalledProject | undefined> {
     try {
@@ -166,6 +192,19 @@ class FilesDatastore {
     }
   }
 
+  async isPackageExistAsync(packageId: string): Promise<boolean> {
+    try {
+      if (!this.projectFile) {
+        return false;
+      }
+      const packages = await this.projectFile.listPackagesAsync();
+      return packages.includes(packageId);
+    } catch (e) {
+      console.error(e);
+      return false;
+    }
+  }
+
   // eslint-disable-next-line class-methods-use-this
   async isPackageAsync(dir: string): Promise<boolean> {
     try {
@@ -176,6 +215,16 @@ class FilesDatastore {
       const metadataPath = path.join(dir, PackageFileName);
       const metadataResult = await fs.stat(metadataPath);
       return metadataResult.isFile();
+    } catch (e) {
+      return false;
+    }
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  async isDirectoryExistsAsync(dir: string): Promise<boolean> {
+    try {
+      const dirResult = await fs.stat(dir);
+      return dirResult.isDirectory();
     } catch (e) {
       return false;
     }
