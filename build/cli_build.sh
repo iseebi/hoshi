@@ -7,5 +7,5 @@ pkg -o out/cli/linux-x64/hoshi-cli --targets node18-linux-x64 out/cli/src/index.
 pf=$(uname)
 if [ $pf = "Darwin" ]; then
   cert_name=$(security find-certificate -c "Developer ID Application" | grep "alis" | awk -F'"' '{print $4}')
-  codesign -f -v -s "$cert_name" -o runtime out/cli/mac-arm64/hoshi-cli
+  codesign -f -v -s "$cert_name" -o runtime --no-strict --deep out/cli/mac-arm64/hoshi-cli
 fi
