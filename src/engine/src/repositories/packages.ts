@@ -12,6 +12,10 @@ class PackagesRepository {
     return this.filesDatastore.fetchPackageAsync(packageId);
   }
 
+  async isExistAsync(packageId: string): Promise<boolean> {
+    return this.filesDatastore.isPackageExistAsync(packageId);
+  }
+
   async isPackageAsync(dir: string): Promise<boolean> {
     return this.filesDatastore.isPackageAsync(dir);
   }

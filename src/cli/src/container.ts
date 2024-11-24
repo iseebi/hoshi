@@ -1,7 +1,7 @@
 import I18NextConverter from '../../engine/src/converters/i18next';
 import JsonConverter from '../../engine/src/converters/json';
 import NextIntlConverter from '../../engine/src/converters/nextintl';
-import { PublishUseCase } from './usecases';
+import { PublishUseCase, ProjectsUseCase, PackagesUseCase, VersionsUseCase } from './usecases';
 import {
   ContextRepository,
   PackagesRepository,
@@ -14,6 +14,9 @@ import { AndroidXmlConverter, AppleStringsConverter } from '../../engine/src/con
 
 type CliModulesContainer = {
   publish: PublishUseCase;
+  projects: ProjectsUseCase;
+  packages: PackagesUseCase;
+  versions: VersionsUseCase;
 };
 
 const createModulesContainer = (): CliModulesContainer => {
@@ -41,6 +44,9 @@ const createModulesContainer = (): CliModulesContainer => {
       publishRepository,
       contextRepository,
     ),
+    packages: new PackagesUseCase(projectsRepository, packagesRepository),
+    projects: new ProjectsUseCase(projectsRepository),
+    versions: new VersionsUseCase(projectsRepository, packagesRepository, versionsRepository),
   };
 };
 

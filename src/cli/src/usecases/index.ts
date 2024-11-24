@@ -1,4 +1,6 @@
 import PublishUseCase from './publish';
+import ProjectsUseCase from './projects';
+import PackagesUseCase from './packages';
+import VersionsUseCase from './versions';
 
-// eslint-disable-next-line import/prefer-default-export
-export { PublishUseCase };
+export { PublishUseCase, ProjectsUseCase, PackagesUseCase, VersionsUseCase };
