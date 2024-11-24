@@ -1,6 +1,5 @@
 import { PackagesRepository, ProjectsRepository } from '../../../engine/src/repositories';
 import { errorResult, Result, successResult } from '../../../models';
-import { CreateParameter } from '../models';
 
 class PackagesUseCase {
   private readonly projectsRepository: ProjectsRepository;
@@ -12,15 +11,13 @@ class PackagesUseCase {
     this.packagesRepository = packagesRepository;
   }
 
-  public async processCreateAsync(parameter: CreateParameter): Promise<Result<void, string>> {
-    const { project: projectPath } = parameter.options;
-
+  public async processCreateAsync(projectPath: string, name: string): Promise<Result<void, string>> {
     const project = await this.projectsRepository.openProjectAsync(projectPath);
     if (!project) {
       return errorResult('Project not found');
     }
 
-    await this.packagesRepository.addNewPackageAsync(parameter.name);
+    await this.packagesRepository.addNewPackageAsync(name);
 
     return successResult(undefined);
   }

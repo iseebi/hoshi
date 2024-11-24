@@ -46,7 +46,7 @@ const createModulesContainer = (): CliModulesContainer => {
     ),
     packages: new PackagesUseCase(projectsRepository, packagesRepository),
     projects: new ProjectsUseCase(projectsRepository),
-    versions: new VersionsUseCase(projectsRepository, versionsRepository),
+    versions: new VersionsUseCase(projectsRepository, packagesRepository, versionsRepository),
   };
 };
 

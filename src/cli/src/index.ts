@@ -12,7 +12,7 @@ program
   .option('-f, --format <format>', 'publish format')
   .option('-o, --outDir <dir>', 'output directory', '_published')
   .action(async (packages, _, cmd) => {
-    const ctx = await detectContext(cmd.optsWithGlobals());
+    const ctx = await detectContext();
     if (ctx.status !== 'success') {
       program.error(`context error: ${ctx.error.message}`);
     }
@@ -41,7 +41,7 @@ packages
   .description('create a new package')
   .argument('<name>', 'package name')
   .action(async (name, _, cmd) => {
-    const ctx = await detectContext(cmd.optsWithGlobals());
+    const ctx = await detectContext();
     if (ctx.status !== 'success') {
       program.error(`context error: ${ctx.error.message}`);
     }
@@ -57,8 +57,9 @@ versions
   .command('create')
   .description('create a new version')
   .argument('<name>', 'version name')
+  .option('-p, --package <package>', 'package id')
   .action(async (name, _, cmd) => {
-    const ctx = await detectContext(cmd.optsWithGlobals());
+    const ctx = await detectContext();
     if (ctx.status !== 'success') {
       program.error(`context error: ${ctx.error.message}`);
     }

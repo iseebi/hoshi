@@ -3,11 +3,6 @@ import { promises as fs } from 'fs';
 import { errorResult, Result, successResult } from '../../models';
 import { CommandContext } from './models';
 
-type DetectContextParams = {
-  project: string;
-  package: string;
-};
-
 const fileExistAtDir = async (dir: string, file: string): Promise<boolean> => {
   try {
     const fileDir = path.join(dir, file);
@@ -21,18 +16,13 @@ const fileExistAtDir = async (dir: string, file: string): Promise<boolean> => {
   }
 };
 
-const detectContext = async (opts: DetectContextParams): Promise<Result<CommandContext, Error>> => {
+const detectContext = async (): Promise<Result<CommandContext, Error>> => {
   try {
-    if (opts.project) {
-      return successResult({ project: 'default', package: opts.package });
-    }
-
     // カレントディレクトリを得る
     const cwd = process.cwd();
 
     // カレントディレクトリのreal pathを得る
     const realCwd = await fs.realpath(cwd);
-    console.log('realCwd:', realCwd);
 
     // カレントディレクトリにpackage.hoshiがあれば、それはpackage context
     if (await fileExistAtDir(realCwd, 'package.hoshi')) {

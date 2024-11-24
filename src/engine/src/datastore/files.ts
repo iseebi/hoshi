@@ -192,6 +192,19 @@ class FilesDatastore {
     }
   }
 
+  async isPackageExistAsync(packageId: string): Promise<boolean> {
+    try {
+      if (!this.projectFile) {
+        return false;
+      }
+      const packages = await this.projectFile.listPackagesAsync();
+      return packages.includes(packageId);
+    } catch (e) {
+      console.error(e);
+      return false;
+    }
+  }
+
   // eslint-disable-next-line class-methods-use-this
   async isPackageAsync(dir: string): Promise<boolean> {
     try {

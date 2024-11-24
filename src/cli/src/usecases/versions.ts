@@ -1,26 +1,34 @@
-import { ProjectsRepository, VersionsRepository } from '../../../engine/src/repositories';
+import { PackagesRepository, ProjectsRepository, VersionsRepository } from '../../../engine/src/repositories';
 import { errorResult, Result, successResult } from '../../../models';
-import { CreateParameter } from '../models';
 
 class VersionsUseCase {
   private readonly projectsRepository: ProjectsRepository;
 
+  private readonly packagesRepository: PackagesRepository;
+
   private readonly versionsRepository: VersionsRepository;
 
-  public constructor(projectsRepository: ProjectsRepository, versionsRepository: VersionsRepository) {
+  public constructor(
+    projectsRepository: ProjectsRepository,
+    packagesRepository: PackagesRepository,
+    versionsRepository: VersionsRepository,
+  ) {
     this.projectsRepository = projectsRepository;
+    this.packagesRepository = packagesRepository;
     this.versionsRepository = versionsRepository;
   }
 
-  public async processCreateAsync(parameter: CreateParameter): Promise<Result<void, string>> {
-    const { project: projectPath } = parameter.options;
-
+  public async processCreateAsync(projectPath: string, packageId: string, name: string): Promise<Result<void, string>> {
     const project = await this.projectsRepository.openProjectAsync(projectPath);
     if (!project) {
       return errorResult('Project not found');
     }
 
-    await this.versionsRepository.addNewVersionAsync(project.id, parameter.name);
+    if (!(await this.packagesRepository.isExistAsync(packageId))) {
+      return errorResult('Package not found');
+    }
+
+    await this.versionsRepository.addNewVersionAsync(packageId, name);
 
     return successResult(undefined);
   }

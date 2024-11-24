@@ -4,7 +4,7 @@ export type CommandContext = {
 };
 
 export type GlobalOptions = {
-  project: string;
+  project: string | undefined;
 };
 
 export type PublishParameter = {
@@ -22,8 +22,16 @@ export type CreateProjectParameter = {
   options: GlobalOptions;
 };
 
-export type CreateParameter = {
+export type CreatePackageParameter = {
   name: string;
-  context: CommandContext;
   options: GlobalOptions;
+  context: CommandContext;
+};
+
+export type CreateVersionParameter = {
+  name: string;
+  options: GlobalOptions & {
+    package: string;
+  };
+  context: CommandContext;
 };
