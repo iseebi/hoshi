@@ -207,6 +207,7 @@ class FilesDatastore {
     }
   }
 
+  // eslint-disable-next-line class-methods-use-this
   async isDirectoryExistsAsync(dir: string): Promise<boolean> {
     try {
       const dirResult = await fs.stat(dir);

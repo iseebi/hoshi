@@ -1,6 +1,6 @@
 import { ProjectsRepository } from '../../../engine/src/repositories';
 import { errorResult, Result, successResult } from '../../../models';
-import { CreateParameter } from '../models';
+import { CreateProjectParameter } from '../models';
 
 class ProjectsUseCase {
   private readonly projectsRepository: ProjectsRepository;
@@ -9,7 +9,7 @@ class ProjectsUseCase {
     this.projectsRepository = projectsRepository;
   }
 
-  public async processCreateAsync(parameter: CreateParameter): Promise<Result<void, string>> {
+  public async processCreateAsync(parameter: CreateProjectParameter): Promise<Result<void, string>> {
     const { project: projectPath } = parameter.options;
 
     const result = await this.projectsRepository.createProjectAsync(projectPath, parameter.name);
