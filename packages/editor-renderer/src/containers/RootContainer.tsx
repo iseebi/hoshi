@@ -1,18 +1,16 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { Dispatch } from '@reduxjs/toolkit';
-import Root from '../components/Root';
-import AppHeaderContainer from './controls/AppHeaderContainer';
-import AppToolbarContainer from './controls/AppToolbarContainer';
-import { fetchCurrentProjectAction, selectHasCurrentProject } from '../modules/projects';
-import { useOnMount } from './sideEffects';
-import StartViewContainer from './startView/StartViewContainer';
-import { RootState } from '../modules';
-import RootEditorContainer from './editors/RootEditorContainer';
+import type React from "react";
+import { connect } from "react-redux";
+import Root from "../components/Root";
+import type { RootState } from "../modules";
+import { fetchCurrentProjectAction, selectHasCurrentProject } from "../modules/projects";
+import AppHeaderContainer from "./controls/AppHeaderContainer";
+import AppToolbarContainer from "./controls/AppToolbarContainer";
+import RootEditorContainer from "./editors/RootEditorContainer";
+import type { Dispatch } from "./helpers";
+import { useOnMount } from "./sideEffects";
+import StartViewContainer from "./startView/StartViewContainer";
 
-type ExportProps = {
-  /* N/A */
-};
+type ExportProps = object;
 
 type StateProps = {
   hasCurrentProject: boolean;

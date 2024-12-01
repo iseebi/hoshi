@@ -1,5 +1,5 @@
-import React from 'react';
-import { Global, css } from '@emotion/react';
+import { Global, css } from "@emotion/react";
+import type React from "react";
 
 const styles = css`
   * {

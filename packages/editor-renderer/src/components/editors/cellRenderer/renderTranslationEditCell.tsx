@@ -1,7 +1,7 @@
-import { RenderEditCellProps } from 'react-data-grid';
-import React from 'react';
-import { TranslationRow } from '../../../modules/versions';
-import TranslationCellInput from './TranslationCellInput';
+import type React from "react";
+import type { RenderEditCellProps } from "react-data-grid";
+import type { TranslationRow } from "../../../modules/versions";
+import TranslationCellInput from "./TranslationCellInput";
 
 type Props = RenderEditCellProps<TranslationRow>;
 
@@ -16,7 +16,7 @@ const renderTranslationEditCell = (language: string): React.FC<Props> =>
     return (
       <TranslationCellInput
         ref={autoFocusAndSelect}
-        value={row.currentPhrase?.translations[language] ?? row.historyPhrase?.translations[language] ?? ''}
+        value={row.currentPhrase?.translations[language] ?? row.historyPhrase?.translations[language] ?? ""}
         onChange={(ev): void => {
           if (!row.currentPhrase) {
             return;

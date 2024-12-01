@@ -1,5 +1,5 @@
-import { createSelector } from '@reduxjs/toolkit';
-import { EditableVersion, TranslationRow, VersionsState } from './types';
+import { createSelector } from "@reduxjs/toolkit";
+import type { EditableVersion, TranslationRow, VersionsState } from "./types";
 
 type State = { versions: VersionsState };
 

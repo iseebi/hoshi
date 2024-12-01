@@ -1,14 +1,14 @@
-import actionCreatorFactory from 'typescript-fsa';
-import { createAsyncActionCreator } from '../actionCreatorsHelpers';
-import { EditableVersion } from './types';
+import actionCreatorFactory from "typescript-fsa";
+import { createAsyncActionCreator } from "../actionCreatorsHelpers";
+import type { EditableVersion } from "./types";
 
-const actionCreator = actionCreatorFactory('Versions');
+const actionCreator = actionCreatorFactory("Versions");
 
-export const clearVersionStateAction = actionCreator('clearVersionState');
+export const clearVersionStateAction = actionCreator("clearVersionState");
 export const switchVersionAction = actionCreator<{
   packageId: string;
   versionId: string;
-}>('switchVersion');
+}>("switchVersion");
 export const [fetchEditableVersionAction, fetchEditableVersionProgressAction] = createAsyncActionCreator<
   {
     packageId: string;
@@ -16,12 +16,12 @@ export const [fetchEditableVersionAction, fetchEditableVersionProgressAction] = 
   },
   EditableVersion,
   Error
->(actionCreator, 'loadVersion');
+>(actionCreator, "loadVersion");
 export const [addVersionAction, addVersionProgressAction] = createAsyncActionCreator<
   { packageId: string; versionId: string },
   void,
   Error
->(actionCreator, 'addVersion');
+>(actionCreator, "addVersion");
 export const [updateVersionAction, updateVersionProgressAction] = createAsyncActionCreator<
   {
     packageId: string;
@@ -30,4 +30,4 @@ export const [updateVersionAction, updateVersionProgressAction] = createAsyncAct
   },
   void,
   Error
->(actionCreator, 'updateVersion');
+>(actionCreator, "updateVersion");

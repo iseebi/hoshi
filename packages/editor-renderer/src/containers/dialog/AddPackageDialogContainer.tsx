@@ -1,19 +1,17 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import * as Yup from 'yup';
-import { useFormik } from 'formik';
-import { Dispatch } from '@reduxjs/toolkit';
-import AddPackageDialog from '../../components/dialogs/AddPackageDialog';
-import { addPackageAction, NewPackageForm } from '../../modules/packages';
-import { resetFormWithDelay } from '../../components/formHelpers';
+import { useFormik } from "formik";
+import type React from "react";
+import { connect } from "react-redux";
+import * as Yup from "yup";
+import AddPackageDialog from "../../components/dialogs/AddPackageDialog";
+import { resetFormWithDelay } from "../../components/formHelpers";
+import { type NewPackageForm, addPackageAction } from "../../modules/packages";
+import type { Dispatch } from "../helpers";
 
 type ExportProps = {
   close: () => void;
 };
 
-type StateProps = {
-  /* N/A */
-};
+type StateProps = object;
 
 type DispatchProps = {
   dispatch: {
@@ -25,12 +23,12 @@ type Props = ExportProps & StateProps & DispatchProps;
 
 const validationSchema = Yup.object({
   name: Yup.string()
-    .required('validation_required')
-    .matches(/^[a-z0-9-_]*$/i, { message: 'validation_invalid_format' }),
+    .required("validation_required")
+    .matches(/^[a-z0-9-_]*$/i, { message: "validation_invalid_format" }),
 });
 
 const AddPackageDialogContainer: React.FC<Props> = ({ close, dispatch }) => {
-  const initialValues: NewPackageForm = { name: '' };
+  const initialValues: NewPackageForm = { name: "" };
   const formik = useFormik({
     initialValues,
     validationSchema,

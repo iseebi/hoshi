@@ -1,16 +1,16 @@
-import actionCreatorFactory from 'typescript-fsa';
-import { createAsyncActionCreator } from '../actionCreatorsHelpers';
-import { SmalledProject } from './types';
+import actionCreatorFactory from "typescript-fsa";
+import { createAsyncActionCreator } from "../actionCreatorsHelpers";
+import type { SmalledProject } from "./types";
 
-const actionCreator = actionCreatorFactory('Projects');
+const actionCreator = actionCreatorFactory("Projects");
 
 export const [fetchCurrentProjectAction, fetchCurrentProjectProgressAction] = createAsyncActionCreator<
   void,
   SmalledProject,
   Error
->(actionCreator, 'fetchCurrentProject');
+>(actionCreator, "fetchCurrentProject");
 
 export const [openProjectAction, openProjectProgressAction] = createAsyncActionCreator<void, SmalledProject, Error>(
   actionCreator,
-  'openProject',
+  "openProject",
 );

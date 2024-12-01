@@ -1,13 +1,13 @@
-import { reducerWithInitialState } from 'typescript-fsa-reducers';
+import { reducerWithInitialState } from "typescript-fsa-reducers";
+import { registerProgressAction } from "../actionCreatorsHelpers";
+import { initialLoadableValue } from "../models";
 import {
   clearVersionStateAction,
   fetchEditableVersionProgressAction,
   switchVersionAction,
   updateVersionAction,
-} from './actions';
-import { EmptyVersionState } from './types';
-import { registerProgressAction } from '../actionCreatorsHelpers';
-import { initialLoadableValue } from '../models';
+} from "./actions";
+import { EmptyVersionState } from "./types";
 
 const reducer = reducerWithInitialState({ ...EmptyVersionState });
 

@@ -1,6 +1,6 @@
-import { ProjectsState } from './projects';
-import { PackagesState } from './packages';
-import { VersionsState } from './versions';
+import type { PackagesState } from "./packages";
+import type { ProjectsState } from "./projects";
+import type { VersionsState } from "./versions";
 
 export type RootState = {
   projects: ProjectsState;

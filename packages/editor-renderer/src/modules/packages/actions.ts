@@ -1,14 +1,14 @@
-import actionCreatorFactory from 'typescript-fsa';
-import { createAsyncActionCreator } from '../actionCreatorsHelpers';
-import { SmalledPackage } from './types';
+import actionCreatorFactory from "typescript-fsa";
+import { createAsyncActionCreator } from "../actionCreatorsHelpers";
+import type { SmalledPackage } from "./types";
 
-const actionCreator = actionCreatorFactory('Packages');
+const actionCreator = actionCreatorFactory("Packages");
 
-export const clearPackagesStateAction = actionCreator('clearPackagesState');
+export const clearPackagesStateAction = actionCreator("clearPackagesState");
 
 export const switchPackageAction = actionCreator<{
   packageId: string | null;
-}>('switchPackage');
+}>("switchPackage");
 
 export const [fetchPackageAction, fetchPackageProgressAction] = createAsyncActionCreator<
   {
@@ -16,11 +16,11 @@ export const [fetchPackageAction, fetchPackageProgressAction] = createAsyncActio
   },
   SmalledPackage,
   Error
->(actionCreator, 'fetchPackage');
+>(actionCreator, "fetchPackage");
 export const [addPackageAction, addPackageProgressAction] = createAsyncActionCreator<
   {
     packageId: string;
   },
   void,
   Error
->(actionCreator, 'addPackage');
+>(actionCreator, "addPackage");

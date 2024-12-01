@@ -1,8 +1,8 @@
-import React from 'react';
-import styled from '@emotion/styled';
-import { ActionButton, DialogTrigger, Tooltip, TooltipTrigger } from '@adobe/react-spectrum';
-import DataAdd from '@spectrum-icons/workflow/DataAdd';
-import TextAdd from '@spectrum-icons/workflow/TextAdd';
+import { ActionButton, DialogTrigger, Tooltip, TooltipTrigger } from "@adobe/react-spectrum";
+import styled from "@emotion/styled";
+import DataAdd from "@spectrum-icons/workflow/DataAdd";
+import TextAdd from "@spectrum-icons/workflow/TextAdd";
+import type React from "react";
 
 type Props = {
   hasActiveProject: boolean;

@@ -1,27 +1,20 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import AppToolbar from '../../components/controls/AppToolbar';
-import { selectHasCurrentProject } from '../../modules/projects';
-import { RootState } from '../../modules';
-import { selectHasActiveEditingVersion } from '../../modules/versions';
-import AddVersionDialogContainer from '../dialog/AddVersionDialogContainer';
-import AddPackageDialogContainer from '../dialog/AddPackageDialogContainer';
+import type React from "react";
+import { connect } from "react-redux";
+import AppToolbar from "../../components/controls/AppToolbar";
+import type { RootState } from "../../modules";
+import { selectHasCurrentProject } from "../../modules/projects";
+import { selectHasActiveEditingVersion } from "../../modules/versions";
+import AddPackageDialogContainer from "../dialog/AddPackageDialogContainer";
+import AddVersionDialogContainer from "../dialog/AddVersionDialogContainer";
 
-type ExportProps = {
-  /* N/A */
-};
+type ExportProps = object;
 
 type StateProps = {
   hasActiveProject: boolean;
   hasActiveVersion: boolean;
 };
 
-type DispatchProps = {
-  /*
-  dispatch: {
-  };
-   */
-};
+type DispatchProps = object;
 
 type Props = ExportProps & StateProps & DispatchProps;
 

@@ -1,10 +1,10 @@
-import createSagaMiddleware from 'redux-saga';
-import { all } from 'typed-redux-saga';
-import logger from 'redux-logger';
-import { configureStore } from '@reduxjs/toolkit';
-import { projectsReducer, projectsSaga } from './modules/projects';
-import { packagesReducer, packagesSaga } from './modules/packages';
-import { versionsReducer, versionsSaga } from './modules/versions';
+import { configureStore } from "@reduxjs/toolkit";
+import logger from "redux-logger";
+import createSagaMiddleware from "redux-saga";
+import { all } from "typed-redux-saga";
+import { packagesReducer, packagesSaga } from "./modules/packages";
+import { projectsReducer, projectsSaga } from "./modules/projects";
+import { versionsReducer, versionsSaga } from "./modules/versions";
 
 const sagaMiddleware = createSagaMiddleware();
 function* rootSaga(): Generator {
@@ -29,7 +29,7 @@ const store = configureStore({
     //   return [...middleware, sagaMiddleware, routerMiddleware, logger];
     // }
     // return [...middleware, sagaMiddleware, routerMiddleware];
-    return [...middleware, sagaMiddleware, logger];
+    return middleware.concat(sagaMiddleware, logger);
   },
 });
 

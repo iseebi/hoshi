@@ -1,8 +1,6 @@
-import React from 'react';
+import type React from "react";
 
-type Props = {
-  /* N/A */
-};
+type Props = object;
 
 const ProjectEditor: React.FC<Props> = () => <div>ProjectEditor</div>;
 

@@ -1,5 +1,5 @@
-import { initialLoadableValue, LoadableValue } from '../models';
-import { EditableVersion as _EditableVersion, Phrase as _Phrase } from '../../../../models';
+import type { EditableVersion as _EditableVersion, Phrase as _Phrase } from "hoshi-models";
+import { type LoadableValue, initialLoadableValue } from "../models";
 
 // Models
 // ------------------------------

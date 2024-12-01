@@ -1,22 +1,21 @@
-import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
-import { Dispatch } from '@reduxjs/toolkit';
-import Browser from '../../components/controls/Browser';
-import { RootState } from '../../modules';
+import type React from "react";
+import { useEffect } from "react";
+import { connect } from "react-redux";
+import Browser from "../../components/controls/Browser";
+import type { RootState } from "../../modules";
 import {
+  type SmalledPackage,
   clearPackagesStateAction,
   fetchPackageAction,
   selectActivePackage,
   selectActivePackageVersions,
-  SmalledPackage,
   switchPackageAction,
-} from '../../modules/packages';
-import { clearVersionStateAction, fetchEditableVersionAction, switchVersionAction } from '../../modules/versions';
-import { usePrevious } from '../sideEffects';
+} from "../../modules/packages";
+import { clearVersionStateAction, fetchEditableVersionAction, switchVersionAction } from "../../modules/versions";
+import type { Dispatch } from "../helpers";
+import { usePrevious } from "../sideEffects";
 
-type ExportProps = {
-  /* N/A */
-};
+type ExportProps = object;
 
 type StateProps = {
   packages: string[];

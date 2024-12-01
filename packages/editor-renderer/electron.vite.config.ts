@@ -1,8 +1,8 @@
-import { resolve } from 'path';
+import { resolve } from "node:path";
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { defineConfig, externalizeDepsPlugin } from 'electron-vite';
+import react from "@vitejs/plugin-react";
 // eslint-disable-next-line import/no-extraneous-dependencies
-import react from '@vitejs/plugin-react';
+import { defineConfig, externalizeDepsPlugin } from "electron-vite";
 
 export default defineConfig({
   main: {
@@ -14,7 +14,7 @@ export default defineConfig({
   renderer: {
     resolve: {
       alias: {
-        '@renderer': resolve('src/renderer/src'),
+        "@renderer": resolve("src/renderer/src"),
       },
     },
     plugins: [react()],

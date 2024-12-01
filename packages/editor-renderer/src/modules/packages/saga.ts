@@ -1,9 +1,9 @@
-import { SagaIterator } from 'redux-saga';
-import { call, put, takeEvery } from 'typed-redux-saga';
-import { addPackageAction, addPackageProgressAction, fetchPackageAction, fetchPackageProgressAction } from './actions';
-import { bindAsyncTriggerAction } from '../sagaHelpers';
-import apiHandler from '../../api';
-import { fetchCurrentProjectAction } from '../projects';
+import type { SagaIterator } from "redux-saga";
+import { call, put, takeEvery } from "typed-redux-saga";
+import apiHandler from "../../api";
+import { fetchCurrentProjectAction } from "../projects";
+import { bindAsyncTriggerAction } from "../sagaHelpers";
+import { addPackageAction, addPackageProgressAction, fetchPackageAction, fetchPackageProgressAction } from "./actions";
 
 const fetchPackageSaga = bindAsyncTriggerAction(
   fetchPackageProgressAction,

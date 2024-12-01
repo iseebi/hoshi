@@ -1,6 +1,6 @@
-import { ReducerBuilder } from 'typescript-fsa-reducers';
-import { ActionCreator, ActionCreatorFactory, AsyncActionCreators } from 'typescript-fsa';
-import { LoadableValue, LoadingState } from './models';
+import type { ActionCreator, ActionCreatorFactory, AsyncActionCreators } from "typescript-fsa";
+import type { ReducerBuilder } from "typescript-fsa-reducers";
+import { type LoadableValue, LoadingState } from "./models";
 
 export const createAsyncActionCreator = <Params, Result, Error = Record<string, unknown>>(
   factory: ActionCreatorFactory,

@@ -1,16 +1,12 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { Dispatch } from '@reduxjs/toolkit';
-import AppHeader from '../../components/controls/AppHeader';
-import { openProjectAction } from '../../modules/projects';
+import type React from "react";
+import { connect } from "react-redux";
+import AppHeader from "../../components/controls/AppHeader";
+import { openProjectAction } from "../../modules/projects";
+import type { Dispatch } from "../helpers";
 
-type ExportProps = {
-  /* N/A */
-};
+type ExportProps = object;
 
-type StateProps = {
-  /* N/A */
-};
+type StateProps = object;
 
 type DispatchProps = {
   dispatch: {

@@ -1,5 +1,5 @@
-import { SmalledProject as _SmalledProject } from '../../../../models';
-import { initialLoadableValue, LoadableValue } from '../models';
+import type { SmalledProject as _SmalledProject } from "hoshi-models";
+import { type LoadableValue, initialLoadableValue } from "../models";
 
 // Models
 // ------------------------------

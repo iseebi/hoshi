@@ -1,6 +1,6 @@
-import React from 'react';
-import { TranslationRow } from '../../../modules/versions';
-import TranslationCellFrame from './TranslationCellFrame';
+import type React from "react";
+import type { TranslationRow } from "../../../modules/versions";
+import TranslationCellFrame from "./TranslationCellFrame";
 
 const renderTranslationCell = (language: string): React.FC<{ row: TranslationRow }> =>
   function TranslationCell({ row }: { row: TranslationRow }) {

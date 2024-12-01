@@ -1,18 +1,12 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import ProjectEditor from '../../components/editors/ProjectEditor';
+import type React from "react";
+import { connect } from "react-redux";
+import ProjectEditor from "../../components/editors/ProjectEditor";
 
-type ExportProps = {
-  /* N/A */
-};
+type ExportProps = object;
 
-type StateProps = {
-  /* N/A */
-};
+type StateProps = object;
 
-type DispatchProps = {
-  /* N/A */
-};
+type DispatchProps = object;
 
 type Props = ExportProps & StateProps & DispatchProps;
 

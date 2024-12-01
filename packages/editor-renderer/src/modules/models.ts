@@ -1,7 +1,7 @@
 export const LoadingState = {
-  Initial: 'initial',
-  Loading: 'loading',
-  Error: 'error',
+  Initial: "initial",
+  Loading: "loading",
+  Error: "error",
 };
 export type LoadingState = (typeof LoadingState)[keyof typeof LoadingState];
 

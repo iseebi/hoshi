@@ -1,5 +1,8 @@
-import { SagaIterator } from 'redux-saga';
-import { call, put, takeEvery } from 'typed-redux-saga';
+import type { SagaIterator } from "redux-saga";
+import { call, put, takeEvery } from "typed-redux-saga";
+import apiHandler from "../../api";
+import { fetchPackageAction } from "../packages";
+import { bindAsyncTriggerAction } from "../sagaHelpers";
 import {
   addVersionAction,
   addVersionProgressAction,
@@ -7,11 +10,8 @@ import {
   fetchEditableVersionProgressAction,
   updateVersionAction,
   updateVersionProgressAction,
-} from './actions';
-import { bindAsyncTriggerAction } from '../sagaHelpers';
-import { EditableVersion } from './types';
-import apiHandler from '../../api';
-import { fetchPackageAction } from '../packages';
+} from "./actions";
+import type { EditableVersion } from "./types";
 
 const loadVersionSaga = bindAsyncTriggerAction(
   fetchEditableVersionProgressAction,

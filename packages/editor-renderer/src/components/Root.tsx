@@ -1,6 +1,6 @@
-import React from 'react';
-import styled from '@emotion/styled';
-import { Grid } from '@adobe/react-spectrum';
+import { Grid } from "@adobe/react-spectrum";
+import styled from "@emotion/styled";
+import type React from "react";
 
 type Props = {
   header?: React.ReactNode;
@@ -15,9 +15,9 @@ const Background = styled.div`
 
 const RootGrid: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <Grid
-    areas={['header header', 'toolbar content']}
-    columns={['size-600', 'auto']}
-    rows={['size-500', 'auto']}
+    areas={["header header", "toolbar content"]}
+    columns={["size-600", "auto"]}
+    rows={["size-500", "auto"]}
     height="100vh"
     gap="size-25"
   >

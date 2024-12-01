@@ -1,5 +1,5 @@
-import { createSelector } from '@reduxjs/toolkit';
-import { ProjectsState, SmalledProject } from './types';
+import { createSelector } from "@reduxjs/toolkit";
+import type { ProjectsState, SmalledProject } from "./types";
 
 type State = { projects: ProjectsState };
 

@@ -1,22 +1,18 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import RootEditor from '../../components/editors/RootEditor';
-import TranslationEditorContainer from './TranslationEditorContainer';
-import BrowserContainer from '../controls/BrowserContainer';
-import { RootState } from '../../modules';
-import ProjectEditorContainer from './ProjectEditorContainer';
+import type React from "react";
+import { connect } from "react-redux";
+import RootEditor from "../../components/editors/RootEditor";
+import type { RootState } from "../../modules";
+import BrowserContainer from "../controls/BrowserContainer";
+import ProjectEditorContainer from "./ProjectEditorContainer";
+import TranslationEditorContainer from "./TranslationEditorContainer";
 
-type ExportProps = {
-  /* N/A */
-};
+type ExportProps = object;
 
 type StateProps = {
   activePackage: string | null;
 };
 
-type DispatchProps = {
-  /* N/A */
-};
+type DispatchProps = object;
 
 type Props = ExportProps & StateProps & DispatchProps;
 

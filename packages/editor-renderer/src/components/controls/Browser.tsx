@@ -1,6 +1,6 @@
-import React from 'react';
-import styled from '@emotion/styled';
-import { Item, ListBox, Picker, Section, Text } from '@adobe/react-spectrum';
+import { Item, ListBox, Picker, Section, Text } from "@adobe/react-spectrum";
+import styled from "@emotion/styled";
+import type React from "react";
 
 type Props = {
   packages: string[];
@@ -24,7 +24,7 @@ const VersionItemContent = styled.div`
   font-family: var(--spectrum-global-font-family-code);
 `;
 
-const ProjectSelectedKey = '**PROJECT**';
+const ProjectSelectedKey = "**PROJECT**";
 
 // TODO: Translation
 const Browser: React.FC<Props> = ({
@@ -62,14 +62,14 @@ const Browser: React.FC<Props> = ({
       flexGrow={1}
       selectedKeys={activeVersion ? [activeVersion] : []}
       onSelectionChange={(selection): void => {
-        if (selection === 'all') {
+        if (selection === "all") {
           return;
         }
         const version = selection.values().next().value;
         if (!version) {
           return;
         }
-        onVersionSelect(version);
+        onVersionSelect(`${version}`);
       }}
     >
       {versions.map((version) => (

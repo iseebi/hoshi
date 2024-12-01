@@ -1,7 +1,7 @@
-import { Action, AsyncActionCreators } from 'typescript-fsa';
-import { SagaIterator } from 'redux-saga';
-import { bindAsyncAction } from 'typescript-fsa-redux-saga';
-import { call, SagaGenerator, spawn } from 'typed-redux-saga';
+import type { SagaIterator } from "redux-saga";
+import { type SagaGenerator, call, spawn } from "typed-redux-saga";
+import type { Action, AsyncActionCreators } from "typescript-fsa";
+import { bindAsyncAction } from "typescript-fsa-redux-saga";
 
 // eslint-disable-next-line import/prefer-default-export
 export const bindAsyncTriggerAction = <Params, Result, Error>(

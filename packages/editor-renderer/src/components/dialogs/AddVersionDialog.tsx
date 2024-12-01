@@ -1,8 +1,8 @@
-import React from 'react';
-import { Button, ButtonGroup, Content, Dialog, Divider, Form, Heading, TextField } from '@adobe/react-spectrum';
-import { FormikProps } from 'formik';
-import { NewVersionForm } from '../../modules/versions';
-import { makeValidationState } from '../formHelpers';
+import { Button, ButtonGroup, Content, Dialog, Divider, Form, Heading, TextField } from "@adobe/react-spectrum";
+import type { FormikProps } from "formik";
+import type React from "react";
+import type { NewVersionForm } from "../../modules/versions";
+import { makeValidationState } from "../formHelpers";
 
 type Props = {
   formik: FormikProps<NewVersionForm>;
@@ -26,10 +26,10 @@ const AddVersionDialog: React.FC<Props> = ({ formik, onCancel }) => (
           autoFocus
           name="name"
           label="New Version Name"
-          validationState={makeValidationState(formik, 'name')}
+          validationState={makeValidationState(formik, "name")}
           value={formik.values.name}
           onChange={(val): void => {
-            formik.setFieldValue('name', val, true);
+            formik.setFieldValue("name", val, true);
           }}
           onBlur={formik.handleBlur}
           errorMessage={formik.errors.name && formik.touched.name ? formik.errors.name : undefined}

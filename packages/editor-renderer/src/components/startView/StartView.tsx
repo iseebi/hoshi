@@ -1,9 +1,7 @@
-import React from 'react';
-import styled from '@emotion/styled';
+import styled from "@emotion/styled";
+import type React from "react";
 
-type Props = {
-  /* N/A */
-};
+type Props = object;
 
 const Frame = styled.div``;
 

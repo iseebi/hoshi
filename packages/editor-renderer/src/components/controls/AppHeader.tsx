@@ -1,7 +1,7 @@
-import React from 'react';
-import styled from '@emotion/styled';
-import { ActionGroup, Item, Tooltip, TooltipTrigger } from '@adobe/react-spectrum';
-import FolderOpenOutline from '@spectrum-icons/workflow/FolderOpenOutline';
+import { ActionGroup, Item, Tooltip, TooltipTrigger } from "@adobe/react-spectrum";
+import styled from "@emotion/styled";
+import FolderOpenOutline from "@spectrum-icons/workflow/FolderOpenOutline";
+import type React from "react";
 
 type Props = {
   onOpen: () => void;
@@ -13,9 +13,11 @@ const Frame = styled.div`
   justify-content: space-between;
   align-items: center;
   height: 40px;
-  padding-left: ${window.navigator.userAgent.toLowerCase().indexOf('mac') !== -1
-    ? `var(--spectrum-global-dimension-size-1000);`
-    : `var(--spectrum-global-dimension-size-100);`};
+  padding-left: ${
+    window.navigator.userAgent.toLowerCase().indexOf("mac") !== -1
+      ? "var(--spectrum-global-dimension-size-1000);"
+      : "var(--spectrum-global-dimension-size-100);"
+  };
   padding-right: var(--spectrum-global-dimension-size-100);
 `;
 
@@ -42,7 +44,7 @@ const AppHeader: React.FC<Props> = ({ onOpen }) => (
             isEmphasized
             onAction={(key): void => {
               switch (key) {
-                case 'Open':
+                case "Open":
                   onOpen();
                   break;
                 default:

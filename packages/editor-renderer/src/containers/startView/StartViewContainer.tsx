@@ -1,18 +1,12 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import StartView from '../../components/startView/StartView';
+import type React from "react";
+import { connect } from "react-redux";
+import StartView from "../../components/startView/StartView";
 
-type ExportProps = {
-  /* N/A */
-};
+type ExportProps = object;
 
-type StateProps = {
-  /* N/A */
-};
+type StateProps = object;
 
-type DispatchProps = {
-  /* N/A */
-};
+type DispatchProps = object;
 
 type Props = ExportProps & StateProps & DispatchProps;
 

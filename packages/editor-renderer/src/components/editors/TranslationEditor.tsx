@@ -1,11 +1,12 @@
-import React, { useMemo } from 'react';
-import styled from '@emotion/styled';
-import DataGrid, { Column } from 'react-data-grid';
-import 'react-data-grid/lib/styles.css';
-import { TranslationRow } from '../../modules/versions';
-import TranslationIdCell from './cellRenderer/TranslationIdCell';
-import renderTranslationCell from './cellRenderer/renderTranslationCell';
-import renderTranslationEditCell from './cellRenderer/renderTranslationEditCell';
+import styled from "@emotion/styled";
+import type React from "react";
+import { useMemo } from "react";
+import DataGrid, { type Column } from "react-data-grid";
+import "react-data-grid/lib/styles.css";
+import type { TranslationRow } from "../../modules/versions";
+import TranslationIdCell from "./cellRenderer/TranslationIdCell";
+import renderTranslationCell from "./cellRenderer/renderTranslationCell";
+import renderTranslationEditCell from "./cellRenderer/renderTranslationEditCell";
 
 type Props = {
   isAvailable: boolean;
@@ -32,7 +33,7 @@ const GridFrame = styled.div`
 `;
 
 const createColumns = (translations: string[]): Column<TranslationRow>[] => [
-  { key: 'id', name: 'ID', resizable: true, frozen: true, width: 200, renderCell: TranslationIdCell },
+  { key: "id", name: "ID", resizable: true, frozen: true, width: 200, renderCell: TranslationIdCell },
   ...translations.map((lang) => ({
     key: `translation.${lang}`,
     name: lang,

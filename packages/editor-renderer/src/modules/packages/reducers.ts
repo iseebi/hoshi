@@ -1,8 +1,8 @@
-import { reducerWithInitialState } from 'typescript-fsa-reducers';
-import { EmptyPackagesState } from './types';
-import { registerProgressAction } from '../actionCreatorsHelpers';
-import { clearPackagesStateAction, fetchPackageProgressAction, switchPackageAction } from './actions';
-import { initialLoadableValue } from '../models';
+import { reducerWithInitialState } from "typescript-fsa-reducers";
+import { registerProgressAction } from "../actionCreatorsHelpers";
+import { initialLoadableValue } from "../models";
+import { clearPackagesStateAction, fetchPackageProgressAction, switchPackageAction } from "./actions";
+import { EmptyPackagesState } from "./types";
 
 const reducer = reducerWithInitialState({ ...EmptyPackagesState });
 

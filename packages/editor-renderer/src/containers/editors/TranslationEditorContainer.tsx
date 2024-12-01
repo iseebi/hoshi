@@ -1,22 +1,20 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { Dispatch } from '@reduxjs/toolkit';
-import TranslationEditor from '../../components/editors/TranslationEditor';
-import { RootState } from '../../modules';
+import type React from "react";
+import { connect } from "react-redux";
+import TranslationEditor from "../../components/editors/TranslationEditor";
+import type { RootState } from "../../modules";
 import {
+  type EditableVersion,
+  type TranslationRow,
   applyTranslationRow,
-  EditableVersion,
   selectActiveEditingVersion,
   selectActiveLanguages,
   selectEditingTranslationRows,
   selectHasActiveEditingVersion,
-  TranslationRow,
   updateVersionAction,
-} from '../../modules/versions';
+} from "../../modules/versions";
+import type { Dispatch } from "../helpers";
 
-type ExportProps = {
-  /* N/A */
-};
+type ExportProps = object;
 
 type StateProps = {
   packageId: string | null;
