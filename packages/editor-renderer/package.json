@@ -1,0 +1,12 @@
+{
+  "name": "hoshi-editor-renderer",
+  "version": "0.8.0",
+  "description": "hoshi Editor renderer",
+  "author": "Nobuhiro Ito",
+  "homepage": "https://hoshi.iseteki.net",
+  "repository": "github:iseebi/hoshi",
+  "devDependencies": {
+    "@biomejs/biome": "1.9.4",
+    "typescript": "^5.7.2"
+  }
+}
