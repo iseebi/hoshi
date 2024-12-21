@@ -48,11 +48,10 @@ jobs:
           mkdir -p ~/private_keys/
           echo '${{ secrets.NOTARIZATION_API_KEY }}' > ~/private_keys/AuthKey_${{ secrets.NOTARIZATION_API_KEY_ID }}.p8
 
-      - name: Build CLI Packages
+      - name: Build
         run: |
           npm install
           npm run build
-          npm run notarization
 
       - name: Notarization
         run: |
