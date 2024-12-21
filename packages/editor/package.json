@@ -13,9 +13,9 @@
     "build": "run-s typecheck build:electron build:app",
     "build:electron": "electron-vite build",
     "build:app": "run-p build:app:win build:app:mac build:app:linux",
-    "build:app:win": "electron-builder --win --config",
-    "build:app:mac": "electron-builder --mac --config",
-    "build:app:linux": "electron-builder --linux --config"
+    "build:app:win": "electron-builder --win --config --publish never",
+    "build:app:mac": "electron-builder --mac --config --publish never",
+    "build:app:linux": "electron-builder --linux --config --publish never"
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
