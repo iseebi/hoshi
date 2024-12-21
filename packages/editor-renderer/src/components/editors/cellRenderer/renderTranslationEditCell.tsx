@@ -1,4 +1,4 @@
-import type React from "react";
+import React from "react";
 import type { RenderEditCellProps } from "react-data-grid";
 import type { TranslationRow } from "../../../modules/versions";
 import TranslationCellInput from "./TranslationCellInput";

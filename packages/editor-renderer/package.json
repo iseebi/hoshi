@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@adobe/react-spectrum": "^3.38.0",
+    "@babel/runtime": "^7.26.0",
     "@emotion/react": "^11.13.5",
     "@emotion/styled": "^11.13.5",
     "@reduxjs/toolkit": "^2.4.0",

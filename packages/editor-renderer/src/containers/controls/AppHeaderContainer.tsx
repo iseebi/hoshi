@@ -1,4 +1,4 @@
-import type React from "react";
+import React from "react";
 import { connect } from "react-redux";
 import AppHeader from "../../components/controls/AppHeader";
 import { openProjectAction } from "../../modules/projects";

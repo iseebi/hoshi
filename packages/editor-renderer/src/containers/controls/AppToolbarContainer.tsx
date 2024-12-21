@@ -1,4 +1,4 @@
-import type React from "react";
+import React from "react";
 import { connect } from "react-redux";
 import AppToolbar from "../../components/controls/AppToolbar";
 import type { RootState } from "../../modules";

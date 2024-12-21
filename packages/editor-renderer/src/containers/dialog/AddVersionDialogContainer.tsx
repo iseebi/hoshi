@@ -1,5 +1,5 @@
 import { useFormik } from "formik";
-import type React from "react";
+import React from "react";
 import { useMemo } from "react";
 import { connect } from "react-redux";
 import * as Yup from "yup";

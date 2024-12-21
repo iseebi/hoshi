@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import type React from "react";
+import React from "react";
 import { useMemo } from "react";
 import DataGrid, { type Column } from "react-data-grid";
 import "react-data-grid/lib/styles.css";

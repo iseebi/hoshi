@@ -1,4 +1,5 @@
 import { Provider as SpectrumProvider, defaultTheme } from "@adobe/react-spectrum";
+import React from "react";
 import type { ReactElement } from "react";
 import { Provider as ReduxProvider } from "react-redux";
 import store from "./configureStore";

@@ -1,4 +1,4 @@
-import type React from "react";
+import React from "react";
 import { useEffect } from "react";
 import { connect } from "react-redux";
 import Browser from "../../components/controls/Browser";

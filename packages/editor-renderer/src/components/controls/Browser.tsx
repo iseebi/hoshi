@@ -1,6 +1,6 @@
 import { Item, ListBox, Picker, Section, Text } from "@adobe/react-spectrum";
 import styled from "@emotion/styled";
-import type React from "react";
+import React from "react";
 
 type Props = {
   packages: string[];

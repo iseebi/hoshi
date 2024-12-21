@@ -1,4 +1,4 @@
-import type React from "react";
+import React from "react";
 import { connect } from "react-redux";
 import StartView from "../../components/startView/StartView";
 

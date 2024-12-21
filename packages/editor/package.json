@@ -5,6 +5,11 @@
   "author": "Nobuhiro Ito",
   "homepage": "https://hoshi.iseteki.net",
   "repository": "github:iseebi/hoshi",
+  "main": "./out/main/index.js",
+  "scripts": {
+    "start": "electron-vite preview",
+    "dev": "electron-vite dev"
+  },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
     "@types/node": "^22.10.1",
@@ -14,6 +19,7 @@
   "dependencies": {
     "@electron-toolkit/preload": "^2.0.0",
     "@electron-toolkit/utils": "^2.0.0",
+    "@vitejs/plugin-react": "^4.3.4",
     "electron-vite": "^1.0.27",
     "electron-updater": "^6.1.1"
   }

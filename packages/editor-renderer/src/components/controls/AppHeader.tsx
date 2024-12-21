@@ -1,7 +1,7 @@
 import { ActionGroup, Item, Tooltip, TooltipTrigger } from "@adobe/react-spectrum";
 import styled from "@emotion/styled";
 import FolderOpenOutline from "@spectrum-icons/workflow/FolderOpenOutline";
-import type React from "react";
+import React from "react";
 
 type Props = {
   onOpen: () => void;

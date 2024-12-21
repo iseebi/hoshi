@@ -1,6 +1,6 @@
 import { Grid } from "@adobe/react-spectrum";
 import styled from "@emotion/styled";
-import type React from "react";
+import React from "react";
 
 type Props = {
   header?: React.ReactNode;

@@ -1,6 +1,6 @@
 import { Button, ButtonGroup, Content, Dialog, Divider, Form, Heading, TextField } from "@adobe/react-spectrum";
 import type { FormikProps } from "formik";
-import type React from "react";
+import React from "react";
 import type { NewVersionForm } from "../../modules/versions";
 import { makeValidationState } from "../formHelpers";
 

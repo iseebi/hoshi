@@ -1,4 +1,4 @@
-import type React from "react";
+import React from "react";
 import { connect } from "react-redux";
 import RootEditor from "../../components/editors/RootEditor";
 import type { RootState } from "../../modules";

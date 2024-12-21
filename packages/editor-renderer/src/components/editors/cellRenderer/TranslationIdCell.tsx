@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import type React from "react";
+import React from "react";
 import type { TranslationRow } from "../../../modules/versions";
 
 const Frame = styled.div<{ disabledColor?: boolean }>`
