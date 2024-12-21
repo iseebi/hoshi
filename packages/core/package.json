@@ -1,0 +1,22 @@
+{
+  "name": "hoshi-core",
+  "version": "0.8.0",
+  "description": "Core module of hoshi",
+  "author": "Nobuhiro Ito",
+  "homepage": "https://hoshi.iseteki.net",
+  "repository": "github:iseebi/hoshi",
+  "scripts": {
+    "test": "jest"
+  },
+  "dependencies": {
+    "hoshi-core": "*",
+    "yaml": "^2.6.1"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "1.9.4",
+    "@types/jest": "^29.5.14",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.2.5",
+    "typescript": "^5.7.2"
+  }
+}

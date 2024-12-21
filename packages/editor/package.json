@@ -1,0 +1,35 @@
+{
+  "name": "hoshi-editor",
+  "version": "0.8.0",
+  "description": "hoshi Editor",
+  "author": "Nobuhiro Ito",
+  "homepage": "https://hoshi.iseteki.net",
+  "repository": "github:iseebi/hoshi",
+  "main": "./out/main/index.js",
+  "scripts": {
+    "start": "electron-vite preview",
+    "dev": "electron-vite dev",
+    "typecheck": "tsc --noEmit -p tsconfig.json --composite false",
+    "build": "run-s typecheck build:electron build:app",
+    "build:electron": "electron-vite build",
+    "build:app": "run-p build:app:win build:app:mac build:app:linux",
+    "build:app:win": "electron-builder --win --config --publish never",
+    "build:app:mac": "electron-builder --mac --config --publish never",
+    "build:app:linux": "electron-builder --linux --config --publish never"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "1.9.4",
+    "@types/node": "^22.10.1",
+    "@vitejs/plugin-react": "^4.3.4",
+    "typescript": "^5.7.2",
+    "electron": "33.3.0",
+    "electron-builder": "^25.1.8",
+    "npm-run-all": "^4.1.5"
+  },
+  "dependencies": {
+    "@electron-toolkit/preload": "^2.0.0",
+    "@electron-toolkit/utils": "^2.0.0",
+    "electron-vite": "^1.0.27",
+    "electron-updater": "^6.1.1"
+  }
+}
