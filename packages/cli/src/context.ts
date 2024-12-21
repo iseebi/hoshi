@@ -40,7 +40,7 @@ const detectContext = async (): Promise<Result<CommandContext, Error>> => {
     return errorResult(e as Error);
   }
 
-  return errorResult(new Error("current directory is not a project or package context"));
+  return successResult({ project: undefined, package: undefined });
 };
 
 export default detectContext;

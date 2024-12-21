@@ -59,8 +59,9 @@ class PublishUseCase {
   ) {}
 
   async processPublishAsync(parameter: PublishParameter): Promise<Result<void, string>> {
-    const { project: projectPath, outDir } = parameter.options;
+    const { outDir } = parameter.options;
 
+    const projectPath = parameter.options.project ?? parameter.context.project;
     if (!projectPath) {
       return errorResult("Project path is not defined");
     }

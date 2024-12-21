@@ -5,6 +5,7 @@ import {
   ConverterDatastore,
   type FileSystem,
   FilesDatastore,
+  HoshiVersionConverter,
   I18NextConverter,
   JsonConverter,
   NextIntlConverter,
@@ -36,6 +37,7 @@ const createModulesContainer = (): CliModulesContainer => {
     new I18NextConverter(fileSystem),
     new JsonConverter(fileSystem),
     new NextIntlConverter(fileSystem),
+    new HoshiVersionConverter(fileSystem),
   ]);
   const variablesDatastore = new VariablesDatastore(platform);
 
