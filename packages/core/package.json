@@ -5,6 +5,9 @@
   "author": "Nobuhiro Ito",
   "homepage": "https://hoshi.iseteki.net",
   "repository": "github:iseebi/hoshi",
+  "scripts": {
+    "test": "jest"
+  },
   "dependencies": {
     "hoshi-core": "*",
     "yaml": "^2.6.1"
