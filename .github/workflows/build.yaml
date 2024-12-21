@@ -10,14 +10,9 @@ on:
 
 jobs:
   release:
-    runs-on: ${{ matrix.os }}
+    runs-on: macos-14
     permissions:
       contents: write
-
-    strategy:
-      matrix:
-#        os: [macos-latest-large, ubuntu-latest, windows-latest]
-        os: [macos-14, windows-latest]
 
     steps:
       - name: Check out Git repository
@@ -29,7 +24,6 @@ jobs:
           node-version: 18
 
       - name: Install Developer ID Certificate
-        if: startsWith(matrix.os, 'macos')
         run: |
           CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
           KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
@@ -50,55 +44,33 @@ jobs:
           KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
 
       - name: Prepare for app notarization
-        if: startsWith(matrix.os, 'macos')
         run: |
           mkdir -p ~/private_keys/
           echo '${{ secrets.NOTARIZATION_API_KEY }}' > ~/private_keys/AuthKey_${{ secrets.NOTARIZATION_API_KEY_ID }}.p8
 
-      - name: Build CLI Packages
-        if: startsWith(matrix.os, 'macos')
+      - name: Build
         run: |
           npm install
-          npm run build:cli
-          npm run build:cli-package
+          npm run build
+
+      - name: Notarization
+        run: |
+          npm run notarization
         env:
           KEY_PATH: ~/private_keys/AuthKey_${{ secrets.NOTARIZATION_API_KEY_ID }}.p8
           KEY_ID: ${{ secrets.NOTARIZATION_API_KEY_ID }}
           ISSUER_ID:  ${{ secrets.NOTARIZATION_API_KEY_ISSUER }}
 
-      - name: Build/release Electron app
-        uses: samuelmeuli/action-electron-builder@v1
-        with:
-          github_token: ${{ secrets.github_token }}
-          release: ${{ startsWith(github.ref, 'refs/tags/v') }}
-          mac_certs: ${{ secrets.MAC_CERTS }}
-          mac_certs_password: ${{ secrets.MAC_CERTS_PASSWORD }}
-        env:
-          APPLE_TEAM_ID: ${{ secrets.MAC_TEAM_ID }}
-          APPLE_API_KEY: ~/private_keys/AuthKey_${{ secrets.NOTARIZATION_API_KEY_ID }}.p8
-          APPLE_API_KEY_ID: ${{ secrets.NOTARIZATION_API_KEY_ID }}
-          APPLE_API_ISSUER: ${{ secrets.NOTARIZATION_API_KEY_ISSUER }}
-
-      - name: Attach CLI Packages
-        if: ${{ startsWith(github.ref, 'refs/tags/v') && startsWith(matrix.os, 'macos') }}
+      - name: Attach Packages
+        if: ${{ startsWith(github.ref, 'refs/tags/v') }}
         run: |
-          gh release upload ${{ github.ref_name }} dist/hoshi-cli*.zip
-          gh release upload ${{ github.ref_name }} dist/hoshi-cli*.dmg
+          gh release create ${{ github.ref_name }} --generate-notes --draft
+          gh release upload ${{ github.ref_name }} dist/*.*
         env:
           GH_TOKEN: ${{ github.token }}
 
       - name: Clean up keychain and provisioning profile
-        if: ${{ always() && startsWith(matrix.os, 'macos') }}
+        if: ${{ always() }}
         run: |
           security delete-keychain $RUNNER_TEMP/app-signing.keychain-db
           rm -r ~/private_keys/
-
-#      - name: Store artifacts
-#        uses: actions/upload-artifact@v3
-#        with:
-#          name: build-artifacts
-#          path: |
-#            dist/*.AppImage
-#            dist/*.dmg*
-#            dist/*.zip*
-#            dist/*.exe*

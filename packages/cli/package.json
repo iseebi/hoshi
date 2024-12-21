@@ -1,0 +1,35 @@
+{
+  "name": "hoshi-cli",
+  "version": "0.8.0",
+  "description": "CLI command of hoshi",
+  "author": "Nobuhiro Ito",
+  "homepage": "https://hoshi.iseteki.net",
+  "repository": "github:iseebi/hoshi",
+  "scripts": {
+    "build": "run-s build:cli build:sign build:package",
+    "build:cli": "run-s build:cli:webpack build:cli:pkg",
+    "build:cli:webpack": "webpack --config ./webpack.config.js",
+    "build:cli:pkg": "run-s build:cli:pkg:linux build:cli:pkg:win build:cli:pkg:mac",
+    "build:cli:pkg:linux": "pkg -o ./out/linux-x64/hoshi --targets node18-linux-x64 ./out/index.js",
+    "build:cli:pkg:win": "pkg -o ./out/win-x64/hoshi.exe --targets node18-win-x64 ./out/index.js",
+    "build:cli:pkg:mac": "pkg -o ./out/mac-arm64/hoshi --targets node18-mac-arm64 ./out/index.js",
+    "build:sign": "sh sign.sh",
+    "build:package": "sh package.sh"
+  },
+  "dependencies": {
+    "commander": "^12.1.0",
+    "hoshi-core": "*",
+    "hoshi-models": "*"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "1.9.4",
+    "@types/node": "^22.10.1",
+    "@yao-pkg/pkg": "^6.1.1",
+    "npm-run-all": "^4.1.5",
+    "ts-loader": "^9.5.1",
+    "tsconfig-paths-webpack-plugin": "^4.2.0",
+    "typescript": "^5.7.2",
+    "webpack": "^5.96.1",
+    "webpack-cli": "^5.1.4"
+  }
+}
