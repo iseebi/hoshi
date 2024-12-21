@@ -1,7 +1,7 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { BrowserWindow, dialog } from 'electron';
-import { EditableVersion, HoshiAPI, SmalledPackage, SmalledProject, Version } from '../../models';
-import createModulesContainer from './container';
+import type { BrowserWindow } from "electron";
+import { dialog } from "electron";
+import type { EditableVersion, HoshiAPI, SmalledPackage, SmalledProject, Version } from "hoshi-models";
+import createModulesContainer from "./container";
 
 export type APIHandler = {
   initializeAsync(): Promise<void>;
@@ -17,12 +17,12 @@ const createAPIHandler: (window: BrowserWindow) => APIHandler = (window) => {
     exposed: {
       openProjectAsync: async (): Promise<SmalledProject | undefined> => {
         const result = await dialog.showOpenDialog(window, {
-          properties: ['openFile'],
-          title: 'Select Directory', // FIXME: Translation
+          properties: ["openFile"],
+          title: "Select Directory", // FIXME: Translation
           filters: [
             {
-              name: 'Hoshi Project (project.hoshi)', // FIXME: Translation
-              extensions: ['hoshi'],
+              name: "Hoshi Project (project.hoshi)", // FIXME: Translation
+              extensions: ["hoshi"],
             },
           ],
         });
@@ -52,7 +52,7 @@ const createAPIHandler: (window: BrowserWindow) => APIHandler = (window) => {
       },
       fetchEditableVersionAsync: async (packageId: string, versionId: string): Promise<EditableVersion | undefined> => {
         const result = await container.versions.fetchEditableVersionAsync(packageId, versionId);
-        if (result.status === 'success') {
+        if (result.status === "success") {
           return result.data;
         }
         return undefined;

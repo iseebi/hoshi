@@ -1,6 +1,5 @@
-import { VersionsRepository } from '../../../engine/src/repositories';
-import { EditableVersion, Result, Version } from '../../../models';
-import { FileLoadError } from '../../../models/file';
+import type { VersionsRepository } from "hoshi-core";
+import type { EditableVersion, FileLoadError, Result, Version } from "hoshi-models";
 
 class VersionsUseCase {
   private versionsRepository: VersionsRepository;

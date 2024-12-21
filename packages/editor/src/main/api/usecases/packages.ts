@@ -1,5 +1,5 @@
-import { SmalledPackage } from '../../../models';
-import { PackagesRepository } from '../../../engine/src/repositories';
+import type { PackagesRepository } from "hoshi-core";
+import type { SmalledPackage } from "hoshi-models";
 
 class PackagesUseCase {
   private packagesRepository: PackagesRepository;

@@ -8,6 +8,13 @@
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
     "@types/node": "^22.10.1",
-    "typescript": "^5.7.2"
+    "typescript": "^5.7.2",
+    "electron": "^28.3.3"
+  },
+  "dependencies": {
+    "@electron-toolkit/preload": "^2.0.0",
+    "@electron-toolkit/utils": "^2.0.0",
+    "electron-vite": "^1.0.27",
+    "electron-updater": "^6.1.1"
   }
 }

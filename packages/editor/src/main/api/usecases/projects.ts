@@ -1,5 +1,5 @@
-import { SmalledProject } from '../../../models';
-import ProjectsRepository from '../../../engine/src/repositories/projects';
+import type { ProjectsRepository } from "hoshi-core";
+import type { SmalledProject } from "hoshi-models";
 
 class ProjectsUseCase {
   private projectsRepository: ProjectsRepository;

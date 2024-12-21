@@ -1,6 +1,6 @@
-import { PackagesUseCase, ProjectsUseCase, VersionsUseCase } from './usecases';
-import { PackagesRepository, ProjectsRepository, VersionsRepository } from '../../engine/src/repositories';
-import { FilesDatastore } from '../../engine/src/datastore';
+import { FilesDatastore, PackagesRepository, ProjectsRepository, VersionsRepository } from "hoshi-core";
+import { FileSystemImpl } from "../../platform";
+import { PackagesUseCase, ProjectsUseCase, VersionsUseCase } from "./usecases";
 
 type ApiModulesContainer = {
   projects: ProjectsUseCase;
@@ -9,7 +9,8 @@ type ApiModulesContainer = {
 };
 
 const createModulesContainer: () => ApiModulesContainer = () => {
-  const filesDatastore = new FilesDatastore();
+  const fileSystem = new FileSystemImpl();
+  const filesDatastore = new FilesDatastore(fileSystem);
 
   const projectsRepository = new ProjectsRepository(filesDatastore);
   const packagesRepository = new PackagesRepository(filesDatastore);
