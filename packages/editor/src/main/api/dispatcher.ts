@@ -29,7 +29,11 @@ class HoshiAPIDispatcher {
     if (!handler) {
       throw new Error("Invalid API State");
     }
-    return invokeMethod(handler.exposed, method, ...args);
+    return invokeMethod(
+      handler.exposed as Record<string, (...args: AnyParameter[]) => Promise<AnyParameter>>,
+      method,
+      ...args,
+    );
   }
 
   private createHandler(window: BrowserWindow): APIHandler {

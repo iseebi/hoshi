@@ -11,12 +11,15 @@
     "doc": "docs"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "run-s build:cli build:editor build:collect",
+    "build:cli": "npm run build -w packages/cli",
+    "build:editor": "npm run build -w packages/editor",
+    "build:collect": "mkdir -p dist && cp -r packages/cli/dist/* dist/ && cp packages/editor/dist/*.* dist/",
+    "notarization": "bash build/run_notarization.sh"
   },
-  "workspaces": [
-    "packages/*"
-  ],
+  "workspaces": ["packages/*"],
   "devDependencies": {
-    "@biomejs/biome": "1.9.4"
+    "@biomejs/biome": "1.9.4",
+    "npm-run-all": "^4.1.5"
   }
 }

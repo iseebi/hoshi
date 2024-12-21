@@ -1,5 +1,5 @@
 appId: net.iseteki.hoshi
-productName: hoshi
+productName: hoshi Editor
 directories:
   buildResources: build
 files:
@@ -10,14 +10,17 @@ files:
   - '!{.env,.env.*,.npmrc,pnpm-lock.yaml}'
   - '!{tsconfig.json,tsconfig.node.json,tsconfig.web.json,tsconfig.cli.json}'
 extraFiles:
-  - from: out/cli/${os}-${arch}/hoshi-cli
-    to: hoshi-cli
-  - from: out/cli/${os}-${arch}/hoshi-cli.exe
-    to: hoshi-cli.exe
+  - from: ../cli/out/${os}-${arch}/hoshi
+    to: hoshi
+  - from: ../cli/out/${os}-${arch}/hoshi.exe
+    to: hoshi.exe
 asarUnpack:
   - resources/**
 win:
-  executableName: hoshi
+  target:
+    - target: nsis
+      arch: x64
+  executableName: hoshiEditor
 nsis:
   artifactName: ${name}-${version}-setup.${ext}
   shortcutName: ${productName}
@@ -32,7 +35,7 @@ mac:
     - target: zip
       arch: arm64
   binaries:
-    - Contents/hoshi-cli
+    - Contents/hoshi
   extendInfo:
     - NSCameraUsageDescription: Application requests access to the device's camera.
     - NSMicrophoneUsageDescription: Application requests access to the device's microphone.
@@ -42,9 +45,12 @@ dmg:
   artifactName: ${name}-${version}.${ext}
 linux:
   target:
-    - AppImage
-    - snap
-    - deb
+    - target: AppImage
+      arch: x64
+    - target: snap
+      arch: x64
+    - target: deb
+      arch: x64
   maintainer: electronjs.org
   category: Utility
 appImage:
