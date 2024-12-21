@@ -13,9 +13,9 @@ wait_pids() {
 
 pids=()
 
-find ./dist -name '*mac*.zip' -or -name '*.dmg' | while IFS= read -r file; do
+while IFS= read -r file; do
   $notarization_script "$file" &
   pids+=($!)
-done
+done < <(find ./dist -name '*mac*.zip' -or -name '*.dmg')
 
 wait_pids "${pids[@]}"
