@@ -13,8 +13,9 @@
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
     "@types/node": "^22.10.1",
+    "@vitejs/plugin-react": "^4.3.4",
     "typescript": "^5.7.2",
-    "electron": "^28.3.3"
+    "electron": "^33.3.0"
   },
   "dependencies": {
     "@electron-toolkit/preload": "^2.0.0",
