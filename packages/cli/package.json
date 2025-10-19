@@ -6,6 +6,7 @@
   "homepage": "https://hoshi.iseteki.net",
   "repository": "github:iseebi/hoshi",
   "scripts": {
+    "cli": "ts-node --project tsconfig.json src/index.ts",
     "build": "run-s build:cli build:sign build:package",
     "build:cli": "run-s build:cli:webpack build:cli:pkg",
     "build:cli:webpack": "webpack --config ./webpack.config.js",
@@ -27,6 +28,7 @@
     "@yao-pkg/pkg": "^6.1.1",
     "npm-run-all": "^4.1.5",
     "ts-loader": "^9.5.1",
+    "ts-node": "^10.9.2",
     "tsconfig-paths-webpack-plugin": "^4.2.0",
     "typescript": "^5.7.2",
     "webpack": "^5.96.1",
