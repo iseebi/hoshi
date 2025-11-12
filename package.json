@@ -11,6 +11,8 @@
     "doc": "docs"
   },
   "scripts": {
+    "dev:cli": "npm run dev --workspace=packages/cli",
+    "dev:editor": "npm run dev --workspace=packages/editor",
     "build": "run-s build:cli build:editor build:collect",
     "build:cli": "npm run build -w packages/cli",
     "build:editor": "npm run build -w packages/editor",

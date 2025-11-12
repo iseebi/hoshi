@@ -5,14 +5,17 @@
   "compilerOptions": {
     "module": "commonjs",
     "composite": true,
-    "downlevelIteration": true
+    "downlevelIteration": true,
+    "baseUrl": ".",
+    "paths": {
+      "hoshi-models": ["../models/src"],
+      "hoshi-core": ["../core/src"]
+    }
   },
   "ts-node": {
-    "esm": true,
-    "experimentalSpecifierResolution": "node"
+    "experimentalSpecifierResolution": "node",
+    "esm": false,
+    "transpileOnly": true
   },
-  "references": [
-    { "path": "../models" },
-    { "path": "../core" }
-  ]
+  "references": [{ "path": "../models" }, { "path": "../core" }]
 }
