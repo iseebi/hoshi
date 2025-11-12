@@ -42,8 +42,8 @@ $ npm install
 ### Development
 
 ```bash
-$ npm run dev
-$ npm run cli -- publish --project sample --outDir _published app
+$ npm run dev:editor
+$ npm run dev:cli -- publish --project sample --outDir _published app
 ```
 
 ### Build
