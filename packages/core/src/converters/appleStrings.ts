@@ -29,6 +29,11 @@ class AppleStringsConverter implements Converter {
     await this.fileSystem.createDirIfNotExistAsync(baseDir);
     const contextPrefix = param.metadata.package.contextPrefix || param.metadata.project.contextPrefix || "";
     const contextKeys = contextPrefix ? Object.keys(param.metadata.context) : [];
+    const fallbackLanguage =
+      param.metadata.package.stringsFallbackLanguage ||
+      param.metadata.package.fallbackLanguage ||
+      param.metadata.project.stringsFallbackLanguage ||
+      param.metadata.project.fallbackLanguage;
     await serialPromises(
       param.languages.map(async (lang) => {
         const contextBuffer = contextKeys.map(
@@ -37,11 +42,17 @@ class AppleStringsConverter implements Converter {
         const mainBuffer = param.keys
           .filter((key) => !contextPrefix || !key.startsWith(contextPrefix))
           .sort()
-          .map((key) =>
-            isDeletedPhrase(param.phrases[key])
-              ? ""
-              : `"${keyEscape(key)}" = "${valueEscape(param.phrases[key]?.translations[lang])}";`,
-          )
+          .map((key) => {
+            if (isDeletedPhrase(param.phrases[key])) {
+              return "";
+            }
+            const phrase = param.phrases[key];
+            let phraseText = phrase.translations[lang];
+            if (!phraseText && fallbackLanguage) {
+              phraseText = phrase.translations[fallbackLanguage];
+            }
+            return `"${keyEscape(key)}" = "${valueEscape(phraseText)}";`;
+          })
           .filter((v) => v !== "");
         const buffer = [...contextBuffer, ...mainBuffer].join("\n");
         const filePath = this.fileSystem.pathJoin(baseDir, `${lang}.strings`);

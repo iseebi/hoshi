@@ -1,0 +1,5 @@
+type: hoshi.version:1
+phrases:
+  fallback:
+    $description: test for fallback not defined in ja
+    en: "fallback english text"
