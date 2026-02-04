@@ -4,4 +4,5 @@ metadata:
     - en
     - ja
   contextPrefix: hoshi_localize_meta_
+  fallbackLanguage: en
 
