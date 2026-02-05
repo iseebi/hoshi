@@ -4,4 +4,5 @@ out
 _published
 *.log*
 
+.idea
 packages/*/src/**/*.d.ts
