@@ -122,7 +122,7 @@ class TypeScriptConverter implements Converter {
         };
 
         const objectCode = generateObjectCode(nestedBuffer);
-        const tsCode = `const dictionary = {\n${objectCode}\n};\n\nexport default dictionary;\n`;
+        const tsCode = `const dictionary = {\n${objectCode}\n};\n\ntype Dictionary = typeof dictionary;\n\nexport default dictionary;\nexport type { Dictionary };\n`;
 
         const filePath = this.fileSystem.pathJoin(baseDir, `${lang}.ts`);
         await this.fileSystem.writeFileAsync(filePath, tsCode);
