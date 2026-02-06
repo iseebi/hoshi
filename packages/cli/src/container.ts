@@ -8,10 +8,12 @@ import {
   HoshiVersionConverter,
   I18NextConverter,
   JsonConverter,
+  JsonStructuredConverter,
   NextIntlConverter,
   PackagesRepository,
   ProjectsRepository,
   PublishRepository,
+  TypeScriptConverter,
   VariablesDatastore,
   VersionsRepository,
 } from "hoshi-core";
@@ -36,7 +38,9 @@ const createModulesContainer = (): CliModulesContainer => {
     new AndroidXmlConverter(fileSystem),
     new I18NextConverter(fileSystem),
     new JsonConverter(fileSystem),
+    new JsonStructuredConverter(fileSystem),
     new NextIntlConverter(fileSystem),
+    new TypeScriptConverter(fileSystem),
     new HoshiVersionConverter(fileSystem),
   ]);
   const variablesDatastore = new VariablesDatastore(platform);
