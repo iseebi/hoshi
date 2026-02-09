@@ -8,7 +8,7 @@ const keyEscape = (input: string): string => input;
 interface Nesting {
   [key: string]: NestingValue;
 }
-type NestingValue = string | undefined | Nesting;
+type NestingValue = string | Nesting;
 
 const sortKeys = <T>(input: Record<string, T>): Record<string, T> => {
   const keys = Object.keys(input).sort();
@@ -25,7 +25,7 @@ const sortKeys = <T>(input: Record<string, T>): Record<string, T> => {
   );
 };
 
-export const makeNesting = (input: Record<string, string | undefined>): Nesting => {
+export const makeNesting = (input: Record<string, string>): Nesting => {
   const output: Nesting = {};
   for (const [key, value] of Object.entries(input)) {
     const keys = key.split(".");
@@ -74,6 +74,7 @@ class TypeScriptConverter implements Converter {
     await this.fileSystem.createDirIfNotExistAsync(baseDir);
     const contextPrefix = param.metadata.package.contextPrefix || param.metadata.project.contextPrefix || "";
     const contextKeys = contextPrefix ? Object.keys(param.metadata.context) : [];
+    const fallbackLanguage = param.metadata.package.fallbackLanguage || param.metadata.project.fallbackLanguage;
     await serialPromises(
       param.languages.map(async (lang) => {
         const contextBuffer = contextKeys.map((key) => [keyEscape(contextPrefix + key), param.metadata.context[key]]);
@@ -82,9 +83,15 @@ class TypeScriptConverter implements Converter {
           .sort()
           .map((key) => {
             try {
-              return isDeletedPhrase(param.phrases[key])
-                ? ["", ""]
-                : [keyEscape(key), param.phrases[key]?.translations[lang]];
+              if (isDeletedPhrase(param.phrases[key])) {
+                return ["", ""];
+              }
+              const phrase = param.phrases[key];
+              let phraseText = phrase.translations[lang];
+              if (!phraseText && fallbackLanguage) {
+                phraseText = phrase.translations[fallbackLanguage];
+              }
+              return [keyEscape(key), phraseText];
             } catch (e) {
               throw new Error(`Error on key: ${key}, lang: ${lang}, ${e}`);
             }
@@ -95,7 +102,7 @@ class TypeScriptConverter implements Converter {
             acc[key] = value;
             return acc;
           },
-          {} as Record<string, string | undefined>,
+          {} as Record<string, string>,
         );
 
         // Convert flat keys to nested structure
@@ -109,9 +116,6 @@ class TypeScriptConverter implements Converter {
           const lines = entries.map(([key, value]) => {
             if (typeof value === "string") {
               return `${indentStr}${key}: "${escapeString(value)}"`;
-            }
-            if (value === undefined) {
-              return `${indentStr}${key}: undefined`;
             }
             if (typeof value === "object" && value !== null) {
               const nestedCode = generateObjectCode(value as Record<string, unknown>, indent + 2);
