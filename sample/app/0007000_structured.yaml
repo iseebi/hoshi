@@ -7,7 +7,7 @@ phrases:
     ja: ホーム
   page.home.description:
     en: Welcome to our application
-    ja: アプリケーションへようこそ
+    # ja: アプリケーションへようこそ
   page.products.title:
     en: Products
     ja: 商品

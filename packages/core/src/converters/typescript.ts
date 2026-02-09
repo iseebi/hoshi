@@ -4,12 +4,11 @@ import type { FileSystem } from "../platform";
 import type { Converter } from "./type";
 
 const keyEscape = (input: string): string => input;
-export const valueEscape = (input: string | undefined): string => input ?? "";
 
 interface Nesting {
   [key: string]: NestingValue;
 }
-type NestingValue = string | Nesting;
+type NestingValue = string | undefined | Nesting;
 
 const sortKeys = <T>(input: Record<string, T>): Record<string, T> => {
   const keys = Object.keys(input).sort();
@@ -26,7 +25,7 @@ const sortKeys = <T>(input: Record<string, T>): Record<string, T> => {
   );
 };
 
-export const makeNesting = (input: Record<string, string>): Nesting => {
+export const makeNesting = (input: Record<string, string | undefined>): Nesting => {
   const output: Nesting = {};
   for (const [key, value] of Object.entries(input)) {
     const keys = key.split(".");
@@ -85,7 +84,7 @@ class TypeScriptConverter implements Converter {
             try {
               return isDeletedPhrase(param.phrases[key])
                 ? ["", ""]
-                : [keyEscape(key), valueEscape(param.phrases[key]?.translations[lang])];
+                : [keyEscape(key), param.phrases[key]?.translations[lang]];
             } catch (e) {
               throw new Error(`Error on key: ${key}, lang: ${lang}, ${e}`);
             }
@@ -96,7 +95,7 @@ class TypeScriptConverter implements Converter {
             acc[key] = value;
             return acc;
           },
-          {} as Record<string, string>,
+          {} as Record<string, string | undefined>,
         );
 
         // Convert flat keys to nested structure
@@ -110,6 +109,9 @@ class TypeScriptConverter implements Converter {
           const lines = entries.map(([key, value]) => {
             if (typeof value === "string") {
               return `${indentStr}${key}: "${escapeString(value)}"`;
+            }
+            if (value === undefined) {
+              return `${indentStr}${key}: undefined`;
             }
             if (typeof value === "object" && value !== null) {
               const nestedCode = generateObjectCode(value as Record<string, unknown>, indent + 2);
