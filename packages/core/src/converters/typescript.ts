@@ -74,7 +74,11 @@ class TypeScriptConverter implements Converter {
     await this.fileSystem.createDirIfNotExistAsync(baseDir);
     const contextPrefix = param.metadata.package.contextPrefix || param.metadata.project.contextPrefix || "";
     const contextKeys = contextPrefix ? Object.keys(param.metadata.context) : [];
-    const fallbackLanguage = param.metadata.package.fallbackLanguage || param.metadata.project.fallbackLanguage;
+    const fallbackLanguage =
+      param.metadata.package.typescriptFallbackLanguage ||
+      param.metadata.package.fallbackLanguage ||
+      param.metadata.project.typescriptFallbackLanguage ||
+      param.metadata.project.fallbackLanguage;
     await serialPromises(
       param.languages.map(async (lang) => {
         const contextBuffer = contextKeys.map((key) => [keyEscape(contextPrefix + key), param.metadata.context[key]]);
