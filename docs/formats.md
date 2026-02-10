@@ -1,4 +1,4 @@
-# hoshiファイルフォーマット Version 0.4 (Draft)
+# hoshiファイルフォーマット Version 0.5 (Draft)
 
 hoshiは、シンプルな仕組みで翻訳文言を管理するソフトウェアです。
 この文章では、hoshiで扱われるデータのフォーマットについて記載します。
@@ -113,9 +113,11 @@ package.hoshiファイルには、以下のキーが定義されます。
 | contextPrefix           | string   | ""     | コンテキストを出力するフレーズに付与されるプレフィクス。定義がない場合は出力されない。                             |
 | formats                 | string[] | []     | 出力するファイルフォーマット。定義がない場合は対応する形式すべてを出力する。                                  |
 | availableTranslations   | string[] | []     | 対応する言語。ここに定義があって項目がない場合は空のファイルが出力される。定義がない場合はバージョンファイルをマージした結果から推測されます。 |
-| fallbackLanguage        | string   | ""     | フレーズのテキストが存在しない場合に使用する言語コード。(stringsとi18nextの場合のみ有効です)                  |
+| fallbackLanguage        | string   | ""     | フレーズのテキストが存在しない場合に使用する言語コード。(対応するフォーマットの場合のみ有効)                  |
 | stringsFallbackLanguage | string   | ""     | strings形式でのみ使用するフォールバック言語コード。こちらが定義されている場合はstrings形式の出力時に優先されます。        |
-| i18nextFallbackLanguage | string   | ""     | i18next形式でのみ使用するフォールバック言語コード。こちらが定義されている場合はi18next形式の出力時に優先されます。        |
+| nextintlFallbackLanguage | string   | ""     | nextintl形式でのみ使用するフォールバック言語コード。こちらが定義されている場合はnextintl形式の出力時に優先されます。        |
+| typescriptFallbackLanguage | string   | ""     | typescript形式でのみ使用するフォールバック言語コード。こちらが定義されている場合はtypescript形式の出力時に優先されます。        |
+| jsonFallbackLanguage | string   | ""     | json形式でのみ使用するフォールバック言語コード。こちらが定義されている場合はjson形式の出力時に優先されます。        |
 
 ## バージョン
 
