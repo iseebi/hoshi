@@ -12,15 +12,35 @@ Simple translation management software (Work in progress)
 - .strings (iOS)
 - .xml (Android)
 - pure JSON
-- TypeScript (const object with nested structure)
+- TypeScript (const object with nested structure) `*`
 - i18next JSON
-- next-intl JSON
+- next-intl JSON `*`
+
+marked `*` format supports nested structure (ex. `HomePage.title: hello!` as `{"HomePage":{"title": "hello!"}}`)
 
 ## Application Components
 
 ### CLI
 
 File export workflow tool
+
+#### Create Project
+
+```
+$ hoshi projects create myProject
+```
+
+#### Create Package
+
+```
+myProject $ hoshi packages create phoneApp
+```
+
+#### Create Version
+
+```
+phoneApp $ hoshi versions create 0001000_initial
+```
 
 #### Publish
 
