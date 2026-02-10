@@ -1,6 +1,6 @@
 {
   "name": "hoshi-cli",
-  "version": "0.9.0",
+  "version": "0.10.0",
   "description": "CLI command of hoshi",
   "author": "Nobuhiro Ito",
   "homepage": "https://hoshi.iseteki.net",
@@ -33,6 +33,6 @@
     "tsconfig-paths-webpack-plugin": "^4.2.0",
     "typescript": "^5.7.2",
     "webpack": "^5.96.1",
-    "webpack-cli": "^5.1.4"
+    "webpack-cli": "^6.0.1"
   }
 }

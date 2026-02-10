@@ -21,6 +21,11 @@ class JsonConverter implements Converter {
     await this.fileSystem.createDirIfNotExistAsync(baseDir);
     const contextPrefix = param.metadata.package.contextPrefix || param.metadata.project.contextPrefix || "";
     const contextKeys = contextPrefix ? Object.keys(param.metadata.context) : [];
+    const fallbackLanguage =
+      param.metadata.package.jsonFallbackLanguage ||
+      param.metadata.package.fallbackLanguage ||
+      param.metadata.project.jsonFallbackLanguage ||
+      param.metadata.project.fallbackLanguage;
     await serialPromises(
       param.languages.map(async (lang) => {
         const contextBuffer = contextKeys.map((key) => [keyEscape(contextPrefix + key), param.metadata.context[key]]);
@@ -29,9 +34,15 @@ class JsonConverter implements Converter {
           .sort()
           .map((key) => {
             try {
-              return isDeletedPhrase(param.phrases[key])
-                ? ["", ""]
-                : [keyEscape(key), valueEscape(param.phrases[key]?.translations[lang])];
+              if (isDeletedPhrase(param.phrases[key])) {
+                return ["", ""];
+              }
+              const phrase = param.phrases[key];
+              let phraseText = phrase.translations[lang];
+              if (!phraseText && fallbackLanguage) {
+                phraseText = phrase.translations[fallbackLanguage];
+              }
+              return [keyEscape(key), valueEscape(phraseText)];
             } catch (e) {
               throw new Error(`Error on key: ${key}, lang: ${lang}, ${e}`);
             }

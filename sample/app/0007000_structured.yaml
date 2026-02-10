@@ -1,0 +1,28 @@
+type: hoshi.version:1
+metadata:
+  description: Add hierarchical structure example
+phrases:
+  page.home.title:
+    en: Home
+    ja: ホーム
+  page.home.description:
+    en: Welcome to our application
+    # ja: アプリケーションへようこそ
+  page.products.title:
+    en: Products
+    ja: 商品
+  page.products.description:
+    en: Browse our product catalog
+    ja: 商品カタログを閲覧
+  page.about.title:
+    en: About Us
+    ja: 概要
+  page.about.description:
+    en: Learn more about our company
+    ja: 当社についてさらに詳しく
+  button.submit:
+    en: Submit
+    ja: 送信
+  button.cancel:
+    en: Cancel
+    ja: キャンセル

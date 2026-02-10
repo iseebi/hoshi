@@ -12,6 +12,7 @@ import {
   PackagesRepository,
   ProjectsRepository,
   PublishRepository,
+  TypeScriptConverter,
   VariablesDatastore,
   VersionsRepository,
 } from "hoshi-core";
@@ -37,6 +38,7 @@ const createModulesContainer = (): CliModulesContainer => {
     new I18NextConverter(fileSystem),
     new JsonConverter(fileSystem),
     new NextIntlConverter(fileSystem),
+    new TypeScriptConverter(fileSystem),
     new HoshiVersionConverter(fileSystem),
   ]);
   const variablesDatastore = new VariablesDatastore(platform);

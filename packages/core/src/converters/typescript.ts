@@ -4,63 +4,6 @@ import type { FileSystem } from "../platform";
 import type { Converter } from "./type";
 
 const keyEscape = (input: string): string => input;
-export const valueEscape = (input: string | undefined): string => {
-  if (!input) {
-    return "";
-  }
-
-  let output = "";
-  let varIndex = 0;
-
-  for (let i = 0; i < input.length; i += 1) {
-    const nextIndex = input.indexOf("%", i);
-    if (nextIndex === -1) {
-      output += input.substring(i);
-      break;
-    }
-    if (input.charAt(nextIndex + 1) === "%") {
-      output += "%";
-      i = nextIndex + 1;
-    } else {
-      // そこまでの文字列は確定
-      // noinspection DuplicatedCode
-      output += input.substring(i, nextIndex);
-
-      // s, d, f を探す
-      const conversionIndex = input.substring(nextIndex).search(/[sdf]/);
-      if (conversionIndex === -1) {
-        throw new Error("Format string is invalid");
-      }
-
-      // 書式指定文字列を得る
-      const formatString = input.substring(nextIndex, nextIndex + conversionIndex + 1);
-
-      // 書式指定文字列のパラメータをパース
-      const params = formatString.match(/^%(?:(\d+)\$)?(\d+)?(?:\.(\d+))?([sdf])$/);
-      if (!params) {
-        throw new Error("Format string is invalid");
-      }
-      const [, argIndex, minimumIntegerDigits, minimumFractionDigits] = params;
-      const fragments: string[] = [];
-      if (argIndex) {
-        fragments.push(`arg${argIndex}`);
-      } else {
-        varIndex += 1;
-        fragments.push(`v${varIndex}`);
-      }
-      if (minimumIntegerDigits) {
-        fragments.push(`minimumIntegerDigits: ${minimumIntegerDigits}`);
-      }
-      if (minimumFractionDigits) {
-        fragments.push(`minimumFractionDigits: ${minimumFractionDigits}`);
-      }
-      output += `{${fragments.join(", ")}}`;
-      i = nextIndex + conversionIndex;
-    }
-  }
-
-  return output;
-};
 
 interface Nesting {
   [key: string]: NestingValue;
@@ -106,25 +49,35 @@ export const makeNesting = (input: Record<string, string>): Nesting => {
   return sortKeys(output);
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const escapeString = (str: string): string => {
+  return str
+    .replace(/\\/g, "\\\\")
+    .replace(/"/g, '\\"')
+    .replace(/\n/g, "\\n")
+    .replace(/\r/g, "\\r")
+    .replace(/\t/g, "\\t");
+};
+
 // noinspection DuplicatedCode
-class NextIntlConverter implements Converter {
+class TypeScriptConverter implements Converter {
   public constructor(private fileSystem: FileSystem) {}
 
   // eslint-disable-next-line class-methods-use-this
   getName(): string {
-    return "next-intl";
+    return "typescript";
   }
 
   // eslint-disable-next-line class-methods-use-this
   async exportAsync(param: ExportParameter): Promise<void> {
-    const baseDir = this.fileSystem.pathJoin(param.outDir, "next-intl");
+    const baseDir = this.fileSystem.pathJoin(param.outDir, "typescript");
     await this.fileSystem.createDirIfNotExistAsync(baseDir);
     const contextPrefix = param.metadata.package.contextPrefix || param.metadata.project.contextPrefix || "";
     const contextKeys = contextPrefix ? Object.keys(param.metadata.context) : [];
     const fallbackLanguage =
-      param.metadata.package.nextintlFallbackLanguage ||
+      param.metadata.package.typescriptFallbackLanguage ||
       param.metadata.package.fallbackLanguage ||
-      param.metadata.project.nextintlFallbackLanguage ||
+      param.metadata.project.typescriptFallbackLanguage ||
       param.metadata.project.fallbackLanguage;
     await serialPromises(
       param.languages.map(async (lang) => {
@@ -142,7 +95,7 @@ class NextIntlConverter implements Converter {
               if (!phraseText && fallbackLanguage) {
                 phraseText = phrase.translations[fallbackLanguage];
               }
-              return [keyEscape(key), valueEscape(phraseText)];
+              return [keyEscape(key), phraseText];
             } catch (e) {
               throw new Error(`Error on key: ${key}, lang: ${lang}, ${e}`);
             }
@@ -156,14 +109,36 @@ class NextIntlConverter implements Converter {
           {} as Record<string, string>,
         );
 
-        // 構造化する
-        const nested = makeNesting(buffer);
+        // Convert flat keys to nested structure
+        const nestedBuffer = makeNesting(buffer);
 
-        const filePath = this.fileSystem.pathJoin(baseDir, `${lang}.json`);
-        await this.fileSystem.writeFileAsync(filePath, JSON.stringify(nested, null, 2));
+        // Generate TypeScript code with nested structure
+        const generateObjectCode = (obj: Record<string, unknown>, indent = 2): string => {
+          const indentStr = " ".repeat(indent);
+          const entries = Object.entries(obj);
+
+          const lines = entries.map(([key, value]) => {
+            if (typeof value === "string") {
+              return `${indentStr}${key}: "${escapeString(value)}"`;
+            }
+            if (typeof value === "object" && value !== null) {
+              const nestedCode = generateObjectCode(value as Record<string, unknown>, indent + 2);
+              return `${indentStr}${key}: {\n${nestedCode}\n${indentStr}}`;
+            }
+            return "";
+          });
+
+          return lines.join(",\n");
+        };
+
+        const objectCode = generateObjectCode(nestedBuffer);
+        const tsCode = `const dictionary = {\n${objectCode}\n};\n\ntype Dictionary = typeof dictionary;\n\nexport default dictionary;\nexport type { Dictionary };\n`;
+
+        const filePath = this.fileSystem.pathJoin(baseDir, `${lang}.ts`);
+        await this.fileSystem.writeFileAsync(filePath, tsCode);
       }),
     );
   }
 }
 
-export default NextIntlConverter;
+export default TypeScriptConverter;
