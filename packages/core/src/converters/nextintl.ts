@@ -122,9 +122,9 @@ class NextIntlConverter implements Converter {
     const contextPrefix = param.metadata.package.contextPrefix || param.metadata.project.contextPrefix || "";
     const contextKeys = contextPrefix ? Object.keys(param.metadata.context) : [];
     const fallbackLanguage =
-      param.metadata.package.i18nextFallbackLanguage ||
+      param.metadata.package.nextintlFallbackLanguage ||
       param.metadata.package.fallbackLanguage ||
-      param.metadata.project.i18nextFallbackLanguage ||
+      param.metadata.project.nextintlFallbackLanguage ||
       param.metadata.project.fallbackLanguage;
     await serialPromises(
       param.languages.map(async (lang) => {
