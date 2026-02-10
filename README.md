@@ -12,6 +12,7 @@ Simple translation management software (Work in progress)
 - .strings (iOS)
 - .xml (Android)
 - pure JSON
+- TypeScript (const object with nested structure)
 - i18next JSON
 - next-intl JSON
 
