@@ -3,3 +3,11 @@ phrases:
   fallback:
     $description: test for fallback not defined in ja
     en: "fallback english text"
+  not_fallback1:
+    $description: test for not fallback
+    en: "not fallback english text"
+    ja: ""
+  not_fallback2:
+    $description: test for not fallback
+    en: "not fallback english text"
+    ja: null
