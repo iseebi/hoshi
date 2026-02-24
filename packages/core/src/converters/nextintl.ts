@@ -139,7 +139,7 @@ class NextIntlConverter implements Converter {
               }
               const phrase = param.phrases[key];
               let phraseText = phrase.translations[lang];
-              if (!phraseText && fallbackLanguage) {
+              if (phraseText === undefined && fallbackLanguage) {
                 phraseText = phrase.translations[fallbackLanguage];
               }
               return [keyEscape(key), valueEscape(phraseText)];
