@@ -21,6 +21,19 @@ class PublishRepository {
     outDir: string,
   ): Promise<boolean> {
     try {
+      const languages = (() => {
+        const metadataLanguages = (): string[] => {
+          if (packageMetadata.availableTranslations) {
+            return Array.isArray(packageMetadata.availableTranslations) ? packageMetadata.availableTranslations : packageMetadata.availableTranslations.split(",")
+          }
+          if (projectMetadata.availableTranslations) {
+            return Array.isArray(projectMetadata.availableTranslations) ? projectMetadata.availableTranslations : projectMetadata.availableTranslations.split(",")
+          }
+          return [];
+        };
+        const dataLanguages = data.languages;
+        return Array.from(new Set<string>([...metadataLanguages(), ...dataLanguages]));
+      })();
       await this.converterDatastore.exportAsync({
         format,
         outDir,
@@ -30,7 +43,7 @@ class PublishRepository {
           version: data.metadata,
           context,
         },
-        languages: data.languages,
+        languages,
         keys: data.keys,
         phrases: data.historyPhrases,
       });
