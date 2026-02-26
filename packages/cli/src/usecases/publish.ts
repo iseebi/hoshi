@@ -37,6 +37,9 @@ const filteredFormats = (
     if (parameterFormats) {
       return parameterFormats.split(",");
     }
+    if (Array.isArray(packageFormats)) {
+      return packageFormats;
+    }
     if (packageFormats) {
       return packageFormats.split(",");
     }
