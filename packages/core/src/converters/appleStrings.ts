@@ -51,6 +51,9 @@ class AppleStringsConverter implements Converter {
             if (phraseText === undefined && fallbackLanguage) {
               phraseText = phrase.translations[fallbackLanguage];
             }
+            if (phraseText === undefined) {
+              return "";
+            }
             return `"${keyEscape(key)}" = "${valueEscape(phraseText)}";`;
           })
           .filter((v) => v !== "");

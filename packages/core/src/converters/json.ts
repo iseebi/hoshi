@@ -42,6 +42,9 @@ class JsonConverter implements Converter {
               if (phraseText === undefined && fallbackLanguage) {
                 phraseText = phrase.translations[fallbackLanguage];
               }
+              if (phraseText === undefined) {
+                return ["", ""];
+              }
               return [keyEscape(key), valueEscape(phraseText)];
             } catch (e) {
               throw new Error(`Error on key: ${key}, lang: ${lang}, ${e}`);

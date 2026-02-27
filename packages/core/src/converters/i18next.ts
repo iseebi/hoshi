@@ -84,9 +84,10 @@ class I18NextConverter implements Converter {
           .sort()
           .map((key) => {
             try {
-              return isDeletedPhrase(param.phrases[key])
-                ? ["", ""]
-                : [keyEscape(key), valueEscape(param.phrases[key]?.translations[lang])];
+              if (isDeletedPhrase(param.phrases[key]) || (param.phrases[key]?.translations[lang] === undefined)) {
+                return ["", ""];
+              }
+              return [keyEscape(key), valueEscape(param.phrases[key]?.translations[lang])];
             } catch (e) {
               throw new Error(`Error on key: ${key}, lang: ${lang}, ${e}`);
             }
