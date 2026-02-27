@@ -8,13 +8,13 @@ const keyEscape = (input: string): string => input;
 interface Nesting {
   [key: string]: NestingValue;
 }
-type NestingValue = string | Nesting;
+type NestingValue = string | undefined | Nesting;
 
 const sortKeys = <T>(input: Record<string, T>): Record<string, T> => {
   const keys = Object.keys(input).sort();
   return keys.reduce(
     (acc, key) => {
-      if (typeof input[key] === "object") {
+      if (typeof input[key] === "object" && input[key] !== null) {
         acc[key] = sortKeys(input[key] as Record<string, T>) as T;
       } else {
         acc[key] = input[key];
@@ -25,7 +25,7 @@ const sortKeys = <T>(input: Record<string, T>): Record<string, T> => {
   );
 };
 
-export const makeNesting = (input: Record<string, string>): Nesting => {
+export const makeNesting = (input: Record<string, string | undefined>): Nesting => {
   const output: Nesting = {};
   for (const [key, value] of Object.entries(input)) {
     const keys = key.split(".");
@@ -95,6 +95,9 @@ class TypeScriptConverter implements Converter {
               if (phraseText === undefined && fallbackLanguage) {
                 phraseText = phrase.translations[fallbackLanguage];
               }
+              if (phraseText === undefined) {
+                return [keyEscape(key), undefined];
+              }
               return [keyEscape(key), phraseText];
             } catch (e) {
               throw new Error(`Error on key: ${key}, lang: ${lang}, ${e}`);
@@ -103,10 +106,10 @@ class TypeScriptConverter implements Converter {
           .filter((v) => v[0] !== "");
         const buffer = [...contextBuffer, ...mainBuffer].reduce(
           (acc, [key, value]) => {
-            acc[key] = value;
+            acc[key as string] = value;
             return acc;
           },
-          {} as Record<string, string>,
+          {} as Record<string, string | undefined>,
         );
 
         // Convert flat keys to nested structure
@@ -121,7 +124,13 @@ class TypeScriptConverter implements Converter {
             if (typeof value === "string") {
               return `${indentStr}${key}: "${escapeString(value)}"`;
             }
-            if (typeof value === "object" && value !== null) {
+            if (value === undefined) {
+              return `${indentStr}${key}: undefined`;
+            }
+            if (value === null) {
+              return `${indentStr}${key}: ""`;
+            }
+            if (typeof value === "object") {
               const nestedCode = generateObjectCode(value as Record<string, unknown>, indent + 2);
               return `${indentStr}${key}: {\n${nestedCode}\n${indentStr}}`;
             }

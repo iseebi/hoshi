@@ -3,6 +3,7 @@ metadata:
   availableTranslations:
     - en
     - ja
+    - ko
   contextPrefix: hoshi_localize_meta_
   fallbackLanguage: en
 

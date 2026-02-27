@@ -49,11 +49,12 @@ ${contextKeys
 ${param.keys
   .filter((key) => !contextPrefix || !key.startsWith(contextPrefix))
   .sort()
-  .map((key) =>
-    isDeletedPhrase(param.phrases[key])
-      ? ""
-      : `    <string name="${keyEscape(key)}">${valueEscape(param.phrases[key]?.translations[lang])}</string>`,
-  )
+  .map((key) => {
+    if (isDeletedPhrase(param.phrases[key]) || (param.phrases[key]?.translations[lang] === undefined)) {
+      return "";
+    }
+    return `    <string name="${keyEscape(key)}">${valueEscape(param.phrases[key]?.translations[lang])}</string>`;
+  })
   .filter((v) => v !== "")
   .join("\n")}
 </resources>
