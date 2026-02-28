@@ -15,6 +15,7 @@ import {
   TypeScriptConverter,
   VariablesDatastore,
   VersionsRepository,
+  XcodeStringCatalogConverter,
 } from "hoshi-core";
 import { FileSystemImpl, PlatformImpl } from "./platform";
 import { PackagesUseCase, ProjectsUseCase, PublishUseCase, VersionsUseCase } from "./usecases";
@@ -40,6 +41,7 @@ const createModulesContainer = (): CliModulesContainer => {
     new NextIntlConverter(fileSystem),
     new TypeScriptConverter(fileSystem),
     new HoshiVersionConverter(fileSystem),
+    new XcodeStringCatalogConverter(fileSystem),
   ]);
   const variablesDatastore = new VariablesDatastore(platform);
 

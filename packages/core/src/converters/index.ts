@@ -6,6 +6,16 @@ import JsonConverter from "./json";
 import NextIntlConverter from "./nextintl";
 import type { Converter } from "./type";
 import TypeScriptConverter from "./typescript";
+import XcodeStringCatalogConverter from "./xcstrings";
 
-export { AndroidXmlConverter, AppleStringsConverter, HoshiVersionConverter, I18NextConverter, JsonConverter, NextIntlConverter, TypeScriptConverter };
+export {
+  AndroidXmlConverter,
+  AppleStringsConverter,
+  HoshiVersionConverter,
+  I18NextConverter,
+  JsonConverter,
+  NextIntlConverter,
+  TypeScriptConverter,
+  XcodeStringCatalogConverter
+};
 export type { Converter };
