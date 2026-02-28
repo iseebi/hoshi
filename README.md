@@ -10,6 +10,7 @@ Simple translation management software (Work in progress)
 ## Supported Formats
 
 - .strings (iOS)
+- String Catalog(.xcstrings) (iOS)
 - .xml (Android)
 - pure JSON
 - TypeScript (const object with nested structure) `*`
