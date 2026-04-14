@@ -22,6 +22,39 @@ const valueEscape = (input: string | undefined): string => {
   return result;
 };
 
+type ResourceTagAttributeMetadata = string | string[] | Record<string, unknown>;
+
+const XML_ATTRIBUTES_REGEX = /^(\s*[a-zA-Z_:][-a-zA-Z0-9._:]*\s*=\s*(?:"[^"<]*"|'[^'<]*')\s*)*$/;
+
+export const validateXmlAttributes = (tagAttributes: string): void => {
+  if (!XML_ATTRIBUTES_REGEX.test(tagAttributes)) {
+    throw new Error(`Invalid XML tag attribute: "${tagAttributes}"`);
+  }
+};
+
+const createResourceTag = (attrs: ResourceTagAttributeMetadata | undefined): string => {
+  if (!attrs) {
+    return "<resources>";
+  }
+  let tagAttributes = "";
+  if (typeof attrs === "object") {
+    const attrDict = attrs as Record<string, unknown>;
+    tagAttributes = Object.keys(attrDict).map((key) => `${key}="${attrDict[key]}"`).join(" ");
+  } else if (Array.isArray(attrs)) {
+    tagAttributes = attrs.join(" ");
+  } else {
+    tagAttributes = attrs as string;
+  }
+
+  if (!tagAttributes) {
+    return "<resources>";
+  }
+
+  validateXmlAttributes(tagAttributes);
+
+  return `<resources ${tagAttributes}>`;
+}
+
 class AndroidXmlConverter implements Converter {
   public constructor(private fileSystem: FileSystem) {}
 
@@ -36,10 +69,11 @@ class AndroidXmlConverter implements Converter {
     await this.fileSystem.createDirIfNotExistAsync(baseDir);
     const contextPrefix = param.metadata.package.contextPrefix || param.metadata.project.contextPrefix || "";
     const contextKeys = contextPrefix ? Object.keys(param.metadata.context) : [];
+    const resourceTagAttributes: ResourceTagAttributeMetadata = param.metadata.package.androidXmlResourceTagAttributes || param.metadata.project.androidXmlResourceTagAttributes;
     await serialPromises(
       param.languages.map(async (lang) => {
         const buffer = `<?xml version="1.0" encoding="utf-8"?>
-<resources>
+${createResourceTag(resourceTagAttributes)}
 ${contextKeys
   .map(
     (key) =>
