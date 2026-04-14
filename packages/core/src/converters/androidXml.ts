@@ -43,11 +43,11 @@ const createResourceTag = (attrs: ResourceTagAttributeMetadata | undefined): str
     return "<resources>";
   }
   let tagAttributes = "";
-  if (typeof attrs === "object") {
+  if (Array.isArray(attrs)) {
+    tagAttributes = attrs.join(" ");
+  } else if (typeof attrs === "object") {
     const attrDict = attrs as Record<string, unknown>;
     tagAttributes = Object.keys(attrDict).map((key) => `${key}="${attrDict[key]}"`).join(" ");
-  } else if (Array.isArray(attrs)) {
-    tagAttributes = attrs.join(" ");
   } else {
     tagAttributes = attrs as string;
   }
