@@ -1,6 +1,6 @@
 {
   "name": "hoshi-editor",
-  "version": "0.10.6",
+  "version": "0.11.0",
   "description": "hoshi Editor",
   "author": "Nobuhiro Ito",
   "homepage": "https://hoshi.iseteki.net",
@@ -22,7 +22,7 @@
     "@types/node": "^22.10.1",
     "@vitejs/plugin-react": "^4.3.4",
     "typescript": "^5.7.2",
-    "electron": "38.3.0",
+    "electron": "38.8.6",
     "electron-builder": "^26.7.0",
     "npm-run-all": "^4.1.5"
   },

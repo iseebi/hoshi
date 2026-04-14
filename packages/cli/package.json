@@ -1,6 +1,6 @@
 {
   "name": "hoshi-cli",
-  "version": "0.10.6",
+  "version": "0.11.0",
   "description": "CLI command of hoshi",
   "author": "Nobuhiro Ito",
   "homepage": "https://hoshi.iseteki.net",
