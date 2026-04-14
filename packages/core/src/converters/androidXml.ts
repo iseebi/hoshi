@@ -69,7 +69,7 @@ class AndroidXmlConverter implements Converter {
     await this.fileSystem.createDirIfNotExistAsync(baseDir);
     const contextPrefix = param.metadata.package.contextPrefix || param.metadata.project.contextPrefix || "";
     const contextKeys = contextPrefix ? Object.keys(param.metadata.context) : [];
-    const resourceTagAttributes: ResourceTagAttributeMetadata = param.metadata.package.androidXmlResourceTagAttributes || param.metadata.project.androidXmlResourceTagAttributes;
+    const resourceTagAttributes: ResourceTagAttributeMetadata = param.metadata.version.androidXmlResourceTagAttributes ||  param.metadata.package.androidXmlResourceTagAttributes || param.metadata.project.androidXmlResourceTagAttributes;
     await serialPromises(
       param.languages.map(async (lang) => {
         const buffer = `<?xml version="1.0" encoding="utf-8"?>
