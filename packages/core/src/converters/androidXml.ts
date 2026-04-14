@@ -24,7 +24,13 @@ const valueEscape = (input: string | undefined): string => {
 
 type ResourceTagAttributeMetadata = string | string[] | Record<string, unknown>;
 
-const XML_ATTRIBUTES_REGEX = /^(\s*[a-zA-Z_:][-a-zA-Z0-9._:]*\s*=\s*(?:"[^"<]*"|'[^'<]*')\s*)*$/;
+// XML attribute: Name="Value" or Name='Value'
+// Name starts with letter, underscore, or colon; followed by letters, digits, '.', '-', '_', ':'
+// Multiple attributes must be separated by whitespace
+const XML_ATTR = /[a-zA-Z_:][-a-zA-Z0-9._:]*\s*=\s*(?:"[^"<]*"|'[^'<]*')/;
+const XML_ATTRIBUTES_REGEX = new RegExp(
+  `^\\s*$|^\\s*${XML_ATTR.source}(\\s+${XML_ATTR.source})*\\s*$`,
+);
 
 export const validateXmlAttributes = (tagAttributes: string): void => {
   if (!XML_ATTRIBUTES_REGEX.test(tagAttributes)) {
@@ -53,7 +59,7 @@ const createResourceTag = (attrs: ResourceTagAttributeMetadata | undefined): str
   validateXmlAttributes(tagAttributes);
 
   return `<resources ${tagAttributes}>`;
-}
+};
 
 class AndroidXmlConverter implements Converter {
   public constructor(private fileSystem: FileSystem) {}
