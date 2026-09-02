@@ -1,4 +1,11 @@
-import { makeNesting } from './nextintl';
+import { makeNesting, valueEscape } from './nextintl';
+
+test('escape format string', () => {
+  expect(valueEscape(undefined)).toBe('');
+  expect(valueEscape('100%')).toBe('100%');
+  expect(valueEscape('%s')).toBe('%s');
+  expect(valueEscape('%%')).toBe('%%');
+});
 
 it('should return empty object', () => expect(makeNesting({})).toEqual({}));
 it('should return same object', () =>
