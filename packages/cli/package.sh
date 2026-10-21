@@ -6,4 +6,4 @@ zip -j "./dist/$base_name-linux-x64.zip" ./out/linux-x64/hoshi
 zip -j "./dist/$base_name-linux-arm64.zip" ./out/linux-arm64/hoshi
 zip -j "./dist/$base_name-win-x64.zip" ./out/win-x64/hoshi.exe
 ditto -c -k --sequesterRsrc ./out/mac-arm64/hoshi "./dist/$base_name-mac-arm64.zip"
-hdiutil create -volname "hoshi" -srcfolder "out/mac-arm64" -ov -format UDZO dist/${base_name}-mac-arm64.dmg
+hdiutil create -volname "hoshi" -srcfolder "out/mac-arm64" -size 200m -ov -format UDZO dist/${base_name}-mac-arm64.dmg
